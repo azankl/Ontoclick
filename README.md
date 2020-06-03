@@ -17,3 +17,13 @@ We developed a first prototype of such a Browser plugin during HealthHack Sydney
 Please join this project and make ontologies great again!
 
 For further information, please contact Prof Andreas Zankl, Kinghorn Centre for Clinical Genomics, Garvan Institute of Medical Research, a.zankl@garvan.org.au
+
+
+LINKS
+HPO-> https://hpo.jax.org/
+Bioportal->http://data.bioontology.org/documentation
+EBI Ontology Lookup Service -> https://www.ebi.ac.uk/ols/docs/api
+Pitch presentation -> https://speakerdeck.com/azankl/ontoclick-pitch-healthhack-2017
+OntoClick -> https://github.com/livingrylabs/ontoclick
+Hlib-> https://github.com/judell/hlib
+
