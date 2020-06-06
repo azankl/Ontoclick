@@ -1,29 +1,92 @@
-# Plugin_Biodata-HPO-
+# OntoClick v0.0.1
 
-A browser plug-in to clean up messy biomedical data
+> Turn your clinical description into a proper ontology term.
 
-As a clinical genomics researcher, I try to understand how changes in our genome lead to rare genetic disorders.  This requires collecting clinical data from various sources. The problem is that medical terminology is not really standardised, ‘large head’, ‘big head’ and ‘macrocephaly’ all mean the same thing, but this would not be obvious to a computer. You could not even tally up all people with ‘large head’ in a spreadsheet if some people have been recorded as having a ‘big head’. Let alone do anything more fancy, like machine learning.
+OntoClick is a Chrome browser extension used by bio researchers to reference ontology class identifiers and preferred labels.
 
-The Human Phenotype Ontology (HPO) has been developed to address this problem. The HPO provides a standard vocabulary of over 10’000 terms to describe clinical features of patients with rare diseases. For example HPO Term HP:0000256 stands for ‘macrocephaly’ and has the synonyms ‘large head’ and ‘big head’.  If everybody used HPO terms to describe clinical features of their patients, research on rare genetic diseases would progress in leaps and bounds!
+It uses the [NCBO BioPortal REST API](http://bioportal.bioontology.org/) to fulfil search requests.
 
-Unfortunately, looking up the right HPO term for a clinical feature takes a few extra steps: you need to go to the HPO website, search for your clinical feature of interest (e.g. ‘large head’),  choose the right HPO term from the search results, copy the HPO ID and paste it into your primary database. Though not particularly onerous, having to do this hundreds of times quickly becomes time consuming.
+OntoClick was prototyped at [Health Hack](https://www.healthhack.com.au/) Sydney Nov 2017 by Dr Andreas Zankl's Team OntoClick and subsequently developed by [LivingryLabs](https://www.livingrylabs.net/).
 
-I would like to build a browser plugin that facilitates this process. Just highlight a clinical feature in your browser, click the HPO extension button and your clipboard will contain the correct HPO ID ready to paste wherever you need it!
+## Usage
 
-Bioportal and the EBI Ontology Lookup Service provide APIs to query the HPO, which could be used for this project. In fact, these APIs can query many other biomedical ontologies, so the Chrome Extension could be easily modified to serve other researcher needs!
+1. Visit a web page in the Chrome browser
+2. Select any clinical description text e.g. 'bowed femur'
+3. Right click to show browser context menu
+4. Left click OntoClick menu item
+5. Copy desired result to clipboard
 
-We developed a first prototype of such a Browser plugin during HealthHack Sydney 2017 (and won 3rd place!). The pitch presentation can be found here and the code for this prototype can be found here. More recently, we started collaborating with Jon Udell from [Hypothes.is](https://web.hypothes.is/) to build such a plugin using his hlib library. 
+## Alpha Limitations
 
-Please join this project and make ontologies great again!
+* 'Filter by Ontology' is hard coded to the Human Phenotype Ontology
+* Does not have 'replace' feature
+* Does not have configurable identifier structure e.g. "notation: preferred label"
+* Does not work with custom context menus e.g. Google Sheets
+* Does not have class detail view
 
-For further information, please contact Prof Andreas Zankl, Kinghorn Centre for Clinical Genomics, Garvan Institute of Medical Research, a.zankl@garvan.org.au
+## Build Prerequisites
 
+* [Yarn](https://yarnpkg.com/en/docs/install)
 
-LINKS
-HPO-> https://hpo.jax.org/
-Bioportal->http://data.bioontology.org/documentation
-EBI Ontology Lookup Service -> https://www.ebi.ac.uk/ols/docs/api
-Pitch presentation -> https://speakerdeck.com/azankl/ontoclick-pitch-healthhack-2017
-OntoClick -> https://github.com/livingrylabs/ontoclick
-Hlib-> https://github.com/judell/hlib
+## Install From Source
 
+``` bash
+# install dependencies
+yarn install
+
+# get your BioPortal REST API key from https://bioportal.bioontology.org/account
+open https://bioportal.bioontology.org/account
+
+# add your API key for production builds
+cp api/example.api.json api/prod.api.json
+open api/prod.api.json
+
+# build for production with minification
+npm run build
+
+# To run but not install, use the load-into-chrome script
+./bin/load-into-chrome
+
+# To install, follow these steps:
+# 1. Start chrome
+# 2. Visit chrome://extensions
+# 3. Click 'Load unpacked extension...'
+# 4. Select the ontoclick/dist/ folder
+```
+
+## Install From Release
+
+TODO: Add instructions for installing the extension using a release artefact.
+
+## Development Setup
+
+``` bash
+# install dependencies
+yarn install
+
+# get your BioPortal REST API key from https://bioportal.bioontology.org/account
+open https://bioportal.bioontology.org/account
+
+# add your API key for development builds
+cp api/example.api.json api/dev.api.json
+open api/dev.api.json
+
+# add your API key for production builds
+cp api/example.api.json api/prod.api.json
+open api/prod.api.json
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+
+# run unit tests
+npm run unit
+
+# run e2e tests
+npm run e2e
+
+# run all tests
+npm test
+```
