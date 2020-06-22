@@ -16178,7 +16178,7 @@
 	  requestFunction: function requestFunction(data) {
 	    return _vue2.default.http.get(("https://data.bioontology.org/search"), {
 	      params: {
-	        apikey: ("430dccf0-a48a-4119-b284-3d756cfbe316"),
+	        apikey: ("c13d7cc0-92b5-4a71-8380-fdb1c5dcde4e"),
 	        q: data.q,
 	        pagesize: 5,
 	        page: data.page,
