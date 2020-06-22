@@ -1,0 +1,46 @@
+{
+  "name": "replaced with package.json#name during build",
+  "description": "replaced with package.json#description during build",
+  "version": "replaced with package.json#version during build",
+  "background": {
+    "scripts": ["static/js/background.js"]
+  },
+  "manifest_version": 2,
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "icons": {
+    "16": "static/img/icon-16.png",
+    "128": "static/img/icon-128.png"
+  },
+  "web_accessible_resources": [
+    "index.html",
+    "static/js/app.js",
+    "static/js/app.js.map",
+    "static/js/vendor.js",
+    "static/js/vendor.js.map",
+    "static/css/app.css",
+    "static/css/app.css.map"
+  ],
+  "permissions": [
+    "contextMenus",
+    "activeTab",
+    "clipboardRead",
+    "clipboardWrite",
+    "cookies",
+    "webRequest",
+    "webRequestBlocking",
+    "http://data.bioontology.org/*",
+    "https://data.bioontology.org/*",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "content_scripts": [{
+    "matches": [
+      "http://*/*",
+      "https://*/*"
+    ],
+    "css": [
+      "static/css/loader.css",
+      "static/css/loader.css.map"
+    ]
+  }]
+}
