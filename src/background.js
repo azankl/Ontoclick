@@ -4,7 +4,7 @@
 chrome.runtime.onInstalled.addListener(function() {
   chrome.contextMenus.create({
     id: 'ontoclick-en',
-    title: 'OntoClick',
+    title: 'OntoClick v2',
     type: 'normal',
     contexts: ['selection']
   });
