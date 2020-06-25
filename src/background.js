@@ -6,7 +6,7 @@ chrome.runtime.onInstalled.addListener(function() {
     id: 'ontoclick-en',
     title: 'OntoClick v2',
     type: 'normal',
-    contexts: ['selection']
+    contexts: ['all']
   });
 });
 

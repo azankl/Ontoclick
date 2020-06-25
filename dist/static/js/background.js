@@ -51,7 +51,7 @@
 	    id: 'ontoclick-en',
 	    title: 'OntoClick v2',
 	    type: 'normal',
-	    contexts: ['selection']
+	    contexts: ['all']
 	  });
 	});
 	

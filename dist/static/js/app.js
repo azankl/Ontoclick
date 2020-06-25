@@ -16242,7 +16242,7 @@
 	      'class': 'table-responsive'
 	    }, [h('table', {
 	      'class': 'VueTables__table table ' + this.opts.skin
-	    }, [h('thead', null, [h('tr', null, [headings]), beforeFilters, columnFilters, afterFilters]), footerHeadings, beforeBody, h('tbody', null, [prependBody, noResults, rows, appendBody]), afterBody])]), pagination, dropdownPaginationCount]);
+	    }, [h('thead', null, [h('tr', null, [headings]), beforeFilters, columnFilters, afterFilters]), footerHeadings, beforeBody, h('tbody', null, [prependBody, noResults, rows, appendBody]), afterBody])]), h('div', { 'id': 'info' }, ["hi"]), pagination, dropdownPaginationCount]);
 	  };
 	};
 

@@ -15,6 +15,11 @@
         <a class="hover-action fa fa-copy" @click='copyContent("notation"+props.index)'></a>
         <!-- <a class="hover-action fa fa-edit" @click='replaceWithContent("notation"+props.index)'></a> -->
       </template>
+      <!-- <template slot="child_row" scope="child" >
+        <span :id='"definition"+props.index'>{{props.row.definition}}
+          <div><b>Definition: </b>{{props.row.definition[0]}}</div>
+        </span>
+        </template> -->
     <template slot="prefLabel" scope="props" v-if="props.row.prefLabel">
         <span :id='"prefLabel"+props.index'>{{props.row.prefLabel}}</span>
         <a class="hover-action fa fa-copy" @click='copyContent("prefLabel"+props.index)'></a>
@@ -150,5 +155,22 @@ ul.pagination>li>a,
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.VueTables__child-row-toggler {
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    display: block;
+    margin: auto;
+    text-align: center;
+}
+
+.VueTables__child-row-toggler--closed::before {
+    content: "+";
+}
+
+.VueTables__child-row-toggler--open::before {
+    content: "-";
 }
 </style>
