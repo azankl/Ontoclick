@@ -10,24 +10,24 @@
     <div slot='ontologiesFilter' class='form-group'>
       <treeselect :multiple="true" :clearable="false" :close-on-select="true" :flat="true" :options="ontologyOptions" placeholder="Filter by Ontology" v-model="ontologyValue" />
     </div>
+    <template slot="child_row" scope="props" >
+      <div v-if="props.row.definition"><b>Definition: </b>{{props.row.definition[0]}}</div>
+       <div v-if="props.row.synonym"><b>Synonyms: </b>{{props.row.synonym}}</div>
+     </template>
     <template slot="notation" scope="props" v-if="props.row.notation">
         <span :id='"notation"+props.index'>{{props.row.notation}}</span>
         <a class="hover-action fa fa-copy" @click='copyContent("notation"+props.index)'></a>
         <!-- <a class="hover-action fa fa-edit" @click='replaceWithContent("notation"+props.index)'></a> -->
       </template>
-      <!-- <template slot="child_row" scope="child" >
-        <span :id='"definition"+props.index'>{{props.row.definition}}
-          <div><b>Definition: </b>{{props.row.definition[0]}}</div>
-        </span>
-        </template> -->
     <template slot="prefLabel" scope="props" v-if="props.row.prefLabel">
         <span :id='"prefLabel"+props.index'>{{props.row.prefLabel}}</span>
         <a class="hover-action fa fa-copy" @click='copyContent("prefLabel"+props.index)'></a>
         <!-- <a class="hover-action fa fa-edit" @click='replaceWithContent("prefLabel"+props.index)'></a> -->
       </template>
-    <!-- <template slot="Actions" scope="props">
-        <a class="hover-action fa fa-copy" @click='copyModel(props)'></a>
-      </template> -->
+    <!-- <template slot="Information" scope="props">
+          <!-- <span :id='"definition"+props.index'>{{props.row.definition[0]}}</span> -->
+        <!-- <a class="hover-action fa fa-copy" @click='copyModel(props)'></a> -->
+      <!-- </template> -->
   </v-server-table>
 </div>
 </template>
@@ -64,7 +64,7 @@ export default {
     return {
       loading: true,
       url: 'https://data.bioontology.org/search',
-      columns: ['notation', 'prefLabel' /*, 'Actions'*/ ],
+      columns: ['notation', 'prefLabel'/*, 'Actions'*/],
       options: {
         initFilters: {
           'GENERIC': query
