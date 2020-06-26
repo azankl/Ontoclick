@@ -20,13 +20,13 @@
         <a class="hover-action fa fa-copy" @click='copyContent("prefLabel"+props.index)'></a>
         <!-- <a class="hover-action fa fa-edit" @click='replaceWithContent("prefLabel"+props.index)'></a> -->
       </template>
-    <!-- <template slot="Actions" scope="props">
-        <a class="hover-action fa fa-copy" @click='copyModel(props)'></a>
-      </template> -->
+    <template slot="Notation Label" scope="props" v-if="props.row.prefLabel && props.row.notation" >
+        <a class="hover-action fa fa-copy" @click='copyContentS(props.row.notation + "  " + props.row.prefLabel)'></a>
+      </template> 
   </v-server-table>
 </div>
 </template>
-
+  
 <script>
 import Treeselect from '@riophae/vue-treeselect'
 import {
@@ -46,6 +46,15 @@ function copyElementContent(srcElementId) {
   selection.removeAllRanges();
 }
 
+function copyElementContentS(cps) {
+ const el = document.createElement('textarea');
+  el.value = cps;
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+}
+
 export default {
   name: 'search-box',
   components: {
@@ -59,7 +68,7 @@ export default {
     return {
       loading: true,
       url: 'https://data.bioontology.org/search',
-      columns: ['notation', 'prefLabel' /*, 'Actions'*/ ],
+      columns: ['notation', 'prefLabel' , 'Notation Label'],
       options: {
         initFilters: {
           'GENERIC': query
@@ -94,7 +103,13 @@ export default {
         type: 'copied-paste'
       }, "*")
     },
-    copyModel(model) {}
+    copyModel(model) {},
+    copyContentS(srcstr) {
+      copyElementContentS(srcstr);
+      window.parent.postMessage({
+        type: 'copied'
+      }, "*")
+    },
   }
 }
 </script>
@@ -151,4 +166,6 @@ ul.pagination>li>a,
   flex-direction: column;
   justify-content: center;
 }
+
+
 </style>
