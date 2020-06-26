@@ -29,7 +29,7 @@ let popper = new Popper(range, popperDiv, {
   onCreate: (data) => {
   },
   onUpdate: (data) => {
-  }
+  },
 });
 
 let tearDown = function() {

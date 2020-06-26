@@ -9065,5 +9065,10 @@ ul.pagination>li>a,
 .VueTables__child-row-toggler--open::before {
     content: "-";
 }
+.text-wrap {
+  /* word-wrap: normal; */
+  white-space: pre-line;
+}
+
 
 /*# sourceMappingURL=app.css.map*/

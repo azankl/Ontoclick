@@ -11,8 +11,8 @@
       <treeselect :multiple="true" :clearable="false" :close-on-select="true" :flat="true" :options="ontologyOptions" placeholder="Filter by Ontology" v-model="ontologyValue" />
     </div>
     <template slot="child_row" scope="props" uniqueKey="props.row.definition">
-        <div v-if="props.row.definition"><b>Definition: </b>{{props.row.definition[0]}}</div>
-        <div v-if="props.row.synonym"><b>Synonyms: </b>{{props.row.synonym.join(', ')}}</div>
+        <div class='text-wrap' v-if="props.row.definition"><b>Definition: </b>{{props.row.definition[0]}}</div>
+        <div class='text-wrap' v-if="props.row.synonym"><b>Synonyms: </b>{{props.row.synonym.join(', ')}}</div>
       </template>
     <template slot="notation" scope="props" v-if="props.row.notation">
         <span :id='"notation"+props.index'>{{props.row.notation}}</span>
@@ -64,7 +64,7 @@ export default {
     return {
       loading: true,
       url: 'https://data.bioontology.org/search',
-      columns: ['notation', 'prefLabel'/*, 'Actions'*/],
+      columns: ['notation', 'prefLabel'],
       options: {
         initFilters: {
           'GENERIC': query
@@ -174,4 +174,10 @@ ul.pagination>li>a,
 .VueTables__child-row-toggler--open::before {
     content: "-";
 }
+
+.text-wrap {
+  word-wrap: normal;
+  white-space: pre-line;
+}
+
 </style>
