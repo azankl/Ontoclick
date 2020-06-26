@@ -10,10 +10,10 @@
     <div slot='ontologiesFilter' class='form-group'>
       <treeselect :multiple="true" :clearable="false" :close-on-select="true" :flat="true" :options="ontologyOptions" placeholder="Filter by Ontology" v-model="ontologyValue" />
     </div>
-    <template slot="child_row" scope="props" >
-      <div v-if="props.row.definition"><b>Definition: </b>{{props.row.definition[0]}}</div>
-       <div v-if="props.row.synonym"><b>Synonyms: </b>{{props.row.synonym}}</div>
-     </template>
+    <template slot="child_row" scope="props" uniqueKey="props.row.definition">
+        <div v-if="props.row.definition"><b>Definition: </b>{{props.row.definition[0]}}</div>
+        <div v-if="props.row.synonym"><b>Synonyms: </b>{{props.row.synonym.join(', ')}}</div>
+      </template>
     <template slot="notation" scope="props" v-if="props.row.notation">
         <span :id='"notation"+props.index'>{{props.row.notation}}</span>
         <a class="hover-action fa fa-copy" @click='copyContent("notation"+props.index)'></a>
@@ -77,7 +77,8 @@ export default {
         texts: {
           filterPlaceholder: 'Query'
         },
-        skin: 'table table-hover'
+        skin: 'table table-hover',
+        uniqueKey: 'notation'
       },
       query: query,
       ontologyValue: ontology ? [ontology] : [],

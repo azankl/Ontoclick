@@ -53,7 +53,7 @@ module.exports = function(source) {
             null, [prependBody, noResults, rows, appendBody]
           ), afterBody]
         )]
-      ), h('div', {'id': 'info'}, ["hi"]), pagination, dropdownPaginationCount]
+      ), pagination, dropdownPaginationCount]
     );
   };
 };

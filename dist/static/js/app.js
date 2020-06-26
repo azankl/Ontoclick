@@ -15185,7 +15185,8 @@
 	        texts: {
 	          filterPlaceholder: 'Query'
 	        },
-	        skin: 'table table-hover'
+	        skin: 'table table-hover',
+	        uniqueKey: 'notation'
 	      },
 	      query: query,
 	      ontologyValue: ontology ? [ontology] : [],
@@ -16242,7 +16243,7 @@
 	      'class': 'table-responsive'
 	    }, [h('table', {
 	      'class': 'VueTables__table table ' + this.opts.skin
-	    }, [h('thead', null, [h('tr', null, [headings]), beforeFilters, columnFilters, afterFilters]), footerHeadings, beforeBody, h('tbody', null, [prependBody, noResults, rows, appendBody]), afterBody])]), h('div', { 'id': 'info' }, ["hi"]), pagination, dropdownPaginationCount]);
+	    }, [h('thead', null, [h('tr', null, [headings]), beforeFilters, columnFilters, afterFilters]), footerHeadings, beforeBody, h('tbody', null, [prependBody, noResults, rows, appendBody]), afterBody])]), pagination, dropdownPaginationCount]);
 	  };
 	};
 
@@ -33117,7 +33118,7 @@
 	    scopedSlots: _vm._u([{
 	      key: "child_row",
 	      fn: function(props) {
-	        return [(props.row.definition) ? _c('div', [_c('b', [_vm._v("Definition: ")]), _vm._v(_vm._s(props.row.definition[0]))]) : _vm._e(), _vm._v(" "), (props.row.synonym) ? _c('div', [_c('b', [_vm._v("Synonyms: ")]), _vm._v(_vm._s(props.row.synonym))]) : _vm._e()]
+	        return [(props.row.definition) ? _c('div', [_c('b', [_vm._v("Definition: ")]), _vm._v(_vm._s(props.row.definition[0]))]) : _vm._e(), _vm._v(" "), (props.row.synonym) ? _c('div', [_c('b', [_vm._v("Synonyms: ")]), _vm._v(_vm._s(props.row.synonym.join(', ')))]) : _vm._e()]
 	      }
 	    }, {
 	      key: "notation",
