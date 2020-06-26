@@ -47,11 +47,11 @@
 
 	'use strict';
 	
-	var _loader = __webpack_require__(66);
+	var _loader = __webpack_require__(67);
 	
 	var _loader2 = _interopRequireDefault(_loader);
 	
-	var _popper = __webpack_require__(94);
+	var _popper = __webpack_require__(101);
 	
 	var _popper2 = _interopRequireDefault(_popper);
 	
@@ -116,14 +116,14 @@
 
 /***/ }),
 
-/***/ 66:
+/***/ 67:
 /***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 94:
+/***/ 101:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**!
