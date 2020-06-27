@@ -20,7 +20,7 @@
         <a class="hover-action fa fa-copy" @click='copyContent("prefLabel"+props.index)'></a>
         <!-- <a class="hover-action fa fa-edit" @click='replaceWithContent("prefLabel"+props.index)'></a> -->
       </template>
-    <template slot="Notation Label" scope="props" v-if="props.row.prefLabel && props.row.notation" >
+    <template slot=" " scope="props" v-if="props.row.prefLabel && props.row.notation" >
         <a class="hover-action fa fa-copy" @click='copyContentS(props.row.notation + "  " + props.row.prefLabel)'></a>
       </template> 
   </v-server-table>
@@ -68,7 +68,7 @@ export default {
     return {
       loading: true,
       url: 'https://data.bioontology.org/search',
-      columns: ['notation', 'prefLabel' , 'Notation Label'],
+      columns: ['notation', 'prefLabel' , ' '],
       options: {
         initFilters: {
           'GENERIC': query
