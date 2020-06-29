@@ -4,17 +4,14 @@
 chrome.runtime.onInstalled.addListener(function() {
   chrome.contextMenus.create({
     id: 'ontoclick-en',
-    title: 'OntoClick v2',
+    title: 'OntoClick',
     type: 'normal',
-    contexts: ['all']
+    contexts: ['selection']
   });
 });
-
-
 
 chrome.contextMenus.onClicked.addListener(function(item, tab) {
   chrome.tabs.executeScript({
     file: 'static/js/loader.js'
   });
-
 });
