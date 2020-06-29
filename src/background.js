@@ -10,8 +10,11 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 });
 
+
+
 chrome.contextMenus.onClicked.addListener(function(item, tab) {
   chrome.tabs.executeScript({
     file: 'static/js/loader.js'
   });
+
 });
