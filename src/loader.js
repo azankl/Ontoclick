@@ -16,7 +16,7 @@ frame.id = 'popper-inner';
 frame.setAttribute('width', '100%');
 frame.setAttribute('height', '100%');
 frame.setAttribute('frameborder', '0');
-frame.setAttribute('src', chrome.extension.getURL("index.html") + '?query=' + escape(selection) + '&ontology=HP');
+frame.setAttribute('src', chrome.extension.getURL("index.html") + '?query=' + escape(selection) + '&ontologies=HP');
 
 popperDiv.appendChild(frame)
 
@@ -29,7 +29,7 @@ let popper = new Popper(range, popperDiv, {
   onCreate: (data) => {
   },
   onUpdate: (data) => {
-  }
+  },
 });
 
 let tearDown = function() {

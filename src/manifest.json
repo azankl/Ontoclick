@@ -11,6 +11,10 @@
     "16": "static/img/icon-16.png",
     "128": "static/img/icon-128.png"
   },
+  "browser_action": {
+    "default_title": "ontoclick",
+    "default_popup": "index.html"
+  },
   "web_accessible_resources": [
     "index.html",
     "static/js/app.js",

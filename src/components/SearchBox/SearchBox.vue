@@ -10,23 +10,27 @@
     <div slot='ontologiesFilter' class='form-group'>
       <treeselect :multiple="true" :clearable="false" :close-on-select="true" :flat="true" :options="ontologyOptions" placeholder="Filter by Ontology" v-model="ontologyValue" />
     </div>
+    <template slot="child_row" scope="props" uniqueKey="props.row.definition">
+        <div class='text-wrap' v-if="props.row.definition"><b>Definition: </b>{{props.row.definition[0]}}</div>
+        <div class='text-wrap' v-if="props.row.synonym"><b>Synonyms: </b>{{props.row.synonym.join(', ')}}</div>
+      </template>
     <template slot="notation" scope="props" v-if="props.row.notation">
         <span :id='"notation"+props.index'>{{props.row.notation}}</span>
         <a class="hover-action fa fa-copy" @click='copyContent("notation"+props.index)'></a>
+        <!-- <a class="hover-action fa fa-edit" @click='replaceWithContent("notation"+props.index)'></a> -->
       </template>
     <template slot="prefLabel" scope="props" v-if="props.row.prefLabel">
         <span :id='"prefLabel"+props.index'>{{props.row.prefLabel}}</span>
         <a class="hover-action fa fa-copy" @click='copyContent("prefLabel"+props.index)'></a>
-    </template>
-    <template slot="spantext" scope="props">
-      <span :id='"spantext"+props.index' v-show="true"></span>
-      <a class="hover-action fa fa-copy" @click="doCopy(props.row.notation,props.row.prefLabel)"></a>
-    </template>
-
+        <!-- <a class="hover-action fa fa-edit" @click='replaceWithContent("prefLabel"+props.index)'></a> -->
+      </template>
+    <template slot="  " scope="props" v-if="props.row.prefLabel && props.row.notation" >
+        <a class="hover-action fa fa-copy" @click='copyContentS(props.row.notation + "  " + props.row.prefLabel)'></a>
+      </template> 
   </v-server-table>
 </div>
 </template>
-
+    
 <script>
 import Treeselect from '@riophae/vue-treeselect'
 import {
@@ -46,20 +50,29 @@ function copyElementContent(srcElementId) {
   selection.removeAllRanges();
 }
 
+function copyElementContentS(cps) {
+ const el = document.createElement('textarea');
+  el.value = cps;
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+}
+
 export default {
   name: 'search-box',
   components: {
     Treeselect
   },
   data() {
-    var query = document.location.search.match(/query=([^&]*)/)
-    var ontology = document.location.search.match(/ontology=(.*)/)
+    let query = document.location.search.match(/query=([^&]*)/)
+    let ontology = document.location.search.match(/ontology=(.*)/)
     query = query ? unescape(query[1]) : undefined
     ontology = ontology ? unescape(ontology[1]) : undefined
     return {
       loading: true,
       url: 'https://data.bioontology.org/search',
-      columns: ['notation', 'prefLabel' , 'spantext' ],
+      columns: ['notation', 'prefLabel' , '  '],
       options: {
         initFilters: {
           'GENERIC': query
@@ -72,7 +85,8 @@ export default {
         texts: {
           filterPlaceholder: 'Query'
         },
-        skin: 'table table-hover'
+        skin: 'table table-hover',
+        uniqueKey: 'notation'
       },
       query: query,
       ontologyValue: ontology ? [ontology] : [],
@@ -94,22 +108,13 @@ export default {
         type: 'copied-paste'
       }, "*")
     },
-    copyModel(model) {
-      console.log(model)
+    copyModel(model) {},
+    copyContentS(srcstr) {
+      copyElementContentS(srcstr);
+      window.parent.postMessage({
+        type: 'copied'
+      }, "*")
     },
-    doCopy(rownotation,label) {
-      let keyword = document.getElementsByClassName('VueTables__search')[0].children[0].value
-      let val = '"'+keyword+'"' + ',' + '"'+rownotation+'"' + ',' + '"'+label+'"'
-      console.log(val)
-      this.$copyText(val).then(
-        res => {
-          console.log("Copied" + res.text);
-        },
-        err => {
-          alert("Can not copy");
-        }
-      );
-    }
   }
 }
 </script>
@@ -166,4 +171,27 @@ ul.pagination>li>a,
   flex-direction: column;
   justify-content: center;
 }
+
+.VueTables__child-row-toggler {
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    display: block;
+    margin: auto;
+    text-align: center;
+}
+
+.VueTables__child-row-toggler--closed::before {
+    content: "+";
+}
+
+.VueTables__child-row-toggler--open::before {
+    content: "-";
+}
+
+.text-wrap {
+  word-wrap: normal;
+  white-space: pre-line;
+}
+
 </style>

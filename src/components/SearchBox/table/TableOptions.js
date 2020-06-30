@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import { data } from 'jquery';
 
 export default {
   requestKeys: {
@@ -9,8 +8,7 @@ export default {
   },
   headings: {
     notation: 'Notation',
-    prefLabel: 'Label',
-    spantext: 'span'
+    prefLabel: 'Label'
   },
   pagination: {
     dropdown: false
@@ -36,7 +34,7 @@ export default {
   responseAdapter: (response) => {
     return response.data ? {
       data: response.data.collection,
-      count: response.data.totalCount,
+      count: response.data.totalCount
     } : {
       data: [],
       count: 0

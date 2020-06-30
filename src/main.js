@@ -8,11 +8,9 @@ import VueResource from 'vue-resource';
 import { ServerTable } from 'vue-tables-2';
 import TableOptions from 'components/SearchBox/table/TableOptions';
 import MockSearchResponse from 'components/SearchBox/OntologyData/mock';
-import VueClipboard from 'vue-clipboard2'
 
 Vue.use(VueResource);
 Vue.use(ServerTable, TableOptions, false, require('components/SearchBox/table/TableTemplate.js')('server'))
-Vue.use(VueClipboard);
 
 /*
 Vue.http.interceptors.unshift((request, next) => {
