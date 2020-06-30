@@ -1,4 +1,5 @@
 import Vue from 'vue';
+// import { data } from 'jquery';
 
 export default {
   requestKeys: {
@@ -8,7 +9,8 @@ export default {
   },
   headings: {
     notation: 'Notation',
-    prefLabel: 'Label'
+    prefLabel: 'Label',
+    spantext: 'Actions'
   },
   pagination: {
     dropdown: false

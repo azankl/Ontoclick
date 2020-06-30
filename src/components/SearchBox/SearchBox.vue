@@ -24,9 +24,13 @@
         <a class="hover-action fa fa-copy" @click='copyContent("prefLabel"+props.index)'></a>
         <!-- <a class="hover-action fa fa-edit" @click='replaceWithContent("prefLabel"+props.index)'></a> -->
       </template>
-    <template slot="  " scope="props" v-if="props.row.prefLabel && props.row.notation" >
-        <a class="hover-action fa fa-copy" @click='copyContentS(props.row.notation + "  " + props.row.prefLabel)'></a>
-      </template> 
+    <!-- <template slot="  " scope="props" v-if="props.row.prefLabel && props.row.notation" >
+        <a class="hover-action fa fa-copy" @click='copyContentS(props.row.notation + " " + props.row.prefLabel)'></a>
+      </template> -->
+    <template slot="spantext" scope="props">
+        <span :id='"spantext"+props.index' v-show="true"></span>
+        <a class="hover-action fa fa-copy" @click="doCopy(props.row.notation,props.row.prefLabel)"></a>
+      </template>
   </v-server-table>
 </div>
 </template>
@@ -72,7 +76,7 @@ export default {
     return {
       loading: true,
       url: 'https://data.bioontology.org/search',
-      columns: ['notation', 'prefLabel' , '  '],
+      columns: ['notation', 'prefLabel' , 'spantext'],
       options: {
         initFilters: {
           'GENERIC': query
@@ -115,6 +119,18 @@ export default {
         type: 'copied'
       }, "*")
     },
+    doCopy(rownotation, label) {
+      let keyword = document.getElementsByClassName('VueTables__search')[0].children[0].value;
+      let val = '"' + keyword + '","' + rownotation + '","' + label + '"';
+      this.$copyText(val).then(
+        res => {
+          console.log("Copied" + res.text);
+        },
+        err => {
+          alert("Can not copy");
+        }
+      );
+    }
   }
 }
 </script>
