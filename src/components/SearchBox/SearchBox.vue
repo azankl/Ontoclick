@@ -27,8 +27,8 @@
         <a class="hover-action fa fa-copy" @click='copyContentS(props.row.notation + " " + props.row.prefLabel)'></a>
       </template> -->
     <template slot="spantext" scope="props">
-        <span :id='"spantext"+props.index' v-show="true"></span>
-        <a class="hover-action fa fa-copy" @click="doCopy(props.row.notation,props.row.prefLabel)"></a>
+        <span :id='"spantext"+props.index' v-if="props.row.prefLabel && props.row.notation"></span>
+        <a class="hover-action fa fa-copy" @click="doCopy(props.row.notation, props.row.prefLabel)"></a>
       </template>
   </v-server-table>
 </div>
@@ -112,12 +112,12 @@ export default {
       }, "*")
     },
     copyModel(model) {},
-    copyContentS(srcstr) {
-      copyElementContentS(srcstr);
-      window.parent.postMessage({
-        type: 'copied'
-      }, "*")
-    },
+    // copyContentS(srcstr) {
+    //   copyElementContentS(srcstr);
+    //   window.parent.postMessage({
+    //     type: 'copied'
+    //   }, "*")
+    // },
     doCopy(rownotation, label) {
       let keyword = document.getElementsByClassName('VueTables__search')[0].children[0].value;
       let val = '"' + keyword + '","' + rownotation + '","' + label + '"';

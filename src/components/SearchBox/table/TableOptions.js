@@ -1,5 +1,4 @@
 import Vue from 'vue';
-// import { data } from 'jquery';
 
 export default {
   requestKeys: {
@@ -22,7 +21,7 @@ export default {
           q: data.q,
           pagesize: 5,
           page: data.page,
-          include: 'prefLabel,synonym,definition,notation,cui,semanticType',
+          include: 'prefLabel, synonym, definition, notation, cui, semanticType',
           ontologies: 'HP'
         },
         headers: {
