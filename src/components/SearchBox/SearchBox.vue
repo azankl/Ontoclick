@@ -121,14 +121,18 @@ export default {
     doCopy(rownotation, label) {
       let keyword = document.getElementsByClassName('VueTables__search')[0].children[0].value;
       let val = '"' + keyword + '","' + rownotation + '","' + label + '"';
-      this.$copyText(val).then(
-        res => {
-          console.log("Copied" + res.text);
-        },
-        err => {
-          alert("Can not copy");
-        }
-      );
+      copyElementContentS(val);
+      window.parent.postMessage({
+        type: 'copied'
+      }, "*")
+      // this.$copyText(val).then(
+      //   res => {
+      //     console.log("Copied" + res.text);
+      //   },
+      //   err => {
+      //     alert("Can not copy");
+      //   }
+      // );
     }
   }
 }
