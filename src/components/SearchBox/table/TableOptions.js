@@ -21,7 +21,7 @@ export default {
           q: data.q,
           pagesize: 5,
           page: data.page,
-          include: 'prefLabel, synonym, definition, notation, cui, semanticType',
+          include: 'prefLabel,synonym,definition,notation,cui,semanticType',
           ontologies: 'HP'
         },
         headers: {
