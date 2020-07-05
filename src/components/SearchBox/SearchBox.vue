@@ -8,7 +8,10 @@
   </div>
   <v-server-table url="url" :columns="columns" :options="options">
     <div slot='ontologiesFilter' class='form-group'>
-      <treeselect :multiple="true" :clearable="false" :close-on-select="true" :flat="true" :options="ontologyOptions" placeholder="Filter by Ontology" v-model="ontologyValue" />
+      <treeselect :multiple="true" :clearable="false" :close-on-select="true" :flat="true" :options="ontologyOptions" style="z-index:6;" placeholder="Filter by Ontology" v-model="ontologyValue" />
+    </div>
+    <div slot='ConceptRec' class='form-group'>
+      <treeselect :multiple="false" :clearable="false" :close-on-select="true" :flat="true" :options="CRoptions" placeholder="Concept Recognizer" v-model="CRvalue" />
     </div>
     <template slot="child_row" scope="props" uniqueKey="props.row.definition">
         <div class='text-wrap' v-if="props.row.definition"><b>Definition: </b>{{props.row.definition[0]}}</div>
@@ -95,7 +98,18 @@ export default {
       ontologyValue: ontology ? [ontology] : [],
       ontologyOptions: options,
       results: [],
-      request: null
+      request: null,
+      CRvalue: undefined,
+    CRoptions: [ {
+      id: 'neural',
+      label: 'Neural',
+    }, {
+      id: 'ncbo',
+      label: 'Ncbo',
+    }, {
+      id: 'jax',
+      label: 'Jax',
+    } ]
     }
   },
   methods: {
