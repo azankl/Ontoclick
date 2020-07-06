@@ -20,18 +20,15 @@
     <template slot="notation" scope="props" v-if="props.row.notation">
         <span :id='"notation"+props.index'>{{props.row.notation}}</span>
         <a class="hover-action fa fa-copy" @click='copyContent("notation"+props.index)'></a>
-        <!-- <a class="hover-action fa fa-edit" @click='replaceWithContent("notation"+props.index)'></a> -->
       </template>
     <template slot="prefLabel" scope="props" v-if="props.row.prefLabel">
         <span :id='"prefLabel"+props.index'>{{props.row.prefLabel}}</span>
         <a class="hover-action fa fa-copy" @click='copyContent("prefLabel"+props.index)'></a>
       </template>
-    <!-- <template slot="  " scope="props" v-if="props.row.prefLabel && props.row.notation" >
-        <a class="hover-action fa fa-copy" @click='copyContentS(props.row.notation + " " + props.row.prefLabel)'></a>
-      </template> -->
     <template slot="spantext" scope="props">
         <span :id='"spantext"+props.index' v-if="props.row.prefLabel && props.row.notation"></span>
-        <a class="hover-action fa fa-copy" @click="doCopy(props.row.notation, props.row.prefLabel)"></a>
+        <a class="hover-action fa fa-copy" title="Notation + Label" @click='copyContentS(props.row.notation + " " + props.row.prefLabel)'></a>
+        <a class="hover-action fa fa-copy" title="Text span + Notation + Label" @click="doCopy(props.row.notation, props.row.prefLabel)"></a>
       </template>
   </v-server-table>
 </div>
@@ -126,12 +123,12 @@ export default {
       }, "*")
     },
     copyModel(model) {},
-    // copyContentS(srcstr) {
-    //   copyElementContentS(srcstr);
-    //   window.parent.postMessage({
-    //     type: 'copied'
-    //   }, "*")
-    // },
+    copyContentS(srcstr) {
+      copyElementContentS(srcstr);
+      window.parent.postMessage({
+        type: 'copied'
+      }, "*")
+    },
     doCopy(rownotation, label) {
       let keyword = document.getElementsByClassName('VueTables__search')[0].children[0].value;
       let val = '"' + keyword + '","' + rownotation + '","' + label + '"';
@@ -139,14 +136,6 @@ export default {
       window.parent.postMessage({
         type: 'copied'
       }, "*")
-      // this.$copyText(val).then(
-      //   res => {
-      //     console.log("Copied" + res.text);
-      //   },
-      //   err => {
-      //     alert("Can not copy");
-      //   }
-      // );
     }
   }
 }
