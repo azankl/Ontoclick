@@ -6,29 +6,34 @@
       <h3 class="pull-left">ONTOCLICK</h3>
     </div>
   </div>
-  <v-server-table url="url" :columns="columns" :options="options">
+  <v-server-table :url="url" :columns="columns" :options="options">
+    <div slot='conceptRec' class='form-group'>
+      <treeselect :multiple="false" :clearable="false" :close-on-select="true" :flat="true" :options="conceptrecogniserOptions" placeholder="Select Concept Recognizer" v-model="conceptrecogniserValue" name="conceptRecogniser"/>
+    </div>
     <div slot='ontologiesFilter' class='form-group'>
-      <treeselect :multiple="true" :clearable="false" :close-on-select="true" :flat="true" :options="ontologyOptions" style="z-index:6;" placeholder="Filter by Ontology" v-model="ontologyValue" />
-    </div>
-    <div slot='ConceptRec' class='form-group'>
-      <treeselect :multiple="false" :clearable="false" :close-on-select="true" :flat="true" :options="CRoptions" placeholder="Concept Recognizer" v-model="CRvalue" />
-    </div>
-    <template slot="child_row" scope="props" uniqueKey="props.row.definition">
+        <treeselect :multiple="true" :clearable="false" :close-on-select="true" :flat="true" :options="ontologyOptions" style="z-index:6;" placeholder="Filter by Ontology" v-model="ontologyValue" />
+      </div>
+    <template slot="child_row" scope="props">
         <div class='text-wrap' v-if="props.row.definition"><b>Definition: </b>{{props.row.definition[0]}}</div>
-        <div class='text-wrap' v-if="props.row.synonym"><b>Synonyms: </b>{{props.row.synonym.join(', ')}}</div>
+        <div class='text-wrap' v-if="props.row.synonym"><b>Synonyms: </b>{{ typeof props.row.synonym === 'string' ? props.row.synonym : props.row.synonym.join(', ') }}</div>
       </template>
-    <template slot="notation" scope="props" v-if="props.row.notation">
-        <span :id='"notation"+props.index'>{{props.row.notation}}</span>
+    <template slot="notation" scope="props" v-if="props.row.notation || props.row.id">
+        <span :id='"notation"+props.index' v-if="props.row.notation">{{props.row.notation}}</span>
+        <span :id='"notation"+props.index' v-if="props.row.id">{{props.row.id}}</span>
         <a class="hover-action fa fa-copy" @click='copyContent("notation"+props.index)'></a>
       </template>
-    <template slot="prefLabel" scope="props" v-if="props.row.prefLabel">
-        <span :id='"prefLabel"+props.index'>{{props.row.prefLabel}}</span>
+    <template slot="prefLabel" scope="props" v-if="props.row.prefLabel || props.row.name">
+        <span :id='"prefLabel"+props.index' v-if="props.row.prefLabel">{{props.row.prefLabel}}</span>
+        <span :id='"prefLabel"+props.index' v-if="props.row.name">{{props.row.name}}</span>
         <a class="hover-action fa fa-copy" @click='copyContent("prefLabel"+props.index)'></a>
       </template>
     <template slot="spantext" scope="props">
         <span :id='"spantext"+props.index' v-if="props.row.prefLabel && props.row.notation"></span>
-        <a class="hover-action fa fa-copy" title="Notation + Label" @click='copyContentS(props.row.notation + " " + props.row.prefLabel)'></a>
-        <a class="hover-action fa fa-copy" title="Text span + Notation + Label" @click="doCopy(props.row.notation, props.row.prefLabel)"></a>
+        <a class="hover-action fa fa-copy" title="Notation + Label" @click='copyContentS(props.row.notation + " " + props.row.prefLabel)' v-if="props.row.notation && props.row.prefLabel"></a>
+        <a class="hover-action fa fa-copy" title="Notation + Label" @click='copyContentS(props.row.id + " " + props.row.name)' v-if="props.row.id && props.row.name"></a>
+
+        <a class="hover-action fa fa-copy" title="Text span + Notation + Label" @click="doCopy(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
+        <a class="hover-action fa fa-copy" title="Text span + Notation + Label" @click="doCopy(props.row.id, props.row.name)" v-if="props.row.id && props.row.name"></a>
       </template>
   </v-server-table>
 </div>
@@ -62,6 +67,9 @@ function copyElementContentS(cps) {
   document.body.removeChild(el);
 }
 
+// let x = document.getElementsByName("conceptRecogniser")[0].innerText;
+// console.log(x);
+
 export default {
   name: 'search-box',
   components: {
@@ -74,7 +82,7 @@ export default {
     ontology = ontology ? unescape(ontology[1]) : undefined
     return {
       loading: true,
-      url: 'https://data.bioontology.org/search',
+      url: 'https://google.com',
       columns: ['notation', 'prefLabel' , 'spantext'],
       options: {
         initFilters: {
@@ -89,24 +97,24 @@ export default {
           filterPlaceholder: 'Query'
         },
         skin: 'table table-hover',
-        uniqueKey: 'notation'
+        // uniqueKey: 'id'
       },
       query: query,
       ontologyValue: ontology ? [ontology] : [],
       ontologyOptions: options,
       results: [],
       request: null,
-      CRvalue: undefined,
-    CRoptions: [ {
-      id: 'neural',
-      label: 'Neural',
-    }, {
-      id: 'ncbo',
-      label: 'Ncbo',
-    }, {
-      id: 'jax',
-      label: 'Jax',
-    } ]
+      conceptrecogniserValue: ['ncbo'],
+      conceptrecogniserOptions: [{
+        id: 'jax',
+        label: 'JAX',
+      }, {
+        id: 'ncbo',
+        label: 'NCBO',
+      }, {
+        id: 'neural',
+        label: 'Neural',
+      }],
     }
   },
   methods: {
