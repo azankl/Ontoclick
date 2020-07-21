@@ -8,7 +8,7 @@
   </div>
   <v-server-table :url="url" :columns="columns" :options="options">
     <div slot='conceptRec' class='form-group'>
-      <treeselect :multiple="false" :clearable="false" :close-on-select="true" :flat="true" :select="getCR()" :options="conceptrecogniserOptions" v-model="conceptrecogniserValue" placeholder="Select Concept Recognizer" name="conceptRecogniser" />
+      <treeselect :multiple="false" :clearable="false" :close-on-select="true" :flat="true" :options="conceptrecogniserOptions" v-model="conceptrecogniserValue" placeholder="Select Concept Recognizer" name="conceptRecogniser" />
     </div>
     <div slot='ontologiesFilter' class='form-group'>
         <treeselect :multiple="true" :clearable="false" :close-on-select="true" :flat="true" :options="ontologyOptions" style="z-index:6;" placeholder="Filter by Ontology" v-model="ontologyValue" />
@@ -17,23 +17,19 @@
         <div class='text-wrap' v-if="props.row.definition"><b>Definition: </b>{{props.row.definition[0]}}</div>
         <div class='text-wrap' v-if="props.row.synonym"><b>Synonyms: </b>{{ typeof props.row.synonym === 'string' ? props.row.synonym : props.row.synonym.join(', ') }}</div>
       </template>
-    <template slot="notation" scope="props" v-if="props.row.notation || props.row.id">
+    <template slot="notation" scope="props" v-if="props.row.notation">
         <span :id='"notation"+props.index' v-if="props.row.notation">{{props.row.notation}}</span>
-        <span :id='"notation"+props.index' v-if="props.row.id">{{props.row.id}}</span>
         <a class="hover-action fa fa-copy" @click='copyContent("notation"+props.index)'></a>
       </template>
-    <template slot="prefLabel" scope="props" v-if="props.row.prefLabel || props.row.name">
+    <template slot="prefLabel" scope="props" v-if="props.row.prefLabel">
         <span :id='"prefLabel"+props.index' v-if="props.row.prefLabel">{{props.row.prefLabel}}</span>
-        <span :id='"prefLabel"+props.index' v-if="props.row.name">{{props.row.name}}</span>
         <a class="hover-action fa fa-copy" @click='copyContent("prefLabel"+props.index)'></a>
       </template>
     <template slot="spantext" scope="props">
         <span :id='"spantext"+props.index' v-if="props.row.prefLabel && props.row.notation"></span>
         <a class="hover-action fa fa-copy" title="Notation + Label" @click='copyContentS(props.row.notation + " " + props.row.prefLabel)' v-if="props.row.notation && props.row.prefLabel"></a>
-        <a class="hover-action fa fa-copy" title="Notation + Label" @click='copyContentS(props.row.id + " " + props.row.name)' v-if="props.row.id && props.row.name"></a>
 
         <a class="hover-action fa fa-copy" title="Text span + Notation + Label" @click="doCopy(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
-        <a class="hover-action fa fa-copy" title="Text span + Notation + Label" @click="doCopy(props.row.id, props.row.name)" v-if="props.row.id && props.row.name"></a>
       </template>
   </v-server-table>
 </div>
@@ -67,35 +63,6 @@ function copyElementContentS(cps) {
   document.body.removeChild(el);
 }
 
-const keyDict = {
-  0: 'notation',
-  1: 'id',
-  2: 'hp_id',
-  3: ''
-};
-
-const recogDict = {
-  'NCBO Bioportal': 0,
-  'HPO Jax': 1,
-  'Neural Concept Recogniser': 2,
-  'Ontology Lookup Search EBI': 3
-};
-
-function test() {
-  let div = document.getElementsByName("conceptRecogniser")[0];
-  let v = 'NCBO Bioportal';
-  if (typeof div !== "undefined") {
-    v = document.getElementsByClassName('vue-treeselect__single-value')[0].innerText;
-  } 
-  console.log(v + " concept");
-  let x = recogDict[v];
-  // console.log(x);
-  let key = keyDict[x];
-  // console.log(key);
-  console.log('key: ' + key);
-  return key;
-}
-
 export default {
   name: 'search-box',
   components: {
@@ -123,7 +90,7 @@ export default {
           filterPlaceholder: 'Query'
         },
         skin: 'table table-hover',
-        uniqueKey: test()
+        uniqueKey: 'notation'
       },
       query: query,
       ontologyValue: ontology ? [ontology] : [],
@@ -138,12 +105,14 @@ export default {
         id: 'jax',
         label: 'HPO Jax',
       }, {
-        id: 'neural',
-        label: 'Neural Concept Recogniser',
-      }, {
         id: 'ebi',
         label: 'Ontology Lookup Search EBI'
-      }]
+      }, 
+      // {
+      //   id: 'neural',
+      //   label: 'Neural Concept Recogniser',
+      // }
+      ]
     }
   },
   methods: {
@@ -173,9 +142,6 @@ export default {
       window.parent.postMessage({
         type: 'copied'
       }, "*")
-    },
-    getCR() {
-      return 'notation';
     }
   }
 }
