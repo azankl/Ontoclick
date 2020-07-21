@@ -8,7 +8,7 @@
   </div>
   <v-server-table :url="url" :columns="columns" :options="options">
     <div slot='conceptRec' class='form-group'>
-      <treeselect :multiple="false" :clearable="false" :close-on-select="true" :flat="true" :options="conceptrecogniserOptions" placeholder="Select Concept Recognizer" v-model="conceptrecogniserValue" name="conceptRecogniser"/>
+      <treeselect :multiple="false" :clearable="false" :close-on-select="true" :flat="true" :select="getCR()" :options="conceptrecogniserOptions" v-model="conceptrecogniserValue" placeholder="Select Concept Recognizer" name="conceptRecogniser" />
     </div>
     <div slot='ontologiesFilter' class='form-group'>
         <treeselect :multiple="true" :clearable="false" :close-on-select="true" :flat="true" :options="ontologyOptions" style="z-index:6;" placeholder="Filter by Ontology" v-model="ontologyValue" />
@@ -67,8 +67,34 @@ function copyElementContentS(cps) {
   document.body.removeChild(el);
 }
 
-// let x = document.getElementsByName("conceptRecogniser")[0].innerText;
-// console.log(x);
+const keyDict = {
+  0: 'notation',
+  1: 'id',
+  2: 'hp_id',
+  3: ''
+};
+
+const recogDict = {
+  'NCBO Bioportal': 0,
+  'HPO Jax': 1,
+  'Neural Concept Recogniser': 2,
+  'Ontology Lookup Search EBI': 3
+};
+
+function test() {
+  let div = document.getElementsByName("conceptRecogniser")[0];
+  let v = 'NCBO Bioportal';
+  if (typeof div !== "undefined") {
+    v = document.getElementsByClassName('vue-treeselect__single-value')[0].innerText;
+  } 
+  console.log(v + " concept");
+  let x = recogDict[v];
+  // console.log(x);
+  let key = keyDict[x];
+  // console.log(key);
+  console.log('key: ' + key);
+  return key;
+}
 
 export default {
   name: 'search-box',
@@ -97,7 +123,7 @@ export default {
           filterPlaceholder: 'Query'
         },
         skin: 'table table-hover',
-        // uniqueKey: 'id'
+        uniqueKey: test()
       },
       query: query,
       ontologyValue: ontology ? [ontology] : [],
@@ -106,15 +132,18 @@ export default {
       request: null,
       conceptrecogniserValue: ['ncbo'],
       conceptrecogniserOptions: [{
-        id: 'jax',
-        label: 'JAX',
-      }, {
         id: 'ncbo',
-        label: 'NCBO',
+        label: 'NCBO Bioportal',
+      }, {
+        id: 'jax',
+        label: 'HPO Jax',
       }, {
         id: 'neural',
-        label: 'Neural',
-      }],
+        label: 'Neural Concept Recogniser',
+      }, {
+        id: 'ebi',
+        label: 'Ontology Lookup Search EBI'
+      }]
     }
   },
   methods: {
@@ -144,6 +173,9 @@ export default {
       window.parent.postMessage({
         type: 'copied'
       }, "*")
+    },
+    getCR() {
+      return 'notation';
     }
   }
 }

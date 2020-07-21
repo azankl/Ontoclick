@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 
-const x = 1;
+// const x = 0;
 
 // NCBO = 0 
 //      data : response.data.collection
@@ -21,11 +21,24 @@ const x = 1;
 //     count: response.data.
 // https://www.ebi.ac.uk/ols/docs/api
 
-const keyDict = {
-  0: 'notation',
-  1: 'id',
-  2: 'hp_id',
-  3: ''
+const recogDict = {
+  'NCBO Bioportal': 0,
+  'HPO Jax': 1,
+  'Neural Concept Recogniser': 2,
+  'Ontology Lookup Search EBI': 3
+};
+
+function test() {
+  let div = document.getElementsByName("conceptRecogniser")[0];
+  let v = 'NCBO Bioportal';
+  if (typeof div !== "undefined") {
+    v = document.getElementsByClassName('vue-treeselect__single-value')[0].innerText;
+  } 
+  // console.log(v + " concept");
+  let x = recogDict[v];
+  // console.log(x);
+
+  return x;
 }
 
 export default {
@@ -33,6 +46,7 @@ export default {
     query: 'q',
     limit: 'pagesize',
     page: 'page',
+    byColumn: 'yeet'
   },
   headings: {
     notation: 'Notation',
@@ -42,8 +56,9 @@ export default {
   pagination: {
     dropdown: false
   },
-  uniqueKey: keyDict[x],
   requestFunction: (data) => {
+    let x = test();
+    console.log(x + 'zxczcxz');
     console.log(data);
     return axios.all([
       axios.get(process.env.API_URL, {
@@ -72,19 +87,13 @@ export default {
       } else {
         return null
       }
-      // if (x == 0) {
-      //   return res0;
-      // } else if (x == 1) {
-      //   return res1;
-      // } else {
-      //   return null
-      // }
     })).catch((e) => {
       this.dispatch('error', e);
     });
-    
   },
   responseAdapter: (response) => {
+    let x = test();
+    console.log(x + ' asdsad')
     if (response.data) {
       if (x == 0) {
         return {
