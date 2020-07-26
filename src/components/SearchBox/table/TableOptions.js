@@ -161,7 +161,6 @@ export default {
         return null;
       }
     }).catch((err) => {
-      console.log(err, "\nError with API request")
       return null;
     });
   },

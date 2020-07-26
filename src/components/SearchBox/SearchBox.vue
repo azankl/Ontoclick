@@ -8,7 +8,7 @@
   </div>
   <v-server-table :url="url" :columns="columns" :options="options">
     <div slot='conceptRec' class='form-group'>
-      <treeselect :multiple="false" :clearable="false" :close-on-select="true" :flat="true" :options="conceptrecogniserOptions" v-model="conceptrecogniserValue" placeholder="Select Concept Recognizer" name="conceptRecogniser" />
+      <treeselect :multiple="false" :clearable="false" :select='selectAPI()' :close-on-select="true" :flat="true" :options="conceptrecogniserOptions" v-model="conceptrecogniserValue" placeholder="Select Concept Recognizer" name="conceptRecogniser" />
     </div>
     <div slot='ontologiesFilter' class='form-group'>
         <treeselect :multiple="true" :clearable="false" :close-on-select="true" :flat="true" :options="ontologyOptions" style="z-index:6;" placeholder="Filter by Ontology" v-model="ontologyValue" />
@@ -28,8 +28,7 @@
     <template slot="spantext" scope="props">
         <span :id='"spantext"+props.index' v-if="props.row.prefLabel && props.row.notation"></span>
         <a class="hover-action fa fa-copy" title="Notation + Label" @click='copyContentS(props.row.notation + " " + props.row.prefLabel)' v-if="props.row.notation && props.row.prefLabel"></a>
-
-        <a class="hover-action fa fa-copy" title="Text span + Notation + Label" @click="doCopy(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
+        <a class="hover-action fa fa-file-text-o" title="Text span + Notation + Label" @click="doCopy(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
       </template>
   </v-server-table>
 </div>
@@ -61,6 +60,14 @@ function copyElementContentS(cps) {
   el.select();
   document.execCommand('copy');
   document.body.removeChild(el);
+}
+
+function enterPress() {
+  let search = document.getElementsByClassName('VueTables__search')[0].children[0];
+  const enter = new KeyboardEvent('keyup', {
+    key: 'Enter',
+  });
+  search.dispatchEvent(enter);
 }
 
 export default {
@@ -142,6 +149,14 @@ export default {
       window.parent.postMessage({
         type: 'copied'
       }, "*")
+    },
+    selectAPI() {
+      try {
+        let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;
+        enterPress();
+      } catch(err) {
+
+      }
     }
   }
 }
