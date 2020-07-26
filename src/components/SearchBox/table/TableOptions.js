@@ -73,74 +73,101 @@ export default {
   },
   requestFunction: (data) => {
     let api = getSelectedAPI();
-    return axios.all([
-      axios.get(process.env.API_URL, {
-        params: {
-          apikey: process.env.API_KEY,
-          q: data.q,
-          pagesize: 5,
-          page: data.page,
-          include: 'prefLabel,synonym,definition,notation',
-          ontologies: 'HP'
-        }
-      }),
-      axios.get('http://hpo.jax.org/api/hpo/search/', {
-        params: {
-          q: data.q,
-        }
-      }),
-      axios.get('https://www.ebi.ac.uk/ols/api/search', {
-        params: {
-          q: data.q,
-          ontology: 'hp',
-          groupField: 'iri',
-          start: 0,
-          // rows: 5
-        }
-      }),
-      // axios.get('https://ncr.ccm.sickkids.ca/curr/match/', {
-      //   params: {
-      //     text: data.q
-      //   }
-      // })
-    ]).then(axios.spread((...responses) => {
-      const res0 = responses[0];
-      const res1 = responses[1];
-      const res2 = responses[2];
-      const res3 = responses[3];
 
+    const ncbo = [
+      process.env.API_URL,
+      {
+        apikey: process.env.API_KEY,
+        q: data.q,
+        pagesize: 5,
+        page: data.page,
+        include: 'prefLabel,synonym,definition,notation',
+        ontologies: 'HP'
+      }
+    ];
+
+    const jax = [
+      'http://hpo.jax.org/api/hpo/search/',
+      {
+        q: data.q
+      }
+    ];
+
+    const ebi = [
+      'https://www.ebi.ac.uk/ols/api/search',
+      {
+        q: data.q,
+        ontology: 'hp',
+        groupField: 'iri',
+        start: 0,
+        // rows: 5
+      }
+    ];
+
+    const neural = [
+      'https://ncr.ccm.sickkids.ca/curr/match/',
+      {
+        text: data.q
+      }
+    ];
+
+    let apiURL, apiParam;
+    switch(api) {
+      case 0:
+        apiURL = ncbo[0];
+        apiParam = ncbo[1];
+        break;
+      case 1:
+        apiURL = jax[0];
+        apiParam = jax[1];
+        break;
+      case 2:
+        apiURL = ebi[0];
+        apiParam = ebi[1];
+        break;
+      case 3:
+        apiURL = neural[0];
+        apiParam = neural[1];
+        break;
+      default:
+        apiURL = null;
+        apiParam = null;
+    };
+
+    return axios.get(apiURL, {
+      params: apiParam
+    }).then((res) => {
       if (api == 0) {
-        return res0;
+        return res;
       } else if (api == 1) {
-        res1.data.terms = keyLoop(res1.data.terms, 'id', 'notation');
-        res1.data.terms = keyLoop(res1.data.terms, 'name', 'prefLabel');
-        return res1
+        res.data.terms = keyLoop(res.data.terms, 'id', 'notation');
+        res.data.terms = keyLoop(res.data.terms, 'name', 'prefLabel');
+        return res
       } else if (api == 2) {
-        res2.data.response.docs = keyLoop(res2.data.response.docs, 'obo_id', 'notation');
-        res2.data.response.docs = keyLoop(res2.data.response.docs, 'label', 'prefLabel');
-        res2.data.response.docs = keyLoop(res2.data.response.docs, 'description', 'definition');
-        return res2;
+        res.data.response.docs = keyLoop(res.data.response.docs, 'obo_id', 'notation');
+        res.data.response.docs = keyLoop(res.data.response.docs, 'label', 'prefLabel');
+        res.data.response.docs = keyLoop(res.data.response.docs, 'description', 'definition');
+        return res;
       } else if (api == 3) {
-        res3.data.matches = keyLoop(res3.data.matches, 'hp_id', 'notation');
+        res.data.matches = keyLoop(res.data.matches, 'hp_id', 'notation');
         var i;
-        for (i = 0; i < res3.data.matches.length; i++) {
-          res3.data.matches[i].prefLabel = res3.data.matches[i].names[0];
-          res3.data.matches[i].names.shift();
+        for (i = 0; i < res.data.matches.length; i++) {
+          res.data.matches[i].prefLabel = res.data.matches[i].names[0];
+          res.data.matches[i].names.shift();
         }
-        res3.data.matches = keyLoop(res3.data.matches, 'names', 'synonym');
-        return res3;
+        res.data.matches = keyLoop(res.data.matches, 'names', 'synonym');
+        return res;
       } else {
         return null;
       }
-    }))
-    .catch((e) => {
-      this.dispatch('error', e);
+    }).catch((err) => {
+      console.log(err, "\nError with API request")
+      return null;
     });
   },
   responseAdapter: (response) => {
     let api = getSelectedAPI();
-    console.log(response.data);
-    if (response.data) {
+    if (response !== null && response.data) {
       if (api == 0) {
         return {
           data: response.data.collection,

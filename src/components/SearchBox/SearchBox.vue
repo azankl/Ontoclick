@@ -108,10 +108,10 @@ export default {
         id: 'ebi',
         label: 'Ontology Lookup Search EBI'
       }, 
-      // {
-      //   id: 'neural',
-      //   label: 'Neural Concept Recogniser',
-      // }
+      {
+        id: 'neural',
+        label: 'Neural Concept Recogniser',
+      }
       ]
     }
   },
