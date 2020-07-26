@@ -109,13 +109,12 @@ export default {
         id: 'ncbo',
         label: 'NCBO Bioportal',
       }, {
+        id: 'ebi',
+        label: 'Ontology Lookup Search EBI'
+      }, {
         id: 'jax',
         label: 'HPO Jax',
       }, {
-        id: 'ebi',
-        label: 'Ontology Lookup Search EBI'
-      }, 
-      {
         id: 'neural',
         label: 'Neural Concept Recogniser',
       }
