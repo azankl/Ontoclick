@@ -155,7 +155,7 @@ export default {
         let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;
         enterPress();
       } catch(err) {
-
+        // do nothing
       }
     }
   }

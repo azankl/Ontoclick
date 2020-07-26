@@ -99,8 +99,9 @@ export default {
         q: data.q,
         ontology: 'hp',
         groupField: 'iri',
-        start: 0,
-        // rows: 5
+        start: data.page,
+        rows: 5,
+        local: true
       }
     ];
 
