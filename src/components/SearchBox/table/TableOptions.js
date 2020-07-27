@@ -6,10 +6,12 @@ import axios from 'axios';
 // NCBO = 0 
 //      data : response.data.collection
 //      count : response.data.totalCount
+// https://data.bioontology.org/documentation
 
 // JAX = 1 
 //     data : response.data.terms
-//     count : response.data.termsTotalCount\
+//     count : response.data.termsTotalCount
+// https://hpo.jax.org/api/hpo/docs/ 
 
 // OLS EBI = 2
 //     data : response.data.
