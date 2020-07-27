@@ -2,7 +2,7 @@
 <div>
   <div class="row">
     <div class="col-sm-7 text-left">
-      <img class="logo" src="/static/img/icon-38.png">
+      <img class="logo" src="/static/img/rdf_flyer_32.png">
       <h3 class="pull-left">ONTOCLICK</h3>
     </div>
   </div>
