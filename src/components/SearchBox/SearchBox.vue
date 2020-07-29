@@ -4,6 +4,7 @@
     <div class="col-sm-7 text-left">
       <img class="logo" src="/static/img/rdf_flyer_32.png">
       <h3 class="pull-left">ONTOCLICK</h3>
+      <button class="pull-right" id="exportButton">export</button>
     </div>
   </div>
   <v-server-table :url="url" :columns="columns" :options="options">
@@ -29,6 +30,7 @@
         <span :id='"spantext"+props.index' v-if="props.row.prefLabel && props.row.notation"></span>
         <a class="hover-action fa fa-copy" title="Notation + Label" @click='copyContentS(props.row.notation + " " + props.row.prefLabel)' v-if="props.row.notation && props.row.prefLabel"></a>
         <a class="hover-action fa fa-file-text-o" title="Text span + Notation + Label" @click="doCopy(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
+        <a class="hover-action fa fa-file-text-o" title="" @click="storeData(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
       </template>
   </v-server-table>
 </div>
@@ -68,6 +70,12 @@ function enterPress() {
     key: 'Enter',
   });
   search.dispatchEvent(enter);
+}
+
+function getStorage() {
+  chrome.storage.local.get(['storage'], function(res) {
+    console.log(res);
+  })
 }
 
 export default {
@@ -148,6 +156,12 @@ export default {
       window.parent.postMessage({
         type: 'copied'
       }, "*")
+    },
+    storeData(notation, label) {
+      document.getElementById('exportButton').addEventListener('click', getStorage);
+      chrome.storage.local.set({'storage': notation}), function() {
+
+      }
     },
     selectAPI() {
       try {

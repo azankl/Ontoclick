@@ -35,7 +35,8 @@
     "http://data.bioontology.org/*",
     "https://data.bioontology.org/*",
     "http://*/*",
-    "https://*/*"
+    "https://*/*",
+    "storage"
   ],
   "content_scripts": [{
     "matches": [
