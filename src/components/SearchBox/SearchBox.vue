@@ -8,11 +8,11 @@
   </div>
   <v-server-table :url="url" :columns="columns" :options="options">
     <div slot='conceptRec' class='form-group'>
-      <treeselect :multiple="false" :clearable="false" :select='selectAPI()' :close-on-select="true" :flat="true" :options="conceptrecogniserOptions" v-model="conceptrecogniserValue" placeholder="Select Concept Recognizer" name="conceptRecogniser" />
+      <treeselect :multiple="false" :clearable="false" :select='selectAPI()' :close-on-select="true" :options="conceptrecogniserOptions" v-model="conceptrecogniserValue" placeholder="Select Concept Recognizer" name="conceptRecogniser" />
     </div>
-    <div slot='ontoRec' class='form-group'>
-      <treeselect :multiple="false" :clearable="false" :select='selectONTO()' :close-on-select="true" :flat="true" :options="ontoRecogniserOptions" v-model="ontorecogniserValue" placeholder="Select Ontology Term" name="ontoRecogniser" />
-    </div>
+    <div slot='ontologiesFilter' class='form-group'>
+        <treeselect :multiple="true" :clearable="false" :close-on-select="true" :flat="true" :options="ontologyOptions" style="z-index:6;" placeholder="Filter by Ontology" v-model="ontologyValue" />
+      </div>
     <template slot="child_row" scope="props">
         <div class='text-wrap' v-if="props.row.definition"><b>Definition: </b>{{props.row.definition[0]}}</div>
         <div class='text-wrap' v-if="props.row.synonym"><b>Synonyms: </b>{{ typeof props.row.synonym === 'string' ? props.row.synonym : props.row.synonym.join(', ') }}</div>
@@ -36,10 +36,10 @@
     
 <script>
 import Treeselect from '@riophae/vue-treeselect'
-import {
-  options,
-  ontologyByAcronym
-} from './OntologyData/tree'
+// import {
+  // options,
+  // ontologyByAcronym
+// } from './OntologyData/tree'
 import ontologies from './OntologyData/ontologies'
 
 function copyElementContent(srcElementId) {
@@ -100,19 +100,10 @@ export default {
         uniqueKey: 'notation'
       },
       query: query,
-      ontologyValue: ontology ? [ontology] : [],
-      ontologyOptions: options,
+      ontologyValue: ['HP'],
+      ontologyOptions: ontologies,
       results: [],
       request: null,
-      ontorecogniserValue: ['hp'],
-      ontoRecogniserOptions: [{
-        id: 'hp',
-        label: 'HP',
-      }, {
-        id: 'go',
-        label: 'GO',
-      }
-      ],
       conceptrecogniserValue: ['ncbo'],
       conceptrecogniserOptions: [{
         id: 'ncbo',
@@ -159,14 +150,6 @@ export default {
       }, "*")
     },
     selectAPI() {
-      try {
-        let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;
-        enterPress();
-      } catch(err) {
-        // do nothing
-      }
-    },
-    selectONTO() {
       try {
         let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;
         enterPress();

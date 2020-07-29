@@ -33,27 +33,27 @@ const recogDict = {
   'Ontology Lookup Search EBI': 2,
   'Neural Concept Recogniser': 3
 };
-const ontoDict = {
-  'HP': 0,
-  'GO': 1
-};
 
 function getSelectedAPI() {
   let div = document.getElementsByName("conceptRecogniser")[0];
   let api = 'NCBO Bioportal';
   if (typeof div !== "undefined") {
-    api = document.getElementsByClassName('vue-treeselect__single-value')[1].innerText;
+    api = document.getElementsByClassName('vue-treeselect__single-value')[0].innerText;
   } 
   return recogDict[api];
 }
 
-function getSelectedONTO() {
-  let div = document.getElementsByName("ontoRecogniser")[0];
-  let onto = 'HP';
-  if (typeof div !== "undefined") {
-    onto = document.getElementsByClassName('vue-treeselect__single-value')[0].innerText;
-  } 
-  return ontoDict[onto];
+function getOntologies() {
+  let list = [];
+  let div = document.getElementsByClassName('vue-treeselect__multi-value-label');
+  for (var i = 0; i < div.length; i++) {
+    let selected = div[i].innerText;
+    let id = selected.match(/\(([^)]+)\)/)[1];
+    if (!list.includes(id)) {
+      list.push(id);
+    }
+  }
+  return ((Array.isArray(list) && list.length) ? list.join(',') : 'HP');
 }
 
 const clone = (obj) => Object.assign({}, obj);
@@ -92,20 +92,7 @@ export default {
   },
   requestFunction: (data) => {
     let api = getSelectedAPI();
-    let onto = getSelectedONTO();
-    console.log(onto);
-    let onto_term;
-    switch(onto) {
-      case 0:
-        onto_term = "HP";
-        break;
-      case 1:
-        onto_term = 'GO';
-        break;
-      default:
-        onto_term = null;
-    };
-
+    let ontologies = getOntologies();
     
     const ncbo = [
       process.env.API_URL,
@@ -115,7 +102,7 @@ export default {
         pagesize: 5,
         page: data.page,
         include: 'prefLabel,synonym,definition,notation',
-        ontologies: onto_term
+        ontologies: ontologies
       }
     ];
 
@@ -172,7 +159,6 @@ export default {
       params: apiParam
     }).then((res) => {
       if (api == 0) {
-        console.log(res);
         return res;
       } else if (api == 1) {
         res.data.terms = keyLoop(res.data.terms, 'id', 'notation');
