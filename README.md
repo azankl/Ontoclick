@@ -1,4 +1,4 @@
-# OntoClick v0.0.1
+# OntoClick v2.0.1
 
 > Turn your clinical description into a proper ontology term.
 

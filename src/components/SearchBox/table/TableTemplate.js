@@ -20,6 +20,7 @@ module.exports = function(source) {
     var appendBody = this.$slots.appendBody ? this.$slots.appendBody : '';
     var afterBody = this.$slots.afterBody ? this.$slots.afterBody : '';
     var ontologiesFilter = this.$slots.ontologiesFilter ? this.$slots.ontologiesFilter : '';
+    var conceptRec = this.$slots.conceptRec ? this.$slots.conceptRec : '';
 
     return h(
       'div', {
@@ -36,6 +37,16 @@ module.exports = function(source) {
             'class': 'col-md-12'
           }, [ontologiesFilter]
         )]
+      ), h(
+        'div', {
+          'class':'row' 
+
+        }, [h(
+          'div', {
+            'class': 'col-md-12'
+          }, [conceptRec]
+        )],
+        
       ), h(
         'div', {
           'class': 'table-responsive'
