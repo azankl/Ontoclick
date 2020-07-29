@@ -74,7 +74,7 @@ function enterPress() {
 
 function getStorage() {
   chrome.storage.local.get(['storage'], function(res) {
-    console.log(res);
+    console.log(res.storage);
   })
 }
 
@@ -160,7 +160,7 @@ export default {
     storeData(notation, label) {
       document.getElementById('exportButton').addEventListener('click', getStorage);
       chrome.storage.local.set({'storage': notation}), function() {
-
+        // Data has been stored locally
       }
     },
     selectAPI() {
