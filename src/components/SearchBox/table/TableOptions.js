@@ -35,14 +35,14 @@ const recogDict = {
 };
 const ontoDict = {
   'HP': 0,
-  'APO': 1
+  'GO': 1
 };
 
 function getSelectedAPI() {
   let div = document.getElementsByName("conceptRecogniser")[0];
   let api = 'NCBO Bioportal';
   if (typeof div !== "undefined") {
-    api = document.getElementsByClassName('vue-treeselect__single-value')[0].innerText;
+    api = document.getElementsByClassName('vue-treeselect__single-value')[1].innerText;
   } 
   return recogDict[api];
 }
@@ -93,17 +93,17 @@ export default {
   requestFunction: (data) => {
     let api = getSelectedAPI();
     let onto = getSelectedONTO();
-    //onto_term;
+    console.log(onto);
     let onto_term;
     switch(onto) {
       case 0:
         onto_term = "HP";
         break;
       case 1:
-        onto_term = 'APO';
+        onto_term = 'GO';
         break;
       default:
-        onto_term = 'HP';
+        onto_term = null;
     };
 
     
@@ -172,6 +172,7 @@ export default {
       params: apiParam
     }).then((res) => {
       if (api == 0) {
+        console.log(res);
         return res;
       } else if (api == 1) {
         res.data.terms = keyLoop(res.data.terms, 'id', 'notation');

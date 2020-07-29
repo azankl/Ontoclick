@@ -104,10 +104,13 @@ export default {
       ontologyOptions: options,
       results: [],
       request: null,
+      ontorecogniserValue: ['hp'],
       ontoRecogniserOptions: [{
+        id: 'hp',
         label: 'HP',
       }, {
-        label: 'APO',
+        id: 'go',
+        label: 'GO',
       }
       ],
       conceptrecogniserValue: ['ncbo'],
