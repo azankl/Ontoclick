@@ -10,9 +10,9 @@
     <div slot='conceptRec' class='form-group'>
       <treeselect :multiple="false" :clearable="false" :select='selectAPI()' :close-on-select="true" :flat="true" :options="conceptrecogniserOptions" v-model="conceptrecogniserValue" placeholder="Select Concept Recognizer" name="conceptRecogniser" />
     </div>
-    <div slot='ontologiesFilter' class='form-group'>
-        <treeselect :multiple="true" :clearable="false" :close-on-select="true" :flat="true" :options="ontologyOptions" style="z-index:6;" placeholder="Filter by Ontology" v-model="ontologyValue" />
-      </div>
+    <div slot='ontoRec' class='form-group'>
+      <treeselect :multiple="false" :clearable="false" :select='selectONTO()' :close-on-select="true" :flat="true" :options="ontoRecogniserOptions" style="z-index:6;" v-model="ontorecogniserValue" placeholder="Select Ontology Term" name="ontoRecogniser" />
+    </div>
     <template slot="child_row" scope="props">
         <div class='text-wrap' v-if="props.row.definition"><b>Definition: </b>{{props.row.definition[0]}}</div>
         <div class='text-wrap' v-if="props.row.synonym"><b>Synonyms: </b>{{ typeof props.row.synonym === 'string' ? props.row.synonym : props.row.synonym.join(', ') }}</div>
@@ -41,7 +41,6 @@ import {
   ontologyByAcronym
 } from './OntologyData/tree'
 import ontologies from './OntologyData/ontologies'
-
 function copyElementContent(srcElementId) {
   let srcElement = document.getElementById(srcElementId)
   var range = document.createRange();
@@ -52,7 +51,6 @@ function copyElementContent(srcElementId) {
   document.execCommand('Copy');
   selection.removeAllRanges();
 }
-
 function copyElementContentS(cps) {
  const el = document.createElement('textarea');
   el.value = cps;
@@ -61,7 +59,6 @@ function copyElementContentS(cps) {
   document.execCommand('copy');
   document.body.removeChild(el);
 }
-
 function enterPress() {
   let search = document.getElementsByClassName('VueTables__search')[0].children[0];
   const enter = new KeyboardEvent('keyup', {
@@ -69,7 +66,6 @@ function enterPress() {
   });
   search.dispatchEvent(enter);
 }
-
 export default {
   name: 'search-box',
   components: {
@@ -104,6 +100,27 @@ export default {
       ontologyOptions: options,
       results: [],
       request: null,
+      ontorecogniserValue: ['hp'],
+      ontoRecogniserOptions: [{
+        id: 'hp',
+        label: 'Human Phenotype',
+      }, {
+        id: 'go',
+        label: 'Gene Ontology',
+      }, {
+        id: 'pato',
+        label: 'Phenotype And Trait Ontology',
+      },{
+        id: 'chebi',
+        label: 'Chemical Entities Of Biological Interest',
+      },{
+        id: 'pr',
+        label: 'Protein Ontology',
+      },{
+        id: 'so',
+        label: 'Sequence ontology',
+      }
+      ],
       conceptrecogniserValue: ['ncbo'],
       conceptrecogniserOptions: [{
         id: 'ncbo',
@@ -156,6 +173,14 @@ export default {
       } catch(err) {
         // do nothing
       }
+    },
+    selectONTO() {
+      try {
+        let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;
+        enterPress();
+      } catch(err) {
+        // do nothing
+      }
     }
   }
 }
@@ -165,55 +190,44 @@ export default {
 </style><style>tr {
   cursor: pointer;
 }
-
 tr a.hover-action {
   opacity: 0;
 }
-
 tr:hover a.hover-action {
   opacity: 1;
 }
-
 li.VuePagination__pagination-item-next-chunk,
 li.VuePagination__pagination-item-prev-chunk {
   display: none;
 }
-
 div.VuePagination p {
   margin: 0;
 }
-
 ul.pagination {
   margin: 0;
 }
-
 ul.pagination>li>a,
 .pagination>li>span {
   color: #039be5;
 }
-
 .vue-treeselect {
   z-index: 4;
 }
-
 .search-box {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
-
 .search-box .controls {
   flex-grow: 0;
   flex-shrink: 0;
 }
-
 .search-box .content {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-
 .VueTables__child-row-toggler {
     width: 16px;
     height: 16px;
@@ -222,18 +236,14 @@ ul.pagination>li>a,
     margin: auto;
     text-align: center;
 }
-
 .VueTables__child-row-toggler--closed::before {
     content: "+";
 }
-
 .VueTables__child-row-toggler--open::before {
     content: "-";
 }
-
 .text-wrap {
   word-wrap: normal;
   white-space: pre-line;
 }
-
 </style>
