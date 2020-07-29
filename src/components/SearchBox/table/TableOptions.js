@@ -33,6 +33,10 @@ const recogDict = {
   'Ontology Lookup Search EBI': 2,
   'Neural Concept Recogniser': 3
 };
+const ontoDict = {
+  'HP': 0,
+  'APO': 1
+};
 
 function getSelectedAPI() {
   let div = document.getElementsByName("conceptRecogniser")[0];
@@ -41,6 +45,15 @@ function getSelectedAPI() {
     api = document.getElementsByClassName('vue-treeselect__single-value')[0].innerText;
   } 
   return recogDict[api];
+}
+
+function getSelectedONTO() {
+  let div = document.getElementsByName("ontoRecogniser")[0];
+  let onto = 'HP';
+  if (typeof div !== "undefined") {
+    onto = document.getElementsByClassName('vue-treeselect__single-value')[0].innerText;
+  } 
+  return ontoDict[onto];
 }
 
 const clone = (obj) => Object.assign({}, obj);
@@ -79,7 +92,21 @@ export default {
   },
   requestFunction: (data) => {
     let api = getSelectedAPI();
+    let onto = getSelectedONTO();
+    //onto_term;
+    let onto_term;
+    switch(onto) {
+      case 0:
+        onto_term = "HP";
+        break;
+      case 1:
+        onto_term = 'APO';
+        break;
+      default:
+        onto_term = 'HP';
+    };
 
+    
     const ncbo = [
       process.env.API_URL,
       {
@@ -88,7 +115,7 @@ export default {
         pagesize: 5,
         page: data.page,
         include: 'prefLabel,synonym,definition,notation',
-        ontologies: 'HP'
+        ontologies: onto_term
       }
     ];
 
