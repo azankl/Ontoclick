@@ -3,36 +3,43 @@ import axios from 'axios';
 
 // const x = 0;
 
-// NCBO = 0 
+// NCBO Search = 0 
 //      data : response.data.collection
 //      count : response.data.totalCount
 // https://data.bioontology.org/documentation
 
-// JAX = 1 
+// NCBO Annotator = 1
+//
+//
+
+// Pryzm Health = 2
+// https://track.health/api/
+
+
+// JAX = 3
 //     data : response.data.terms
 //     count : response.data.termsTotalCount
 // https://hpo.jax.org/api/hpo/docs/ 
 
-// OLS EBI = 2
+// OLS EBI = 4
 //     data : response.data.
 //     count: response.data.
 // https://www.ebi.ac.uk/ols/docs/api/search
 
-// Neural Concept Recogniser = 3
+// Neural Concept Recogniser = 5
 //     data: response.data.
 //     count: response.data. 
 // https://ncr.ccm.sickkids.ca/api_doc/
 
-// Pryzm Health = 4
-// https://track.health/api/
-// API key 3156e102-4add-4098-926f-74fb1e49d38c
 
 const recogDict = {
   'NCBO Bioportal Search': 0,
-  'HPO Jax': 1,
-  'Ontology Lookup Search EBI': 2,
-  'Neural Concept Recogniser': 3,
-  'Pryzm Health CR': 4
+  'NCBO Bioportal Annotator': 1,
+  'Pryzm Health CR': 2,
+  'HPO Jax': 3,
+  'Ontology Lookup Search EBI': 4,
+  'Neural Concept Recogniser': 5,
+  
 };
 
 function getSelectedAPI() {
@@ -95,10 +102,10 @@ export default {
     let api = getSelectedAPI();
     let ontologies = getOntologies();
     
-    const ncbo = [
-      process.env.API_URL,
+    const ncbos = [
+      process.env.NCBO_SEARCH,
       {
-        apikey: process.env.API_KEY,
+        apikey: process.env.NCBO_KEY,
         q: data.q,
         pagesize: 5,
         page: data.page,
@@ -107,15 +114,27 @@ export default {
       }
     ];
 
+    const ncboa = [
+      process.env.NCBO_ANNOTATOR,
+      {
+        apikey: process.env.NCBO_KEY,
+        text: data.q,
+        pagesize: 5,
+        page: data.page,
+        include: 'prefLabel,synonym,definition,notation',
+        ontologies: ontologies
+      }
+    ];
+
     const jax = [
-      'http://hpo.jax.org/api/hpo/search/',
+      process.env.JAX,
       {
         q: data.q
       }
     ];
 
     const ebi = [
-      'https://www.ebi.ac.uk/ols/api/search',
+      process.env.EBI,
       {
         q: data.q,
         ontology: 'hp',
@@ -127,32 +146,36 @@ export default {
     ];
 
     const neural = [
-      'https://ncr.ccm.sickkids.ca/curr/match/',
+      process.env.NEURAL,
       {
         text: data.q
       }
     ];
 
     const pryzm = [
-      'https://knowledge.pryzm.health/api/cr/v1/annotate?apiKey=3156e102-4add-4098-926f-74fb1e49d38c',
+      process.env.PRYZM + process.env.PRYZM_KEY,
       data.q
     ]
 
     let apiURL, apiParam;
     switch(api) {
       case 0:
-        apiURL = ncbo[0];
-        apiParam = ncbo[1];
+        apiURL = ncbos[0];
+        apiParam = ncbos[1];
         break;
       case 1:
+        apiURL = ncboa[0];
+        apiParam = ncboa[1];
+        break;
+      case 3:
         apiURL = jax[0];
         apiParam = jax[1];
         break;
-      case 2:
+      case 4:
         apiURL = ebi[0];
         apiParam = ebi[1];
         break;
-      case 3:
+      case 5:
         apiURL = neural[0];
         apiParam = neural[1];
         break;
@@ -161,7 +184,7 @@ export default {
         apiParam = null;
     };
 
-    if (api == 4) {
+    if (api == 2) {
       return axios.post(pryzm[0], {
         payload: pryzm[1]
       }).then((res) => {
@@ -188,15 +211,24 @@ export default {
       if (api == 0) {
         return res;
       } else if (api == 1) {
+        for (var i = 0; i < res.data.length; i++) {
+          res.data[i].notation = res.data[i].annotatedClass.notation;
+          res.data[i].prefLabel = res.data[i].annotatedClass.prefLabel;
+          res.data[i].definition = res.data[i].annotatedClass.definition;
+          res.data[i].synonym = res.data[i].annotatedClass.synonym;
+          res.data[i].annotatedClass = null;
+        }
+        return res;
+      } else if (api == 3) {
         res.data.terms = keyLoop(res.data.terms, 'id', 'notation');
         res.data.terms = keyLoop(res.data.terms, 'name', 'prefLabel');
         return res
-      } else if (api == 2) {
+      } else if (api == 4) {
         res.data.response.docs = keyLoop(res.data.response.docs, 'obo_id', 'notation');
         res.data.response.docs = keyLoop(res.data.response.docs, 'label', 'prefLabel');
         res.data.response.docs = keyLoop(res.data.response.docs, 'description', 'definition');
         return res;
-      } else if (api == 3) {
+      } else if (api == 5) {
         res.data.matches = keyLoop(res.data.matches, 'hp_id', 'notation');
         var i;
         for (i = 0; i < res.data.matches.length; i++) {
@@ -222,23 +254,28 @@ export default {
         }
       } else if (api == 1) {
         return {
+          data: response.data,
+          count: response.data.length
+        }
+      } else if (api == 2) {
+        return {
+          data: response.data.data,
+          count: response.data.data.length
+        }
+      } else if (api == 3) {
+        return {
           data: response.data.terms,
           count: response.data.termsTotalCount
         }
-      } else if (api == 2) {
+      } else if (api == 4) {
         return {
           data: response.data.response.docs,
           count: response.data.response.numFound
         }
-      } else if (api == 3) {
+      } else if (api == 5) {
         return {
           data: response.data.matches,
           count: response.data.matches.length
-        }
-      } else if (api == 4) {
-        return {
-          data: response.data.data,
-          count: response.data.data.length
         }
       } else {
         return {

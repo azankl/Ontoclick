@@ -119,6 +119,9 @@ export default {
       }, {
         id: 'ncboa',
         label: 'NCBO Bioportal Annotator',
+      },{
+        id: 'pryzm',
+        label: 'Pryzm Health CR'
       }, {
         id: 'ebi',
         label: 'Ontology Lookup Search EBI'
@@ -128,11 +131,7 @@ export default {
       }, {
         id: 'neural',
         label: 'Neural Concept Recogniser',
-      }, {
-        id: 'pryzm',
-        label: 'Pryzm Health CR'
-      }
-      ]
+      }]
     }
   },
   methods: {
