@@ -108,17 +108,14 @@ export default {
         id: 'go',
         label: 'Gene Ontology',
       }, {
-        id: 'pato',
-        label: 'Phenotype And Trait Ontology',
+        id: 'mondo',
+        label: 'Mondo Disease Ontology',
       },{
-        id: 'chebi',
-        label: 'Chemical Entities Of Biological Interest',
+        id: 'ordo',
+        label: 'Orphanet Rare Disease Ontology',
       },{
-        id: 'pr',
-        label: 'Protein Ontology',
-      },{
-        id: 'so',
-        label: 'Sequence ontology',
+        id: 'doid',
+        label: 'Human Disease Ontology',
       }
       ],
       conceptrecogniserValue: 'ncbo',
