@@ -36,10 +36,9 @@ const recogDict = {
 const ontoDict = {
   'Human Phenotype': 0,
   'Gene Ontology': 1,
-  'Phenotype And Trait Ontology': 2,
-  'Chemical Entities Of Biological Interest': 3,
-  'Protein Ontology': 4,
-  'Sequence ontology': 5,
+  'Mondo Disease Ontology': 2,
+  'Orphanet Rare Disease': 3,
+  'Human Disease Ontology': 4,
 };
 
 function getSelectedAPI() {
@@ -107,16 +106,13 @@ export default {
         onto_term = 'GO';
         break;
       case 2:
-        onto_term = 'PATO';
+        onto_term = 'MONDO';
         break;
       case 3:
-        onto_term = "CHEBI";
+        onto_term = "ORDO";
         break;
       case 4:
-        onto_term = 'PR';
-        break;
-      case 5:
-        onto_term = 'SO';
+        onto_term = 'DOID';
         break;
       default:
         onto_term = 'HP';
