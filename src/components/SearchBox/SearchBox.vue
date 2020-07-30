@@ -30,7 +30,7 @@
         <span :id='"spantext"+props.index' v-if="props.row.prefLabel && props.row.notation"></span>
         <a class="hover-action fa fa-copy" title="Notation + Label" @click='copyContentS(props.row.notation + " " + props.row.prefLabel)' v-if="props.row.notation && props.row.prefLabel"></a>
         <a class="hover-action fa fa-file-text-o" title="Text span + Notation + Label" @click="doCopy(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
-        <a class="hover-action fa fa-file-text-o" title="" @click="storeData(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
+        <a class="hover-action fa fa-file-excel-o" title="Save to history" @click="storeData(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
       </template>
   </v-server-table>
 </div>
@@ -74,7 +74,7 @@ function enterPress() {
 
 function getStorage() {
   chrome.storage.local.get(['storage'], function(res) {
-    console.log(res.storage);
+    console.log(res);
   })
 }
 
@@ -164,12 +164,18 @@ export default {
     },
     storeData(notation, label) {
       document.getElementById('exportButton').addEventListener('click', getStorage);
-      chrome.storage.local.set({'storage': notation}), function() {
+      let keyword = document.getElementsByClassName('VueTables__search')[0].children[0].value;
+      let val = '"' + keyword + '","' + notation + '","' + label + '"';
+      chrome.storage.local.get(['storage'], function(res) {
+        console.log(res);
+      });
+      chrome.storage.local.set({'storage': val}), function() {
         // Data has been stored locally
       }
     },
     selectAPI() {
       try {
+        document.getElementById('exportButton').addEventListener('click', getStorage);
         let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;
         enterPress();
       } catch(err) {

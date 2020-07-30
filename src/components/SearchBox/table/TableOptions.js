@@ -102,23 +102,12 @@ export default {
     let api = getSelectedAPI();
     let ontologies = getOntologies();
     
-    const ncbos = [
+    const ncbo = [
       process.env.NCBO_SEARCH,
-      {
-        apikey: process.env.NCBO_KEY,
-        q: data.q,
-        pagesize: 5,
-        page: data.page,
-        include: 'prefLabel,synonym,definition,notation',
-        ontologies: ontologies
-      }
-    ];
-
-    const ncboa = [
       process.env.NCBO_ANNOTATOR,
       {
         apikey: process.env.NCBO_KEY,
-        text: data.q,
+        q: data.q,
         pagesize: 5,
         page: data.page,
         include: 'prefLabel,synonym,definition,notation',
@@ -160,12 +149,12 @@ export default {
     let apiURL, apiParam;
     switch(api) {
       case 0:
-        apiURL = ncbos[0];
-        apiParam = ncbos[1];
+        apiURL = ncbo[0];
+        apiParam = ncbo[2];
         break;
       case 1:
-        apiURL = ncboa[0];
-        apiParam = ncboa[1];
+        apiURL = ncbo[1];
+        apiParam = ncbo[2];
         break;
       case 3:
         apiURL = jax[0];
