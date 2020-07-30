@@ -10,7 +10,7 @@
     <div slot='conceptRec' class='form-group'>
       <treeselect :multiple="false" :clearable="false" :select='selectAPI()' :close-on-select="true" :flat="true" :options="conceptrecogniserOptions" v-model="conceptrecogniserValue" placeholder="Select Concept Recognizer" name="conceptRecogniser" />
     </div>
-    <div slot='ontoRec' class='form-group'>
+    <div slot='ontoRec' class='form-group' v-if= "conceptrecogniserValue==='ncbo'">
       <treeselect :multiple="false" :clearable="false" :select='selectONTO()' :close-on-select="true" :flat="true" :options="ontoRecogniserOptions" style="z-index:6;" v-model="ontorecogniserValue" placeholder="Select Ontology Term" name="ontoRecogniser" />
     </div>
     <template slot="child_row" scope="props">
@@ -121,7 +121,7 @@ export default {
         label: 'Sequence ontology',
       }
       ],
-      conceptrecogniserValue: ['ncbo'],
+      conceptrecogniserValue: 'ncbo',
       conceptrecogniserOptions: [{
         id: 'ncbo',
         label: 'NCBO Bioportal',
