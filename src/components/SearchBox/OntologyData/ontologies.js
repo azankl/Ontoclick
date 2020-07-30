@@ -4,11 +4,6 @@
 //   "categories": ["Health", "Phenotype", "Human"]
 // }]
 
-// {
-//   id: '',
-//   label: ''
-// }
-
 export default [
   {
     id: 'HP',
@@ -19,23 +14,15 @@ export default [
     label: 'Gene Ontology (GO)'
   },
   {
-    id: 'PR',
-    label: 'Protein Ontology (PR)'
+    id: 'MONDO',
+    label: 'Mondo Disease Ontology (MONDO)'
   },
   {
-    id: 'MP',
-    label: 'Mammalian Phenotype Ontology (MP)'
+    id: 'ORDO',
+    label: 'Orphanet Rare Disease Ontology (ORDO)'
   },
   {
-    id: 'SEQ',
-    label: 'Sequence Ontoloty (SEQ)'
-  },
-  {
-    id: 'PW',
-    label: 'Pathway Ontology (PW)'
-  },
-  {
-    id: 'MPO',
-    label: 'Microbial Phenotype Ontology (MPO)'
+    id: 'DOID',
+    label: 'Human Disease Ontology (DOID)'
   },
 ]

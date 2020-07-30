@@ -112,10 +112,13 @@ export default {
       ontologyOptions: ontologies,
       results: [],
       request: null,
-      conceptrecogniserValue: ['ncbo'],
+      conceptrecogniserValue: ['ncbos'],
       conceptrecogniserOptions: [{
-        id: 'ncbo',
-        label: 'NCBO Bioportal',
+        id: 'ncbos',
+        label: 'NCBO Bioportal Search',
+      }, {
+        id: 'ncboa',
+        label: 'NCBO Bioportal Annotator',
       }, {
         id: 'ebi',
         label: 'Ontology Lookup Search EBI'
@@ -125,6 +128,9 @@ export default {
       }, {
         id: 'neural',
         label: 'Neural Concept Recogniser',
+      }, {
+        id: 'pryzm',
+        label: 'Pryzm Health CR'
       }
       ]
     }

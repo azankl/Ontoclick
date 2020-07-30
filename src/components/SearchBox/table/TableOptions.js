@@ -23,20 +23,21 @@ import axios from 'axios';
 //     count: response.data. 
 // https://ncr.ccm.sickkids.ca/api_doc/
 
-
+// Pryzm Health = 4
 // https://track.health/api/
-// API key 4df19df4-f923-4b81-b575-6edc3deba4c2
+// API key 3156e102-4add-4098-926f-74fb1e49d38c
 
 const recogDict = {
-  'NCBO Bioportal': 0,
+  'NCBO Bioportal Search': 0,
   'HPO Jax': 1,
   'Ontology Lookup Search EBI': 2,
-  'Neural Concept Recogniser': 3
+  'Neural Concept Recogniser': 3,
+  'Pryzm Health CR': 4
 };
 
 function getSelectedAPI() {
   let div = document.getElementsByName("conceptRecogniser")[0];
-  let api = 'NCBO Bioportal';
+  let api = 'NCBO Bioportal Search';
   if (typeof div !== "undefined") {
     api = document.getElementsByClassName('vue-treeselect__single-value')[0].innerText;
   } 
@@ -132,6 +133,11 @@ export default {
       }
     ];
 
+    const pryzm = [
+      'https://knowledge.pryzm.health/api/cr/v1/annotate?apiKey=3156e102-4add-4098-926f-74fb1e49d38c',
+      data.q
+    ]
+
     let apiURL, apiParam;
     switch(api) {
       case 0:
@@ -154,6 +160,27 @@ export default {
         apiURL = null;
         apiParam = null;
     };
+
+    if (api == 4) {
+      return axios.post(pryzm[0], {
+        payload: pryzm[1]
+      }).then((res) => {
+        for (var i = 0; i < res.data.data.length; i++) {
+          res.data.data[i].notation = res.data.data[i].term.curie;
+          res.data.data[i].prefLabel = res.data.data[i].term.label;
+          res.data.data[i].definition = [];
+          res.data.data[i].definition.push(res.data.data[i].term.metadata.metadata.DEFINITION);
+          let arr = [];
+          for (var j = 0; j < res.data.data[i].term.synonyms.length; j++) {
+              arr.push(res.data.data[i].term.synonyms[j].synonym)
+          }
+          res.data.data[i].synonym = arr;
+        }
+        return res;
+      }).catch((err) => {
+        return null
+      })
+    }
 
     return axios.get(apiURL, {
       params: apiParam
@@ -207,6 +234,11 @@ export default {
         return {
           data: response.data.matches,
           count: response.data.matches.length
+        }
+      } else if (api == 4) {
+        return {
+          data: response.data.data,
+          count: response.data.data.length
         }
       } else {
         return {
