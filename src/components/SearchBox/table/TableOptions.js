@@ -119,6 +119,14 @@ export default {
         page: data.page,
         include: 'prefLabel,synonym,definition,notation',
         ontologies: ontologies
+      },
+      {
+        apikey: process.env.NCBO_KEY,
+        text: data.q,
+        pagesize: 5,
+        page: data.page,
+        include: 'prefLabel,synonym,definition,notation',
+        ontologies: ontologies
       }
     ];
 
@@ -161,7 +169,7 @@ export default {
         break;
       case 1:
         apiURL = ncbo[1];
-        apiParam = ncbo[2];
+        apiParam = ncbo[3];
         break;
       case 3:
         apiURL = jax[0];
@@ -205,7 +213,6 @@ export default {
       params: apiParam
     }).then((res) => {
       if (api == 0) {
-        console.log(res);
         return res;
       } else if (api == 1) {
         for (var i = 0; i < res.data.length; i++) {
