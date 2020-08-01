@@ -2,6 +2,7 @@ import style from './css/loader.css'
 import Popper from 'popper.js'
 
 var selection = window.getSelection();
+var location = window.location.href;
 var range = selection.getRangeAt(0);
 var popperDiv = document.createElement('div');
 popperDiv.id = 'popper-container';
@@ -16,7 +17,7 @@ frame.id = 'popper-inner';
 frame.setAttribute('width', '100%');
 frame.setAttribute('height', '100%');
 frame.setAttribute('frameborder', '0');
-frame.setAttribute('src', chrome.extension.getURL("index.html") + '?query=' + escape(selection));
+frame.setAttribute('src', chrome.extension.getURL("index.html") + '?query=' + escape(selection) + '&href=' + location);
 
 popperDiv.appendChild(frame)
 
@@ -58,4 +59,4 @@ let onMessage = function(message) {
 }
 
 document.addEventListener("selectionchange", onSelectionChange);
-window.addEventListener('message', onMessage, false)
+window.addEventListener('message', onMessage, false);

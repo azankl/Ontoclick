@@ -45,6 +45,8 @@ import Treeselect from '@riophae/vue-treeselect'
 // } from './OntologyData/tree'
 import ontologies from './OntologyData/ontologies'
 
+// var location = window.location;
+
 function copyElementContent(srcElementId) {
   let srcElement = document.getElementById(srcElementId)
   var range = document.createRange();
@@ -66,13 +68,21 @@ function copyElementContentS(cps) {
 }
 
 function changeExportName() {
-  chrome.storage.local.get(['storage'], function(storage) {
-    if (storage.storage === undefined) {
-      document.getElementById('exportButton').innerText = 'export (0)';
-    } else {
-      document.getElementById('exportButton').innerText = 'export (' + storage.storage.length + ')';
-    }
-  });
+  // PERSISTANT STORAGE
+  // chrome.storage.local.get(['storage'], function(storage) {
+  //   if (storage.storage === undefined) {
+  //     document.getElementById('exportButton').innerText = 'export (0)';
+  //   } else {
+  //     document.getElementById('exportButton').innerText = 'export (' + storage.storage.length + ')';
+  //   }
+  // });
+
+  // SESSION STORAGE
+  if (sessionStorage.getItem('storage') === null) {
+    document.getElementById('exportButton').innerText = 'export (0)';
+  } else {
+    document.getElementById('exportButton').innerText = 'export (' + JSON.parse(sessionStorage.getItem('storage')).length + ')';
+  }
 }
 
 function enterPress() {
@@ -83,36 +93,80 @@ function enterPress() {
   search.dispatchEvent(enter);
 }
 
+function getPubMedID() {
+  var url = document.location.search.match(/href=(.*)/)[1];
+  url = url.split('/');
+  if (url[2] !== 'pubmed.ncbi.nlm.nih.gov') {
+    return null
+  }
+  let id = 'PMID:';
+  id += url[3] + '\n';
+  return id;
+}
+
 function getStorage() {
-  chrome.storage.local.get(['storage'], function(res) {
-    console.log(res);
-  })
+  // PERSISTANT STORAGE
+  // chrome.storage.local.get(['storage'], function(res) {
+    // console.log(res);
+  // });
+
+  // SESSION STORAGE
+  if (sessionStorage.getItem('storage') === null) {
+    console.log(sessionStorage.getItem('storage'));
+  } else {
+    console.log(JSON.parse(sessionStorage.getItem('storage')));
+  }
+  console.log(getPubMedID());
 }
 
 function clearStorage() {
-  chrome.storage.local.clear();
+  // PERSISTANT STORAGE
+  // chrome.storage.local.clear();
+
+  // SESSION STORAGE
+  sessionStorage.clear();
   changeExportName();
 }
 
 function downloadCSV() {
-  chrome.storage.local.get(['storage'], function(res) {
-    if (res.storage !== undefined) {
-      var csv = 'text,notation,label\n';
+  // PERSISTANT STORAGE
+  // chrome.storage.local.get(['storage'], function(res) {
+    // if (res.storage !== undefined) {
+    //   var csv = 'text,notation,label\n';
 
-      res.storage.forEach(function(row) {
-        csv += row.join(',');
-        csv += '\n';
-      }); 
-      console.log(csv);
-      var hiddenElement = document.createElement('a');
-      hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
-      hiddenElement.target = '_blank';
-      hiddenElement.download = 'download.csv';
-      hiddenElement.click();
+    //   res.storage.forEach(function(row) {
+    //     csv += row.join(',');
+    //     csv += '\n';
+    //   }); 
+    //   // console.log(csv);
+    //   var hiddenElement = document.createElement('a');
+    //   hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    //   hiddenElement.target = '_blank';
+    //   hiddenElement.download = 'download.csv';
+    //   hiddenElement.click();
+  //   }
+  // })
 
-      clearStorage();
+  if (sessionStorage.getItem('storage') !== null) {
+    let storage = JSON.parse(sessionStorage.getItem('storage'));
+    var csv = '';
+    let id = getPubMedID();
+    if (id !== null) {
+      csv += id;
     }
-  })
+
+    storage.forEach(function(row) {
+      csv += row.join(',');
+      csv += '\n';
+    })
+
+    var hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = 'download.csv';
+    hiddenElement.click();
+  }
+  clearStorage();
 }
 
 function isArrayInArray(arr, item){
@@ -158,7 +212,7 @@ export default {
       ontologyOptions: ontologies,
       results: [],
       request: null,
-      conceptrecogniserValue: ['ncbos'],
+      conceptrecogniserValue: 'ncbos',
       conceptrecogniserOptions: [{
         id: 'ncbos',
         label: 'NCBO Bioportal Search',
@@ -211,17 +265,31 @@ export default {
     storeData(notation, label) {
       let keyword = document.getElementsByClassName('VueTables__search')[0].children[0].value;
       let data = [keyword, notation, label];
-      chrome.storage.local.get(['storage'], function(storage) {
-        if (JSON.stringify(storage) === '{}') {
-          chrome.storage.local.set({'storage': [data]});
-        } else {
-          if (!isArrayInArray(storage.storage, data)) {
-            storage.storage.push(data);
-            chrome.storage.local.set({'storage': storage.storage});
-          }
+
+      // SESSION STORAGE
+      if (sessionStorage.getItem('storage') === null) {
+        sessionStorage.setItem('storage', JSON.stringify([data]));
+      } else {
+        let currentStorage = JSON.parse(sessionStorage.getItem('storage'));
+        if (!isArrayInArray(currentStorage, data)) {
+          currentStorage.push(data);
+          sessionStorage.setItem('storage', JSON.stringify(currentStorage));
         }
-        changeExportName();
-      })
+      }
+
+      // PERSISTANT STORAGE
+      // chrome.storage.local.get(['storage'], function(storage) {
+      //   if (JSON.stringify(storage) === '{}') {
+      //     chrome.storage.local.set({'storage': [data]});
+      //   } else {
+      //     if (!isArrayInArray(storage.storage, data)) {
+      //       storage.storage.push(data);
+      //       chrome.storage.local.set({'storage': storage.storage});
+      //     }
+      //   }
+      // })
+
+      changeExportName();
     },
     selectAPI() {
       try {
