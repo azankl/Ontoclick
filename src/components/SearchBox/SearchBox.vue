@@ -7,15 +7,12 @@
       <button class="pull-right" id="clearButton">clear</button>
       <button class="pull-right" id="exportButton">export</button>
     </div>
-    <!-- <div class="col-sm-5 text-right" >
-      <button>Export</button>
-    </div> -->
   </div>
   <v-server-table :url="url" :columns="columns" :options="options">
     <div slot='conceptRec' class='form-group'>
       <treeselect :multiple="false" :clearable="false" :select='selectAPI()' :close-on-select="true" :options="conceptrecogniserOptions" v-model="conceptrecogniserValue" placeholder="Select Concept Recognizer" name="conceptRecogniser" />
     </div>
-    <div slot='ontologiesFilter' class='form-group' v-if="conceptrecogniserValue==='ncbo'">
+    <div slot='ontologiesFilter' class='form-group'>
         <treeselect :multiple="true" :clearable="false" :close-on-select="true" :flat="true" :options="ontologyOptions" style="z-index:6;" placeholder="Filter by Ontology" v-model="ontologyValue" />
       </div>
     <template slot="child_row" scope="props">
@@ -47,6 +44,7 @@ import Treeselect from '@riophae/vue-treeselect'
   // ontologyByAcronym
 // } from './OntologyData/tree'
 import ontologies from './OntologyData/ontologies'
+
 function copyElementContent(srcElementId) {
   let srcElement = document.getElementById(srcElementId)
   var range = document.createRange();
@@ -57,6 +55,7 @@ function copyElementContent(srcElementId) {
   document.execCommand('Copy');
   selection.removeAllRanges();
 }
+
 function copyElementContentS(cps) {
  const el = document.createElement('textarea');
   el.value = cps;
@@ -235,14 +234,6 @@ export default {
       } catch(err) {
         // do nothing
       }
-    },
-    selectONTO() {
-      try {
-        let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;
-        enterPress();
-      } catch(err) {
-        // do nothing
-      }
     }
   }
 }
@@ -252,44 +243,55 @@ export default {
 </style><style>tr {
   cursor: pointer;
 }
+
 tr a.hover-action {
   opacity: 0;
 }
+
 tr:hover a.hover-action {
   opacity: 1;
 }
+
 li.VuePagination__pagination-item-next-chunk,
 li.VuePagination__pagination-item-prev-chunk {
   display: none;
 }
+
 div.VuePagination p {
   margin: 0;
 }
+
 ul.pagination {
   margin: 0;
 }
+
 ul.pagination>li>a,
 .pagination>li>span {
   color: #039be5;
 }
+
 .vue-treeselect {
   z-index: 4;
 }
+
 .search-box {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
+
 .search-box .controls {
   flex-grow: 0;
   flex-shrink: 0;
 }
+
 .search-box .content {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+
 .VueTables__child-row-toggler {
     width: 16px;
     height: 16px;
@@ -298,14 +300,18 @@ ul.pagination>li>a,
     margin: auto;
     text-align: center;
 }
+
 .VueTables__child-row-toggler--closed::before {
     content: "+";
 }
+
 .VueTables__child-row-toggler--open::before {
     content: "-";
 }
+
 .text-wrap {
   word-wrap: normal;
   white-space: pre-line;
 }
+
 </style>

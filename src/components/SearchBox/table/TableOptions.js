@@ -53,7 +53,7 @@ function getSelectedAPI() {
   let div = document.getElementsByName("conceptRecogniser")[0];
   let api = 'NCBO Bioportal Search';
   if (typeof div !== "undefined") {
-    api = document.getElementsByClassName('vue-treeselect__single-value')[1].innerText;
+    api = document.getElementsByClassName('vue-treeselect__single-value')[0].innerText;
   } 
   return recogDict[api];
 }
