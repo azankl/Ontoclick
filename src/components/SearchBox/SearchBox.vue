@@ -4,6 +4,7 @@
     <div class="col-sm-7 text-left">
       <img class="logo" src="/static/img/rdf_flyer_32.png">
       <h3 class="pull-left">ONTOCLICK</h3>
+      <button class="pull-right" id="clearButton">clear</button>
       <button class="pull-right" id="exportButton">export</button>
     </div>
   </div>
@@ -64,6 +65,16 @@ function copyElementContentS(cps) {
   document.body.removeChild(el);
 }
 
+function changeExportName() {
+  chrome.storage.local.get(['storage'], function(storage) {
+    if (storage.storage === undefined) {
+      document.getElementById('exportButton').innerText = 'export (0)';
+    } else {
+      document.getElementById('exportButton').innerText = 'export (' + storage.storage.length + ')';
+    }
+  });
+}
+
 function enterPress() {
   let search = document.getElementsByClassName('VueTables__search')[0].children[0];
   const enter = new KeyboardEvent('keyup', {
@@ -76,6 +87,41 @@ function getStorage() {
   chrome.storage.local.get(['storage'], function(res) {
     console.log(res);
   })
+}
+
+function clearStorage() {
+  chrome.storage.local.clear();
+  changeExportName();
+}
+
+function downloadCSV() {
+  chrome.storage.local.get(['storage'], function(res) {
+    if (res.storage !== undefined) {
+      var csv = 'text,notation,label\n';
+
+      res.storage.forEach(function(row) {
+        csv += row.join(',');
+        csv += '\n';
+      }); 
+      console.log(csv);
+      var hiddenElement = document.createElement('a');
+      hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+      hiddenElement.target = '_blank';
+      hiddenElement.download = 'download.csv';
+      hiddenElement.click();
+
+      clearStorage();
+    }
+  })
+}
+
+function isArrayInArray(arr, item){
+  var item_as_string = JSON.stringify(item);
+
+  var contains = arr.some(function(ele){
+    return JSON.stringify(ele) === item_as_string;
+  });
+  return contains;
 }
 
 export default {
@@ -163,19 +209,26 @@ export default {
       }, "*")
     },
     storeData(notation, label) {
-      document.getElementById('exportButton').addEventListener('click', getStorage);
       let keyword = document.getElementsByClassName('VueTables__search')[0].children[0].value;
-      let val = '"' + keyword + '","' + notation + '","' + label + '"';
-      chrome.storage.local.get(['storage'], function(res) {
-        console.log(res);
-      });
-      chrome.storage.local.set({'storage': val}), function() {
-        // Data has been stored locally
-      }
+      let data = [keyword, notation, label];
+      chrome.storage.local.get(['storage'], function(storage) {
+        if (JSON.stringify(storage) === '{}') {
+          chrome.storage.local.set({'storage': [data]});
+        } else {
+          if (!isArrayInArray(storage.storage, data)) {
+            storage.storage.push(data);
+            chrome.storage.local.set({'storage': storage.storage});
+          }
+        }
+        changeExportName();
+      })
     },
     selectAPI() {
       try {
-        document.getElementById('exportButton').addEventListener('click', getStorage);
+        document.getElementById('exportButton').addEventListener('click', downloadCSV);
+        changeExportName();
+        document.getElementById('clearButton').addEventListener('click', clearStorage);
+
         let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;
         enterPress();
       } catch(err) {
