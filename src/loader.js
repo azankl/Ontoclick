@@ -1,8 +1,19 @@
 import style from './css/loader.css'
 import Popper from 'popper.js'
 
-var selection = window.getSelection();
 var location = window.location.href;
+var url = location.split('/');
+var id = 'PMID: ';
+if (url[2] === 'pubmed.ncbi.nlm.nih.gov') {
+  id += url[3] + '\n';
+} else if (url[2] === 'www.ncbi.nlm.nih.gov') {
+  id = document.getElementsByClassName('fm-citation-pmid')[0].innerText;
+  id += '\n';
+} else {
+  id = null;
+}
+
+var selection = window.getSelection();
 var range = selection.getRangeAt(0);
 var popperDiv = document.createElement('div');
 popperDiv.id = 'popper-container';
@@ -17,7 +28,7 @@ frame.id = 'popper-inner';
 frame.setAttribute('width', '100%');
 frame.setAttribute('height', '100%');
 frame.setAttribute('frameborder', '0');
-frame.setAttribute('src', chrome.extension.getURL("index.html") + '?query=' + escape(selection) + '&href=' + location);
+frame.setAttribute('src', chrome.extension.getURL("index.html") + '?query=' + escape(selection) + '&id=' + escape(id) + '&href=' + escape(location));
 
 popperDiv.appendChild(frame)
 

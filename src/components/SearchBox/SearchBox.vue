@@ -92,14 +92,8 @@ function enterPress() {
 }
 
 function getPubMedID() {
-  var url = document.location.search.match(/href=(.*)/)[1];
-  url = url.split('/');
-  if (url[2] !== 'pubmed.ncbi.nlm.nih.gov') {
-    return null
-  }
-  let id = 'PMID:';
-  id += url[3] + '\n';
-  return id;
+  return [unescape(document.location.search.match(/id=(.*)\&/)[1]),
+          unescape(document.location.search.match(/href=(.*)/)[1])];
 }
 
 function getStorage() {
@@ -148,9 +142,11 @@ function downloadCSV() {
   if (sessionStorage.getItem('storage') !== null) {
     let storage = JSON.parse(sessionStorage.getItem('storage'));
     var csv = '';
-    let id = getPubMedID();
-    if (id !== null) {
-      csv += id;
+    let options = getPubMedID();
+    if (options[0] !== 'null') {
+      csv += options[0];
+    } else {
+      csv += options[1] + '\n';
     }
 
     storage.forEach(function(row) {
