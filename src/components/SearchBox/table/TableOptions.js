@@ -269,7 +269,7 @@ export default {
       } else if (api == 3) {
         return {
           data: response.data.terms,
-          count: response.data.termsTotalCount
+          count: 1
         }
       } else if (api == 4) {
         return {
@@ -279,7 +279,7 @@ export default {
       } else if (api == 5) {
         return {
           data: response.data.matches,
-          count: response.data.matches.length
+          count: 1
         }
       } else {
         return {
