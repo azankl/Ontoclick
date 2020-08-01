@@ -228,7 +228,7 @@ export default {
         document.getElementById('exportButton').addEventListener('click', downloadCSV);
         changeExportName();
         document.getElementById('clearButton').addEventListener('click', clearStorage);
-
+        
         let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;
         enterPress();
       } catch(err) {
