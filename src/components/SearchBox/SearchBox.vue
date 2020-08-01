@@ -12,7 +12,7 @@
     <div slot='conceptRec' class='form-group'>
       <treeselect :multiple="false" :clearable="false" :select='selectAPI()' :close-on-select="true" :options="conceptrecogniserOptions" v-model="conceptrecogniserValue" placeholder="Select Concept Recognizer" name="conceptRecogniser" />
     </div>
-    <div slot='ontologiesFilter' class='form-group'>
+    <div slot='ontologiesFilter' class='form-group' v-if="conceptrecogniserValue==='ncbos' || conceptrecogniserValue==='ncboa'">
         <treeselect :multiple="true" :clearable="false" :close-on-select="true" :flat="true" :options="ontologyOptions" style="z-index:6;" placeholder="Filter by Ontology" v-model="ontologyValue" />
       </div>
     <template slot="child_row" scope="props">
@@ -158,7 +158,7 @@ export default {
       ontologyOptions: ontologies,
       results: [],
       request: null,
-      conceptrecogniserValue: ['ncbos'],
+      conceptrecogniserValue: 'ncbos',
       conceptrecogniserOptions: [{
         id: 'ncbos',
         label: 'NCBO Bioportal Search',
