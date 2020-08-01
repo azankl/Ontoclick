@@ -15,9 +15,9 @@
     <div slot='conceptRec' class='form-group'>
       <treeselect :multiple="false" :clearable="false" :select='selectAPI()' :close-on-select="true" :options="conceptrecogniserOptions" v-model="conceptrecogniserValue" placeholder="Select Concept Recognizer" name="conceptRecogniser" />
     </div>
-    <div slot='ontoRec' class='form-group' v-if= "conceptrecogniserValue==='ncbo'">
-      <treeselect :multiple="false" :clearable="false" :select='selectONTO()' :close-on-select="true" :flat="true" :options="ontoRecogniserOptions" style="z-index:6;" v-model="ontorecogniserValue" placeholder="Select Ontology Term" name="ontoRecogniser" />
-    </div>
+    <div slot='ontologiesFilter' class='form-group' v-if="conceptrecogniserValue==='ncbo'">
+        <treeselect :multiple="true" :clearable="false" :close-on-select="true" :flat="true" :options="ontologyOptions" style="z-index:6;" placeholder="Filter by Ontology" v-model="ontologyValue" />
+      </div>
     <template slot="child_row" scope="props">
         <div class='text-wrap' v-if="props.row.definition"><b>Definition: </b>{{props.row.definition[0]}}</div>
         <div class='text-wrap' v-if="props.row.synonym"><b>Synonyms: </b>{{ typeof props.row.synonym === 'string' ? props.row.synonym : props.row.synonym.join(', ') }}</div>
