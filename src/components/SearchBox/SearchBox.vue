@@ -7,9 +7,9 @@
       <button class="pull-right" id="clearButton">clear</button>
       <button class="pull-right" id="exportButton">export</button>
     </div>
-    <div class="col-sm-5 text-right" >
+    <!-- <div class="col-sm-5 text-right" >
       <button>Export</button>
-    </div>
+    </div> -->
   </div>
   <v-server-table :url="url" :columns="columns" :options="options">
     <div slot='conceptRec' class='form-group'>
