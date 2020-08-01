@@ -3,35 +3,43 @@ import axios from 'axios';
 
 // const x = 0;
 
-// NCBO = 0 
+// NCBO Search = 0 
 //      data : response.data.collection
 //      count : response.data.totalCount
 // https://data.bioontology.org/documentation
 
-// JAX = 1 
+// NCBO Annotator = 1
+//
+//
+
+// Pryzm Health = 2
+// https://track.health/api/
+
+
+// JAX = 3
 //     data : response.data.terms
 //     count : response.data.termsTotalCount
 // https://hpo.jax.org/api/hpo/docs/ 
 
-// OLS EBI = 2
+// OLS EBI = 4
 //     data : response.data.
 //     count: response.data.
 // https://www.ebi.ac.uk/ols/docs/api/search
 
-// Neural Concept Recogniser = 3
+// Neural Concept Recogniser = 5
 //     data: response.data.
 //     count: response.data. 
 // https://ncr.ccm.sickkids.ca/api_doc/
 
 
-// https://track.health/api/
-// API key 4df19df4-f923-4b81-b575-6edc3deba4c2
-
 const recogDict = {
-  'NCBO Bioportal': 0,
-  'HPO Jax': 1,
-  'Ontology Lookup Search EBI': 2,
-  'Neural Concept Recogniser': 3
+  'NCBO Bioportal Search': 0,
+  'NCBO Bioportal Annotator': 1,
+  'Pryzm Health CR': 2,
+  'HPO Jax': 3,
+  'Ontology Lookup Search EBI': 4,
+  'Neural Concept Recogniser': 5,
+  
 };
 const ontoDict = {
   'Human Phenotype': 0,
@@ -43,20 +51,24 @@ const ontoDict = {
 
 function getSelectedAPI() {
   let div = document.getElementsByName("conceptRecogniser")[0];
-  let api = 'NCBO Bioportal';
+  let api = 'NCBO Bioportal Search';
   if (typeof div !== "undefined") {
     api = document.getElementsByClassName('vue-treeselect__single-value')[1].innerText;
   } 
   return recogDict[api];
 }
 
-function getSelectedONTO() {
-  let div = document.getElementsByName("ontoRecogniser")[0];
-  let onto = 'HP';
-  if (typeof div !== "undefined") {
-    onto = document.getElementsByClassName('vue-treeselect__single-value')[0].innerText;
-  } 
-  return ontoDict[onto];
+function getOntologies() {
+  let list = [];
+  let div = document.getElementsByClassName('vue-treeselect__multi-value-label');
+  for (var i = 0; i < div.length; i++) {
+    let selected = div[i].innerText;
+    let id = selected.match(/\(([^)]+)\)/)[1];
+    if (!list.includes(id)) {
+      list.push(id);
+    }
+  }
+  return ((Array.isArray(list) && list.length) ? list.join(',') : 'HP');
 }
 
 const clone = (obj) => Object.assign({}, obj);
@@ -95,51 +107,30 @@ export default {
   },
   requestFunction: (data) => {
     let api = getSelectedAPI();
-    let onto = getSelectedONTO();
-    console.log(onto);
-    let onto_term;
-    switch(onto) {
-      case 0:
-        onto_term = 'HP';
-        break;
-      case 1:
-        onto_term = 'GO';
-        break;
-      case 2:
-        onto_term = 'MONDO';
-        break;
-      case 3:
-        onto_term = "ORDO";
-        break;
-      case 4:
-        onto_term = 'DOID';
-        break;
-      default:
-        onto_term = 'HP';
-    };
-
+    let ontologies = getOntologies();
     
     const ncbo = [
-      process.env.API_URL,
+      process.env.NCBO_SEARCH,
+      process.env.NCBO_ANNOTATOR,
       {
-        apikey: process.env.API_KEY,
+        apikey: process.env.NCBO_KEY,
         q: data.q,
         pagesize: 5,
         page: data.page,
         include: 'prefLabel,synonym,definition,notation',
-        ontologies: onto_term
+        ontologies: ontologies
       }
     ];
 
     const jax = [
-      'http://hpo.jax.org/api/hpo/search/',
+      process.env.JAX,
       {
         q: data.q
       }
     ];
 
     const ebi = [
-      'https://www.ebi.ac.uk/ols/api/search',
+      process.env.EBI,
       {
         q: data.q,
         ontology: 'hp',
@@ -151,27 +142,36 @@ export default {
     ];
 
     const neural = [
-      'https://ncr.ccm.sickkids.ca/curr/match/',
+      process.env.NEURAL,
       {
         text: data.q
       }
     ];
 
+    const pryzm = [
+      process.env.PRYZM + process.env.PRYZM_KEY,
+      data.q
+    ]
+
     let apiURL, apiParam;
     switch(api) {
       case 0:
         apiURL = ncbo[0];
-        apiParam = ncbo[1];
+        apiParam = ncbo[2];
         break;
       case 1:
+        apiURL = ncbo[1];
+        apiParam = ncbo[2];
+        break;
+      case 3:
         apiURL = jax[0];
         apiParam = jax[1];
         break;
-      case 2:
+      case 4:
         apiURL = ebi[0];
         apiParam = ebi[1];
         break;
-      case 3:
+      case 5:
         apiURL = neural[0];
         apiParam = neural[1];
         break;
@@ -180,6 +180,27 @@ export default {
         apiParam = null;
     };
 
+    if (api == 2) {
+      return axios.post(pryzm[0], {
+        payload: pryzm[1]
+      }).then((res) => {
+        for (var i = 0; i < res.data.data.length; i++) {
+          res.data.data[i].notation = res.data.data[i].term.curie;
+          res.data.data[i].prefLabel = res.data.data[i].term.label;
+          res.data.data[i].definition = [];
+          res.data.data[i].definition.push(res.data.data[i].term.metadata.metadata.DEFINITION);
+          let arr = [];
+          for (var j = 0; j < res.data.data[i].term.synonyms.length; j++) {
+              arr.push(res.data.data[i].term.synonyms[j].synonym)
+          }
+          res.data.data[i].synonym = arr;
+        }
+        return res;
+      }).catch((err) => {
+        return null
+      })
+    }
+
     return axios.get(apiURL, {
       params: apiParam
     }).then((res) => {
@@ -187,15 +208,24 @@ export default {
         console.log(res);
         return res;
       } else if (api == 1) {
+        for (var i = 0; i < res.data.length; i++) {
+          res.data[i].notation = res.data[i].annotatedClass.notation;
+          res.data[i].prefLabel = res.data[i].annotatedClass.prefLabel;
+          res.data[i].definition = res.data[i].annotatedClass.definition;
+          res.data[i].synonym = res.data[i].annotatedClass.synonym;
+          res.data[i].annotatedClass = null;
+        }
+        return res;
+      } else if (api == 3) {
         res.data.terms = keyLoop(res.data.terms, 'id', 'notation');
         res.data.terms = keyLoop(res.data.terms, 'name', 'prefLabel');
         return res
-      } else if (api == 2) {
+      } else if (api == 4) {
         res.data.response.docs = keyLoop(res.data.response.docs, 'obo_id', 'notation');
         res.data.response.docs = keyLoop(res.data.response.docs, 'label', 'prefLabel');
         res.data.response.docs = keyLoop(res.data.response.docs, 'description', 'definition');
         return res;
-      } else if (api == 3) {
+      } else if (api == 5) {
         res.data.matches = keyLoop(res.data.matches, 'hp_id', 'notation');
         var i;
         for (i = 0; i < res.data.matches.length; i++) {
@@ -221,15 +251,25 @@ export default {
         }
       } else if (api == 1) {
         return {
+          data: response.data,
+          count: response.data.length
+        }
+      } else if (api == 2) {
+        return {
+          data: response.data.data,
+          count: response.data.data.length
+        }
+      } else if (api == 3) {
+        return {
           data: response.data.terms,
           count: response.data.termsTotalCount
         }
-      } else if (api == 2) {
+      } else if (api == 4) {
         return {
           data: response.data.response.docs,
           count: response.data.response.numFound
         }
-      } else if (api == 3) {
+      } else if (api == 5) {
         return {
           data: response.data.matches,
           count: response.data.matches.length

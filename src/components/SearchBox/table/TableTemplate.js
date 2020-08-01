@@ -21,7 +21,6 @@ module.exports = function(source) {
     var afterBody = this.$slots.afterBody ? this.$slots.afterBody : '';
     var ontologiesFilter = this.$slots.ontologiesFilter ? this.$slots.ontologiesFilter : '';
     var conceptRec = this.$slots.conceptRec ? this.$slots.conceptRec : '';
-    var ontoRec = this.$slots.ontoRec ? this.$slots.ontoRec : '';
 
     return h(
       'div', {
@@ -41,7 +40,7 @@ module.exports = function(source) {
         }, [h(
           'div', {
             'class': 'col-md-12'
-          }, [ontoRec]
+          }, [ontologiesFilter]
         )],
       ),h(
         'div', {

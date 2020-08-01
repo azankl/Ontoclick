@@ -4,6 +4,8 @@
     <div class="col-sm-7 text-left">
       <img class="logo" src="/static/img/rdf_flyer_32.png">
       <h3 class="pull-left">ONTOCLICK</h3>
+      <button class="pull-right" id="clearButton">clear</button>
+      <button class="pull-right" id="exportButton">export</button>
     </div>
     <div class="col-sm-5 text-right" >
       <button>Export</button>
@@ -11,7 +13,7 @@
   </div>
   <v-server-table :url="url" :columns="columns" :options="options">
     <div slot='conceptRec' class='form-group'>
-      <treeselect :multiple="false" :clearable="false" :select='selectAPI()' :close-on-select="true" :flat="true" :options="conceptrecogniserOptions" v-model="conceptrecogniserValue" placeholder="Select Concept Recognizer" name="conceptRecogniser" />
+      <treeselect :multiple="false" :clearable="false" :select='selectAPI()' :close-on-select="true" :options="conceptrecogniserOptions" v-model="conceptrecogniserValue" placeholder="Select Concept Recognizer" name="conceptRecogniser" />
     </div>
     <div slot='ontoRec' class='form-group' v-if= "conceptrecogniserValue==='ncbo'">
       <treeselect :multiple="false" :clearable="false" :select='selectONTO()' :close-on-select="true" :flat="true" :options="ontoRecogniserOptions" style="z-index:6;" v-model="ontorecogniserValue" placeholder="Select Ontology Term" name="ontoRecogniser" />
@@ -32,7 +34,7 @@
         <span :id='"spantext"+props.index' v-if="props.row.prefLabel && props.row.notation"></span>
         <a class="hover-action fa fa-copy" title="Notation + Label" @click='copyContentS(props.row.notation + " " + props.row.prefLabel)' v-if="props.row.notation && props.row.prefLabel"></a>
         <a class="hover-action fa fa-file-text-o" title="Text span + Notation + Label" @click="doCopy(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
-         <a class="hover-action fa fa-floppy-o" title="Add to export" @click="exportChanger()"></a>
+        <a class="hover-action fa fa-file-excel-o" title="Save to history" @click="storeData(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
       </template>
   </v-server-table>
 </div>
@@ -40,10 +42,10 @@
     
 <script>
 import Treeselect from '@riophae/vue-treeselect'
-import {
-  options,
-  ontologyByAcronym
-} from './OntologyData/tree'
+// import {
+  // options,
+  // ontologyByAcronym
+// } from './OntologyData/tree'
 import ontologies from './OntologyData/ontologies'
 function copyElementContent(srcElementId) {
   let srcElement = document.getElementById(srcElementId)
@@ -63,6 +65,17 @@ function copyElementContentS(cps) {
   document.execCommand('copy');
   document.body.removeChild(el);
 }
+
+function changeExportName() {
+  chrome.storage.local.get(['storage'], function(storage) {
+    if (storage.storage === undefined) {
+      document.getElementById('exportButton').innerText = 'export (0)';
+    } else {
+      document.getElementById('exportButton').innerText = 'export (' + storage.storage.length + ')';
+    }
+  });
+}
+
 function enterPress() {
   let search = document.getElementsByClassName('VueTables__search')[0].children[0];
   const enter = new KeyboardEvent('keyup', {
@@ -70,6 +83,48 @@ function enterPress() {
   });
   search.dispatchEvent(enter);
 }
+
+function getStorage() {
+  chrome.storage.local.get(['storage'], function(res) {
+    console.log(res);
+  })
+}
+
+function clearStorage() {
+  chrome.storage.local.clear();
+  changeExportName();
+}
+
+function downloadCSV() {
+  chrome.storage.local.get(['storage'], function(res) {
+    if (res.storage !== undefined) {
+      var csv = 'text,notation,label\n';
+
+      res.storage.forEach(function(row) {
+        csv += row.join(',');
+        csv += '\n';
+      }); 
+      console.log(csv);
+      var hiddenElement = document.createElement('a');
+      hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+      hiddenElement.target = '_blank';
+      hiddenElement.download = 'download.csv';
+      hiddenElement.click();
+
+      clearStorage();
+    }
+  })
+}
+
+function isArrayInArray(arr, item){
+  var item_as_string = JSON.stringify(item);
+
+  var contains = arr.some(function(ele){
+    return JSON.stringify(ele) === item_as_string;
+  });
+  return contains;
+}
+
 export default {
   name: 'search-box',
   components: {
@@ -100,32 +155,20 @@ export default {
         uniqueKey: 'notation'
       },
       query: query,
-      ontologyValue: ontology ? [ontology] : [],
-      ontologyOptions: options,
+      ontologyValue: ['HP'],
+      ontologyOptions: ontologies,
       results: [],
       request: null,
-      ontorecogniserValue: ['hp'],
-      ontoRecogniserOptions: [{
-        id: 'hp',
-        label: 'Human Phenotype',
-      }, {
-        id: 'go',
-        label: 'Gene Ontology',
-      }, {
-        id: 'mondo',
-        label: 'Mondo Disease Ontology',
-      },{
-        id: 'ordo',
-        label: 'Orphanet Rare Disease Ontology',
-      },{
-        id: 'doid',
-        label: 'Human Disease Ontology',
-      }
-      ],
-      conceptrecogniserValue: 'ncbo',
+      conceptrecogniserValue: ['ncbos'],
       conceptrecogniserOptions: [{
-        id: 'ncbo',
-        label: 'NCBO Bioportal',
+        id: 'ncbos',
+        label: 'NCBO Bioportal Search',
+      }, {
+        id: 'ncboa',
+        label: 'NCBO Bioportal Annotator',
+      },{
+        id: 'pryzm',
+        label: 'Pryzm Health CR'
       }, {
         id: 'ebi',
         label: 'Ontology Lookup Search EBI'
@@ -135,8 +178,7 @@ export default {
       }, {
         id: 'neural',
         label: 'Neural Concept Recogniser',
-      }
-      ]
+      }]
     }
   },
   methods: {
@@ -167,8 +209,27 @@ export default {
         type: 'copied'
       }, "*")
     },
+    storeData(notation, label) {
+      let keyword = document.getElementsByClassName('VueTables__search')[0].children[0].value;
+      let data = [keyword, notation, label];
+      chrome.storage.local.get(['storage'], function(storage) {
+        if (JSON.stringify(storage) === '{}') {
+          chrome.storage.local.set({'storage': [data]});
+        } else {
+          if (!isArrayInArray(storage.storage, data)) {
+            storage.storage.push(data);
+            chrome.storage.local.set({'storage': storage.storage});
+          }
+        }
+        changeExportName();
+      })
+    },
     selectAPI() {
       try {
+        document.getElementById('exportButton').addEventListener('click', downloadCSV);
+        changeExportName();
+        document.getElementById('clearButton').addEventListener('click', clearStorage);
+
         let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;
         enterPress();
       } catch(err) {
