@@ -45,8 +45,6 @@ import Treeselect from '@riophae/vue-treeselect'
 // } from './OntologyData/tree'
 import ontologies from './OntologyData/ontologies'
 
-// var location = window.location;
-
 function copyElementContent(srcElementId) {
   let srcElement = document.getElementById(srcElementId)
   var range = document.createRange();
@@ -288,7 +286,6 @@ export default {
       //     }
       //   }
       // })
-
       changeExportName();
     },
     selectAPI() {
