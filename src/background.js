@@ -10,6 +10,16 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 });
 
+// Add listener to create ontoclick context menu items on Chrome broswer startup
+chrome.runtime.onStartup.addListener(function() {
+  chrome.contextMenus.create({
+    id: 'ontoclick-en',
+    title: 'OntoClick v2',
+    type: 'normal',
+    contexts: ['all']
+  });
+});
+
 
 
 chrome.contextMenus.onClicked.addListener(function(item, tab) {
