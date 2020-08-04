@@ -75,7 +75,7 @@ function changeExportName() {
   //   }
   // });
 
-  // SESSION STORAGE
+  // SESSION STORAGE (Each tab is seperate from another)
   if (sessionStorage.getItem('storage') === null) {
     document.getElementById('exportButton').innerText = 'export (0)';
   } else {
@@ -102,7 +102,7 @@ function getStorage() {
     // console.log(res);
   // });
 
-  // SESSION STORAGE
+  // SESSION STORAGE (Each tab is seperate from another)
   if (sessionStorage.getItem('storage') === null) {
     console.log(sessionStorage.getItem('storage'));
   } else {
@@ -179,12 +179,12 @@ export default {
   },
   data() {
     let query = document.location.search.match(/query=([^&]*)/)
-    let ontology = document.location.search.match(/ontology=(.*)/)
+    // let ontology = document.location.search.match(/ontology=(.*)/)
     query = query ? unescape(query[1]) : undefined
-    ontology = ontology ? unescape(ontology[1]) : undefined
+    // ontology = ontology ? unescape(ontology[1]) : undefined
     return {
       loading: true,
-      url: 'https://google.com',
+      url: 'https://google.com', // Not required
       columns: ['notation', 'prefLabel' , 'spantext'],
       options: {
         initFilters: {
@@ -260,7 +260,7 @@ export default {
       let keyword = document.getElementsByClassName('VueTables__search')[0].children[0].value;
       let data = [keyword, notation, label];
 
-      // SESSION STORAGE
+      // SESSION STORAGE 
       if (sessionStorage.getItem('storage') === null) {
         sessionStorage.setItem('storage', JSON.stringify([data]));
       } else {

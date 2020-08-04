@@ -4,7 +4,7 @@
 chrome.runtime.onInstalled.addListener(function() {
   chrome.contextMenus.create({
     id: 'ontoclick-en',
-    title: 'OntoClick v2',
+    title: 'OntoClick',
     type: 'normal',
     contexts: ['all']
   });
@@ -14,7 +14,7 @@ chrome.runtime.onInstalled.addListener(function() {
 chrome.runtime.onStartup.addListener(function() {
   chrome.contextMenus.create({
     id: 'ontoclick-en',
-    title: 'OntoClick v2',
+    title: 'OntoClick',
     type: 'normal',
     contexts: ['all']
   });

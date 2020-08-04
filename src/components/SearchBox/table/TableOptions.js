@@ -1,20 +1,13 @@
-import Vue from 'vue';
 import axios from 'axios';
 
-// const x = 0;
-
 // NCBO Search = 0 
+// NCBO Annotator = 1
 //      data : response.data.collection
 //      count : response.data.totalCount
 // https://data.bioontology.org/documentation
 
-// NCBO Annotator = 1
-//
-//
-
 // Pryzm Health = 2
 // https://track.health/api/
-
 
 // JAX = 3
 //     data : response.data.terms
@@ -41,14 +34,9 @@ const recogDict = {
   'Neural Concept Recogniser': 5,
   
 };
-const ontoDict = {
-  'Human Phenotype': 0,
-  'Gene Ontology': 1,
-  'Mondo Disease Ontology': 2,
-  'Orphanet Rare Disease': 3,
-  'Human Disease Ontology': 4,
-};
 
+// Search HTML for concept recogniser dropdown list
+// Initial startup value will always be NCBO Search
 function getSelectedAPI() {
   let div = document.getElementsByName("conceptRecogniser")[0];
   let api = 'NCBO Bioportal Search';
@@ -58,11 +46,14 @@ function getSelectedAPI() {
   return recogDict[api];
 }
 
+// Search for ontologies selected from dropdown menu
+// Human Phenotype Ontology is the default value if no ontologies are selected
 function getOntologies() {
   let list = [];
   let div = document.getElementsByClassName('vue-treeselect__multi-value-label');
   for (var i = 0; i < div.length; i++) {
     let selected = div[i].innerText;
+    // Extract ontology ID to be used for GET request
     let id = selected.match(/\(([^)]+)\)/)[1];
     if (!list.includes(id)) {
       list.push(id);
@@ -71,8 +62,9 @@ function getOntologies() {
   return ((Array.isArray(list) && list.length) ? list.join(',') : 'HP');
 }
 
+// Renames the key for dictionary
+// Input: dictionary, keyToReplace, newKeyName
 const clone = (obj) => Object.assign({}, obj);
-
 const renameKey = (object, key, newKey) => {
     const clonedObj = clone(object);
     const targetKey = clonedObj[key];
@@ -161,6 +153,7 @@ export default {
       data.q
     ]
 
+    // Change the URL and parameters depending on the Concept Recogniser selected
     let apiURL, apiParam;
     switch(api) {
       case 0:
@@ -188,11 +181,13 @@ export default {
         apiParam = null;
     };
 
+    // Seperate from the other returns as Pryzm requires a POST request instead of GET request
     if (api == 2) {
       return axios.post(pryzm[0], {
         payload: pryzm[1]
       }).then((res) => {
         for (var i = 0; i < res.data.data.length; i++) {
+          // Switch return object's keys to align with display rows in SearchBox.vue
           res.data.data[i].notation = res.data.data[i].term.curie;
           res.data.data[i].prefLabel = res.data.data[i].term.label;
           res.data.data[i].definition = [];
@@ -216,6 +211,7 @@ export default {
         return res;
       } else if (api == 1) {
         for (var i = 0; i < res.data.length; i++) {
+          // Switch return object's keys to align with display rows in SearchBox.vue
           res.data[i].notation = res.data[i].annotatedClass.notation;
           res.data[i].prefLabel = res.data[i].annotatedClass.prefLabel;
           res.data[i].definition = res.data[i].annotatedClass.definition;
@@ -269,6 +265,8 @@ export default {
       } else if (api == 3) {
         return {
           data: response.data.terms,
+          // API only returns top 10 results, all results are returned on one single page
+          // Let count be 1 to let user think there are more result pages
           count: 1
         }
       } else if (api == 4) {
@@ -279,6 +277,8 @@ export default {
       } else if (api == 5) {
         return {
           data: response.data.matches,
+          // API only returns top 10 results, all results are returned on one single page
+          // Let count be 1 to let user think there are more result pages
           count: 1
         }
       } else {

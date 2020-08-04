@@ -1,9 +1,11 @@
 import style from './css/loader.css'
 import Popper from 'popper.js'
 
+// Store URL location of kwebsite the user it highlighting text from
 var location = window.location.href;
 var url = location.split('/');
 var id = 'PMID: ';
+// Only grab the PubMed ID when on the two websites
 if (url[2] === 'pubmed.ncbi.nlm.nih.gov') {
   id += url[3] + '\n';
 } else if (url[2] === 'www.ncbi.nlm.nih.gov') {
@@ -13,6 +15,7 @@ if (url[2] === 'pubmed.ncbi.nlm.nih.gov') {
   id = null;
 }
 
+// Create popper for extension popup
 var selection = window.getSelection();
 var range = selection.getRangeAt(0);
 var popperDiv = document.createElement('div');
