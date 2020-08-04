@@ -1,6 +1,6 @@
 'use strict';
 
-// Add listener to create ontoclick context menu items at runtime.onInstalled
+// Add listener to create ontoclick context menu items when the extension is installed
 chrome.runtime.onInstalled.addListener(function() {
   chrome.contextMenus.create({
     id: 'ontoclick-en',
