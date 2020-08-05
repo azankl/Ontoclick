@@ -1,7 +1,7 @@
 {
-  "name": "replaced with package.json#name during build",
-  "description": "replaced with package.json#description during build",
-  "version": "replaced with package.json#version during build",
+  "name": "OntoClick",
+  "description": "Turn your clinical description into a proper ontology term",
+  "version": "0.0.1",
   "background": {
     "scripts": ["static/js/background.js"]
   },
