@@ -282,6 +282,7 @@ export default {
     },
     storeData(notation, label) {
       let keyword = document.getElementsByClassName('VueTables__search')[0].children[0].value;
+      keyword = '"' + keyword + '"';
       let data = [keyword, notation, label];
 
       let options = getPubMedID();
@@ -337,7 +338,6 @@ export default {
         if (getPubMedID() === null) {
           document.getElementById('exportButton').style.display = 'none';
           document.getElementById('clearButton').style.display = 'none';
-          // document.getElementById('saveButton').style.display = 'none';
         }
         
         let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;
