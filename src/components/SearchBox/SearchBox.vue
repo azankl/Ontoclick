@@ -4,8 +4,8 @@
     <div class="col-sm-7 text-left">
       <img class="logo" src="/static/img/rdf_flyer.png">
       <h3 class="pull-left">ONTOCLICK</h3>
-      <i class="pull-right fas fa-eraser clear-icon hoverer" id="clearButton"></i>
-      <button class="pull-right export-button" id="exportButton">
+      <i class="pull-right hover-action fas fa-eraser clear-icon hoverer" title="Clear All" id="clearButton"></i>
+      <button class="pull-right hover-action export-button" title="Export" id="exportButton">
         <i class="pull-right fas fa-file-download export-icon hoverer"></i>
         <p class="pull-right" id="exportCounter"></p>
       </button>
