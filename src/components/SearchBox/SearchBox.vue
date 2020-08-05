@@ -4,8 +4,11 @@
     <div class="col-sm-7 text-left">
       <img class="logo" src="/static/img/rdf_flyer.png">
       <h3 class="pull-left">ONTOCLICK</h3>
-      <i class="pull-right fa fa-trash" aria-hidden="true" id="clearButton"></i>
-      <i class="pull-right fa fa-download" aria-hidden="true" id="exportButton"></i>
+      <i class="pull-right fas fa-eraser clear-icon" id="clearButton"></i>
+      <button class="pull-right export-button" id="exportButton">
+        <i class="pull-right fas fa-file-download export-icon"></i>
+        <p class="pull-right" id="exportCounter"></p>
+      </button>
     </div>
   </div>
   <v-server-table :url="url" :columns="columns" :options="options">
@@ -21,17 +24,17 @@
       </template>
     <template slot="notation" scope="props" v-if="props.row.notation">
         <span :id='"notation"+props.index' v-if="props.row.notation">{{props.row.notation}}</span>
-        <a class="hover-action fa fa-copy" @click='copyContent("notation"+props.index)'></a>
+        <a class="hover-action far fa-copy" @click='copyContent("notation"+props.index)'></a>
       </template>
     <template slot="prefLabel" scope="props" v-if="props.row.prefLabel">
         <span :id='"prefLabel"+props.index' v-if="props.row.prefLabel">{{props.row.prefLabel}}</span>
-        <a class="hover-action fa fa-copy" @click='copyContent("prefLabel"+props.index)'></a>
+        <a class="hover-action far fa-copy" @click='copyContent("prefLabel"+props.index)'></a>
       </template>
     <template slot="spantext" scope="props">
         <span :id='"spantext"+props.index' v-if="props.row.prefLabel && props.row.notation"></span>
-        <a class="hover-action fa fa-copy" title="Notation + Label" @click='copyContentS(props.row.notation + " " + props.row.prefLabel)' v-if="props.row.notation && props.row.prefLabel"></a>
-        <a class="hover-action fa fa-file-text-o" title="Text span + Notation + Label" @click="doCopy(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
-        <a class="hover-action fa fa-file-excel-o" title="Save to history" @click="storeData(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
+        <a class="hover-action far fa-copy" title="Notation + Label" @click='copyContentS(props.row.notation + " " + props.row.prefLabel)' v-if="props.row.notation && props.row.prefLabel"></a>
+        <a class="hover-action fas fa-highlighter" title="Text span + Notation + Label" @click="doCopy(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
+        <a class="hover-action far fa-save" title="Save to history" @click="storeData(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
       </template>
   </v-server-table>
 </div>
@@ -77,9 +80,9 @@ function changeExportName() {
 
   // SESSION STORAGE (Each tab is seperate from another)
   if (sessionStorage.getItem('storage') === null) {
-    document.getElementById('exportButton').innerText = ' (0)  ';
+    document.getElementById('exportCounter').innerText = ' (0)  ';
   } else {
-    document.getElementById('exportButton').innerText = ' (' + JSON.parse(sessionStorage.getItem('storage')).length + ')  ';
+    document.getElementById('exportCounter').innerText = ' (' + JSON.parse(sessionStorage.getItem('storage')).length + ')  ';
   }
 }
 
@@ -92,8 +95,12 @@ function enterPress() {
 }
 
 function getPubMedID() {
-  return [unescape(document.location.search.match(/id=(.*)\&/)[1]),
-          unescape(document.location.search.match(/href=(.*)/)[1])];
+  try {
+    return [unescape(document.location.search.match(/id=(.*)\&/)[1]),
+            unescape(document.location.search.match(/href=(.*)/)[1])];
+  } catch(e) {
+    return null;
+  }
 }
 
 function getStorage() {
@@ -289,6 +296,11 @@ export default {
         document.getElementById('exportButton').addEventListener('click', downloadCSV);
         changeExportName();
         document.getElementById('clearButton').addEventListener('click', clearStorage);
+
+        if (getPubMedID() === null) {
+          document.getElementById('exportButton').style.display = 'none';
+          document.getElementById('clearButton').style.display = 'none';
+        }
         
         let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;
         enterPress();
@@ -378,6 +390,21 @@ ul.pagination>li>a,
 .logo {
   height: 30px;
   width: 30px;
+}
+
+.clear-icon {
+  display: block;
+}
+
+.export-icon {
+  display: block;
+}
+
+.export-button {
+  padding: 0;
+  padding-right: 10px;
+  border: none;
+  background: none;
 }
 
 </style>

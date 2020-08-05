@@ -9,6 +9,8 @@ import { ServerTable } from 'vue-tables-2';
 import TableOptions from 'components/SearchBox/table/TableOptions';
 import MockSearchResponse from 'components/SearchBox/OntologyData/mock';
 // import VueClipboard from 'vue-clipboard2';
+import '@fortawesome/fontawesome-free/css/all.css';
+import '@fortawesome/fontawesome-free/js/all.js';
 
 Vue.use(VueResource);
 Vue.use(ServerTable, TableOptions, false, require('components/SearchBox/table/TableTemplate.js')('server'));

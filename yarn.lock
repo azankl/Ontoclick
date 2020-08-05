@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@fortawesome/fontawesome-free@^5.14.0":
+  version "5.14.0"
+  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free/-/fontawesome-free-5.14.0.tgz#a371e91029ebf265015e64f81bfbf7d228c9681f"
+  integrity sha512-OfdMsF+ZQgdKHP9jUbmDcRrP0eX90XXrsXIdyjLbkmSBzmMXPABB8eobUJtivaupucYaByz6WNe1PI1JuYm3qA==
+
 "@riophae/vue-treeselect@^0.0.6":
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/@riophae/vue-treeselect/-/vue-treeselect-0.0.6.tgz#bd98b6760d59271070537b4ce20205d6d6746692"
@@ -6296,9 +6301,10 @@ vue-hot-reload-api@^2.0.1:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.2.3.tgz#43c8e5506d65a271d2571936d77253019fd3eb17"
 
-vue-loader@^9.4.0:
+vue-loader@^9.9.5:
   version "9.9.5"
   resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-9.9.5.tgz#0893e3093e90c8fbe852053b2b0f4854a3bf4651"
+  integrity sha1-CJPjCT6QyPvoUgU7Kw9IVKO/RlE=
   dependencies:
     consolidate "^0.14.0"
     hash-sum "^1.0.2"
