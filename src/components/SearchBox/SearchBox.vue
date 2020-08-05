@@ -1,12 +1,12 @@
 <template>
-<div>
+<div >
   <div class="row">
     <div class="col-sm-7 text-left">
       <img class="logo" src="/static/img/rdf_flyer.png">
       <h3 class="pull-left">ONTOCLICK</h3>
-      <i class="pull-right fas fa-eraser clear-icon" id="clearButton"></i>
+      <i class="pull-right fas fa-eraser clear-icon hoverer" id="clearButton"></i>
       <button class="pull-right export-button" id="exportButton">
-        <i class="pull-right fas fa-file-download export-icon"></i>
+        <i class="pull-right fas fa-file-download export-icon hoverer"></i>
         <p class="pull-right" id="exportCounter"></p>
       </button>
     </div>
@@ -405,6 +405,10 @@ ul.pagination>li>a,
   padding-right: 10px;
   border: none;
   background: none;
+}
+  
+i.hoverer:hover {
+  cursor:pointer;
 }
 
 </style>
