@@ -26,7 +26,7 @@
         <span :id='"notation"+props.index' v-if="props.row.notation">{{props.row.notation}}</span>
         <a class="hover-action far fa-copy" @click='copyContent("notation"+props.index)'></a>
       </template>
-    <template slot="prefLabel" scope="props" v-if="props.row.prefLabel && props.row.notation">
+    <template slot="prefLabel" scope="props" v-if="props.row.prefLabel">
         <span :id='"prefLabel"+props.index' v-if="props.row.prefLabel">{{props.row.prefLabel}}</span>
         <a class="hover-action far fa-copy" @click='copyContent("prefLabel"+props.index)'></a>
       </template>
