@@ -1,11 +1,11 @@
 <template>
-<div>
+<div >
   <div class="row">
     <div class="col-sm-7 text-left">
       <img class="logo" src="/static/img/rdf_flyer_32.png">
       <h3 class="pull-left">ONTOCLICK</h3>
-      <button class="pull-right" id="clearButton">clear</button>
-      <button class="pull-right" id="exportButton">export</button>
+      <button class="pull-right fa fa-minus-square-o" style="height:25px" id="clearButton">    clear</button>
+      <button class="pull-right fa fa-download" style="height:25px" id="exportButton">export</button>
     </div>
   </div>
   <v-server-table :url="url" :columns="columns" :options="options">
@@ -77,9 +77,9 @@ function changeExportName() {
 
   // SESSION STORAGE (Each tab is seperate from another)
   if (sessionStorage.getItem('storage') === null) {
-    document.getElementById('exportButton').innerText = 'export (0)';
+    document.getElementById('exportButton').innerText = '   export (0)';
   } else {
-    document.getElementById('exportButton').innerText = 'export (' + JSON.parse(sessionStorage.getItem('storage')).length + ')';
+    document.getElementById('exportButton').innerText = '   export (' + JSON.parse(sessionStorage.getItem('storage')).length + ')';
   }
 }
 
