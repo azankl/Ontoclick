@@ -4,59 +4,48 @@
 
 OntoClick is a Chrome browser extension used by bio researchers to reference ontology class identifiers and preferred labels.
 
-It uses the [NCBO BioPortal REST API](http://bioportal.bioontology.org/) to fulfil search requests.
+It uses the [NCBO BioPortal REST API](http://bioportal.bioontology.org/),[HPO Jax](), [Pryzm Health CR],[Ontology loop up search EBI] and [Neural Concept Recongniser] to fulfil search requests.
 
-OntoClick was prototyped at [Health Hack](https://www.healthhack.com.au/) Sydney Nov 2017 by Dr Andreas Zankl's Team OntoClick and subsequently developed by [LivingryLabs](https://www.livingrylabs.net/).
+OntoClick was prototyped at [Health Hack](https://www.healthhack.com.au/) Sydney Nov 2017 by Dr Andreas Zankl's Team OntoClick and subsequently developed by [LivingryLabs](https://www.livingrylabs.net/). The OntoClick v2.0.1 was improved based on OntoClick prototype by Team Zankl(BINF6111) from UNSW.
 
-## Usage
-
-1. Visit a web page in the Chrome browser
-2. Select any clinical description text e.g. 'bowed femur'
-3. Right click to show browser context menu
-4. Left click OntoClick menu item
-5. Copy desired result to clipboard
-
-## Alpha Limitations
-
-* 'Filter by Ontology' is hard coded to the Human Phenotype Ontology
-* Does not have 'replace' feature
-* Does not have configurable identifier structure e.g. "notation: preferred label"
-* Does not work with custom context menus e.g. Google Sheets
-* Does not have class detail view
 
 ## Build Prerequisites
 
 * [Yarn](https://yarnpkg.com/en/docs/install)
 
-## Install From Source
 
+## Install From Source
 ``` bash
 # install dependencies
-yarn install
-
-# get your BioPortal REST API key from https://bioportal.bioontology.org/account
-open https://bioportal.bioontology.org/account
-
-# add your API key for production builds
-cp api/example.api.json api/prod.api.json
-open api/prod.api.json
+1 . Yarn install
+2 . Npm install
 
 # build for production with minification
 npm run build
 
-# To run but not install, use the load-into-chrome script
-./bin/load-into-chrome
-
 # To install, follow these steps:
-# 1. Start chrome
-# 2. Visit chrome://extensions
-# 3. Click 'Load unpacked extension...'
-# 4. Select the ontoclick/dist/ folder
+Go to chrome:
+1. Visit chrome://extensions
+2. Enable developer options 
+3. Click 'Load unpacked extension...'
+4. Select the ontoclick/dist/ folder
 ```
 
-## Install From Release
+## Future Product Installation
+In the future, a user can install the plugin from the chrome store. Unfortunately, since it is under review by the chrome team, this method of installation is not currently available. 
 
-TODO: Add instructions for installing the extension using a release artefact.
+## User Manual
+1. Visit a web page in the Chrome browser
+2. Three ways to open and search using OntoClick V2
+    a. Select any clinical description text e.g. 'bowed femur'
+       Right click to show browser context menu
+       Left click OntoClick V2 menu item
+    b. Click the OntoClick V2 logo on the toolbar to type down the text directly in the search box.
+    c. Right click anywhere in the browser and click the ontoclick button to search immediately (fastest method for a user input quick search)
+3. Choose the desired ontology term and the search API
+4. Copy desired result by clicking the different copy buttons which includes the copying Notation or label individually, copying Notation and label together,   copying search text, notation and label all together or clicking the save to history button when multiple results are desired to be copied. Clear button refreshes copy history.
+5. Right click to click paste to paste the copy text directly or click the export button to download the csv file which contains the copy history.
+
 
 ## Development Setup
 
