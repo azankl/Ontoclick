@@ -436,7 +436,7 @@ ul.pagination>li>a,
 
 .export-icon {
   display: block;
-  padding-left: 10px;
+  padding-left: 5px;
 }
 
 .save-button {
