@@ -34,7 +34,7 @@
         <span :id='"spantext"+props.index' v-if="props.row.prefLabel && props.row.notation"></span>
         <a class="hover-action far fa-copy" title="Notation + Label" @click='copyContentS(props.row.notation + " " + props.row.prefLabel)' v-if="props.row.notation && props.row.prefLabel"></a>
         <a class="hover-action fas fa-highlighter" title="Text span + Notation + Label" @click="doCopy(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
-        <a class="hover-action far fa-save" title="Save to history" @click="storeData(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
+        <a class="hover-action far fa-save save-button" title="Save to history" @click="storeData(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
       </template>
   </v-server-table>
 </div>
@@ -68,21 +68,21 @@ function copyElementContentS(cps) {
   document.body.removeChild(el);
 }
 
-function changeExportName() {
-  // PERSISTANT STORAGE
-  // chrome.storage.local.get(['storage'], function(storage) {
-  //   if (storage.storage === undefined) {
-  //     document.getElementById('exportButton').innerText = 'export (0)';
-  //   } else {
-  //     document.getElementById('exportButton').innerText = 'export (' + storage.storage.length + ')';
-  //   }
-  // });
+function getStorageLen(data) {
+  let counter = 0;
+  for (var i = 0; i < data.length; i++) {
+    if (Array.isArray(data[i])) {
+      counter++;
+    }
+  }
+  return counter;
+}
 
-  // SESSION STORAGE (Each tab is seperate from another)
-  if (sessionStorage.getItem('storage') === null) {
-    document.getElementById('exportCounter').innerText = ' (0)  ';
-  } else {
-    document.getElementById('exportCounter').innerText = ' (' + JSON.parse(sessionStorage.getItem('storage')).length + ')  ';
+function getPrevID(data) {
+  for (var i = data.length; i >= 0; i--) {
+    if (data[i] && !Array.isArray(data[i]) && (data[i].match(/^PMID: /) || data[i].match(/^http/))) {
+      return data[i];
+    }
   }
 }
 
@@ -100,6 +100,25 @@ function getPubMedID() {
             unescape(document.location.search.match(/href=(.*)/)[1])];
   } catch(e) {
     return null;
+  }
+}
+
+function changeExportName() {
+  // PERSISTANT STORAGE
+  // chrome.storage.local.get(['storage'], function(storage) {
+  //   if (storage.storage === undefined) {
+  //     document.getElementById('exportButton').innerText = 'export (0)';
+  //   } else {
+  //     document.getElementById('exportButton').innerText = 'export (' + storage.storage.length + ')';
+  //   }
+  // });
+
+  // SESSION STORAGE (Each tab is seperate from another)
+  if (sessionStorage.getItem('storage') === null) {
+    document.getElementById('exportCounter').innerText = '0';
+  } else {
+    let len = getStorageLen(JSON.parse(sessionStorage.getItem('storage')));
+    document.getElementById('exportCounter').innerText = len;
   }
 }
 
@@ -149,15 +168,13 @@ function downloadCSV() {
   if (sessionStorage.getItem('storage') !== null) {
     let storage = JSON.parse(sessionStorage.getItem('storage'));
     var csv = '';
-    let options = getPubMedID();
-    if (options[0] !== 'null') {
-      csv += options[0];
-    } else {
-      csv += options[1] + '\n';
-    }
 
     storage.forEach(function(row) {
-      csv += row.join(',');
+      if (Array.isArray(row)) {
+        csv += row.join(',');
+      } else {
+        csv += row;
+      }
       csv += '\n';
     })
 
@@ -267,13 +284,33 @@ export default {
       let keyword = document.getElementsByClassName('VueTables__search')[0].children[0].value;
       let data = [keyword, notation, label];
 
+      let options = getPubMedID();
+      let link;
       // SESSION STORAGE 
       if (sessionStorage.getItem('storage') === null) {
-        sessionStorage.setItem('storage', JSON.stringify([data]));
+        if (options[0] !== 'null') {
+          link = [options[0].replace(/^\s+|\s+$/g, '')];
+        } else {
+          link = [options[1]];
+        }
+        link.push(data);
+        // sessionStorage.setItem('storage', JSON.stringify([data]));
+        sessionStorage.setItem('storage', JSON.stringify(link));
       } else {
         let currentStorage = JSON.parse(sessionStorage.getItem('storage'));
         if (!isArrayInArray(currentStorage, data)) {
-          currentStorage.push(data);
+          let id;
+          if (options[0] !== 'null') {
+            id = options[0].replace(/^\s+|\s+$/g, '');
+          } else {
+            id = options[1];
+          }
+          if (id === getPrevID(currentStorage)) {
+            currentStorage.push(data);
+          } else {
+            currentStorage.push(id);
+            currentStorage.push(data);
+          }
           sessionStorage.setItem('storage', JSON.stringify(currentStorage));
         }
       }
@@ -300,6 +337,7 @@ export default {
         if (getPubMedID() === null) {
           document.getElementById('exportButton').style.display = 'none';
           document.getElementById('clearButton').style.display = 'none';
+          // document.getElementById('saveButton').style.display = 'none';
         }
         
         let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;
@@ -398,11 +436,16 @@ ul.pagination>li>a,
 
 .export-icon {
   display: block;
+  padding-left: 10px;
+}
+
+.save-button {
+  display: inline-block;
 }
 
 .export-button {
   padding: 0;
-  padding-right: 10px;
+  padding-right: 5px;
   border: none;
   background: none;
 }
