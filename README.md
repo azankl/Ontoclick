@@ -50,7 +50,7 @@ Unfortunately, since it is under review by the Chrome team, this method of insta
     2. Click the OntoClick logo on the toolbar to type down the text directly in the search box.
     3. Right click anywhere in the browser and click the Ontoclick button to search immediately (fastest method for a user input quick search)
 3. Choose the desired ontology term and the search API/Concept Recogniser
-4. Copy desired result by clicking the different copy buttons which include copying notation or label individually, copying notation and label together, copying search text, notation, and label all together or clicking the save to history button when multiple results are desired to be copied. Clear button clears copy history.
+4. Copy desired result by clicking the different copy buttons which include copying notation or label individually, copying notation and label together, copying search text, notation, and label all together or clicking the save to history button when multiple results are desired to be exported. Clear button clears copy history.
 5. Right click and click paste to paste the copied text directly or click the export button to download the csv file which contains the copy history.
 
 
