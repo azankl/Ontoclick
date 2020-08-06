@@ -4,11 +4,11 @@
 
 OntoClick is a Chrome browser extension used by bio researchers to reference ontology class identifiers and preferred labels.
 
-It uses the [NCBO BioPortal REST API](http://bioportal.bioontology.org/), [HPO Jax](https://hpo.jax.org/webjars/swagger-ui/3.20.9/index.html?url=/api/hpo/docs/), [Pryzm Health CR](https://track.health/api/), [Ontology Lookup Search EBI](https://www.ebi.ac.uk/ols/docs/api) and [Neural Concept Recongniser](https://ncr.ccm.sickkids.ca/api_doc/) to fulfil search requests.
+It uses the [NCBO BioPortal REST API](http://bioportal.bioontology.org/), [HPO Jax](https://hpo.jax.org/webjars/swagger-ui/3.20.9/index.html?url=/api/hpo/docs/), [Pryzm Health CR](https://track.health/api/), [EBI Ontology Lookup Search](https://www.ebi.ac.uk/ols/docs/api) and [Neural Concept Recongniser](https://ncr.ccm.sickkids.ca/api_doc/) to fulfil search requests.
 
 OntoClick was prototyped at [Health Hack](https://www.healthhack.com.au/) Sydney Nov 2017 by Dr Andreas Zankl's Team OntoClick and subsequently developed by [LivingryLabs](https://www.livingrylabs.net/). 
 
-The OntoClick v2.0.1 was improved based on OntoClick prototype by Team Zankl (BINF6111) from UNSW.
+OntoClick v2.0.1 was improved, based on initial OntoClick prototype, by Team Zankl (BINF6111) from UNSW.
 
 
 ## Build Prerequisites
@@ -19,14 +19,14 @@ The OntoClick v2.0.1 was improved based on OntoClick prototype by Team Zankl (BI
 ## Install From Source
 ``` bash
 # install dependencies
-1 . Yarn install
-2 . Npm install
+1 . yarn install
+2 . npm install
 
 # build for production with minification
 npm run build
 
 # To install, follow these steps:
-Go to chrome:
+Go to Chrome:
 1. Visit chrome://extensions
 2. Enable developer options 
 3. Click 'Load unpacked extension...'
@@ -43,14 +43,14 @@ Unfortunately, since it is under review by the Chrome team, this method of insta
 
 ## User Manual
 1. Visit a web page in the Chrome browser
-2. Three ways to open and search using OntoClick V2
-    a. Highlight any clinical description text or phrase e.g. 'bowed femur', 'Heart defects, especially abnormalities of atrial septation, occur in about 60% of cases'
-       Right click to show browser context menu
-       Left click OntoClick menu item
-    b. Click the OntoClick logo on the toolbar to type down the text directly in the search box.
-    c. Right click anywhere in the browser and click the Ontoclick button to search immediately (fastest method for a user input quick search)
+2. Three ways to open and search using OntoClick V2:
+    1. Highlight any clinical description text or phrase e.g. 'bowed femur', 'Heart defects, especially abnormalities of atrial septation, occur in about 60% of cases', 
+       right click to show browser context menu, and finally, 
+       left click OntoClick menu item
+    2. Click the OntoClick logo on the toolbar to type down the text directly in the search box.
+    3. Right click anywhere in the browser and click the Ontoclick button to search immediately (fastest method for a user input quick search)
 3. Choose the desired ontology term and the search API/Concept Recogniser
-4. Copy desired result by clicking the different copy buttons which include copying notation or label individually, copying notation and label together, copying search text, notation, and label all together or clicking the save to history button when multiple results are desired to be copied. Clear button refreshes copy history.
+4. Copy desired result by clicking the different copy buttons which include copying notation or label individually, copying notation and label together, copying search text, notation, and label all together or clicking the save to history button when multiple results are desired to be copied. Clear button clears copy history.
 5. Right click and click paste to paste the copied text directly or click the export button to download the csv file which contains the copy history.
 
 
