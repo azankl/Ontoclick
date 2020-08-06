@@ -4,7 +4,7 @@
 
 OntoClick is a Chrome browser extension used by bio researchers to reference ontology class identifiers and preferred labels.
 
-It uses the [NCBO BioPortal REST API](http://bioportal.bioontology.org/),[HPO Jax](https://hpo.jax.org/webjars/swagger-ui/3.20.9/index.html?url=/api/hpo/docs/), [Pryzm Health CR](https://track.health/api/), [Ontology Lookup Search EBI](https://www.ebi.ac.uk/ols/docs/api) and [Neural Concept Recongniser](https://ncr.ccm.sickkids.ca/api_doc/) to fulfil search requests.
+It uses the [NCBO BioPortal REST API](http://bioportal.bioontology.org/), [HPO Jax](https://hpo.jax.org/webjars/swagger-ui/3.20.9/index.html?url=/api/hpo/docs/), [Pryzm Health CR](https://track.health/api/), [Ontology Lookup Search EBI](https://www.ebi.ac.uk/ols/docs/api) and [Neural Concept Recongniser](https://ncr.ccm.sickkids.ca/api_doc/) to fulfil search requests.
 
 OntoClick was prototyped at [Health Hack](https://www.healthhack.com.au/) Sydney Nov 2017 by Dr Andreas Zankl's Team OntoClick and subsequently developed by [LivingryLabs](https://www.livingrylabs.net/). 
 
@@ -39,19 +39,19 @@ In the future, users can install the plugin from the chrome store by following s
 2. Click ‘Add to Chrome’
 3. Click ‘Add extension’ on the pop up window 
 
-Unfortunately, since it is under review by the chrome team, this method of installation is not currently available.
+Unfortunately, since it is under review by the Chrome team, this method of installation is not currently available.
 
 ## User Manual
 1. Visit a web page in the Chrome browser
 2. Three ways to open and search using OntoClick V2
-    a. Select any clinical description text e.g. 'bowed femur'
+    a. Highlight any clinical description text or phrase e.g. 'bowed femur', 'Heart defects, especially abnormalities of atrial septation, occur in about 60% of cases'
        Right click to show browser context menu
-       Left click OntoClick V2 menu item
-    b. Click the OntoClick V2 logo on the toolbar to type down the text directly in the search box.
-    c. Right click anywhere in the browser and click the ontoclick button to search immediately (fastest method for a user input quick search)
-3. Choose the desired ontology term and the search API
-4. Copy desired result by clicking the different copy buttons which includes the copying Notation or label individually, copying Notation and label together,   copying search text, notation and label all together or clicking the save to history button when multiple results are desired to be copied. Clear button refreshes copy history.
-5. Right click to click paste to paste the copy text directly or click the export button to download the csv file which contains the copy history.
+       Left click OntoClick menu item
+    b. Click the OntoClick logo on the toolbar to type down the text directly in the search box.
+    c. Right click anywhere in the browser and click the Ontoclick button to search immediately (fastest method for a user input quick search)
+3. Choose the desired ontology term and the search API/Concept Recogniser
+4. Copy desired result by clicking the different copy buttons which include copying notation or label individually, copying notation and label together, copying search text, notation, and label all together or clicking the save to history button when multiple results are desired to be copied. Clear button refreshes copy history.
+5. Right click and click paste to paste the copied text directly or click the export button to download the csv file which contains the copy history.
 
 
 ## Development Setup
