@@ -4,11 +4,11 @@
 
 OntoClick is a Chrome browser extension used by bio researchers to reference ontology class identifiers and preferred labels.
 
-It uses the [NCBO BioPortal REST API](http://bioportal.bioontology.org/),[HPO Jax](), [Pryzm Health CR],[Ontology loop up search EBI] and [Neural Concept Recongniser] to fulfil search requests.
+It uses the [NCBO BioPortal REST API](http://bioportal.bioontology.org/),[HPO Jax](https://hpo.jax.org/webjars/swagger-ui/3.20.9/index.html?url=/api/hpo/docs/), [Pryzm Health CR](https://track.health/api/), [Ontology Lookup Search EBI](https://www.ebi.ac.uk/ols/docs/api) and [Neural Concept Recongniser](https://ncr.ccm.sickkids.ca/api_doc/) to fulfil search requests.
 
 OntoClick was prototyped at [Health Hack](https://www.healthhack.com.au/) Sydney Nov 2017 by Dr Andreas Zankl's Team OntoClick and subsequently developed by [LivingryLabs](https://www.livingrylabs.net/). 
 
-The OntoClick v2.0.1 was improved based on OntoClick prototype by Team Zankl(BINF6111) from UNSW.
+The OntoClick v2.0.1 was improved based on OntoClick prototype by Team Zankl (BINF6111) from UNSW.
 
 
 ## Build Prerequisites
