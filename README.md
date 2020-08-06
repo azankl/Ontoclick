@@ -38,7 +38,8 @@ In the future, users can install the plugin from the chrome store by following s
 1. Search for OntoClick in chrome store
 2. Click ‘Add to Chrome’
 3. Click ‘Add extension’ on the pop up window 
-(Unfortunately, since it is under review by the chrome team, this method of installation is not currently available.)
+
+Unfortunately, since it is under review by the chrome team, this method of installation is not currently available.
 
 ## User Manual
 1. Visit a web page in the Chrome browser
