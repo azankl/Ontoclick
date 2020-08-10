@@ -14,6 +14,7 @@ OntoClick v2.0.1 was improved, based on initial OntoClick prototype, by Team Zan
 ## Build Prerequisites
 
 * [Yarn](https://yarnpkg.com/en/docs/install)
+* [npm](https://docs.npmjs.com)
 
 
 ## Install From Source
