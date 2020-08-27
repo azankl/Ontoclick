@@ -20,7 +20,6 @@ OntoClick v2.0.1 was improved, based on initial OntoClick prototype, by Team Zan
 ``` bash
 # install dependencies
 1. yarn install
-2. npm install
 
 # build for production with minification
 npm run build
