@@ -19,10 +19,10 @@ OntoClick v2.0.1 was improved, based on initial OntoClick prototype, by Team Zan
 ## Install From Source
 ``` bash
 # install dependencies
-1. yarn install
+yarn install
 
 # build for production with minification
-npm run build
+yarn run build
 
 # To install, follow these steps:
 Go to Chrome:
@@ -71,17 +71,17 @@ cp api/example.api.json api/prod.api.json
 open api/prod.api.json
 
 # serve with hot reload at localhost:8080
-npm run dev
+yarn run dev
 
 # build for production with minification
-npm run build
+yarn run build
 
 # run unit tests
-npm run unit
+yarn run unit
 
 # run e2e tests
-npm run e2e
+yarn run e2e
 
 # run all tests
-npm test
+yarn test
 ```
