@@ -47,5 +47,6 @@
       "static/css/loader.css",
       "static/css/loader.css.map"
     ]
-  }]
+  }],
+  "content_security_policy": "script-src 'self' https://use.fontawesome.com/releases/v5.14.0/js/all.js; object-src 'self'"
 }
