@@ -34,7 +34,7 @@
         <span :id='"spantext"+props.index' v-if="props.row.prefLabel && props.row.notation"></span>
         <a class="hover-action far fa-copy" title="Notation + Label" @click='copyContentS(props.row.notation + " " + props.row.prefLabel)' v-if="props.row.notation && props.row.prefLabel"></a>
         <a class="hover-action fas fa-highlighter" title="Text span + Notation + Label" @click="doCopy(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
-        <a class="hover-action far fa-save save-button" title="Save to history" @click="storeData(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
+        <a class="hover-action far fa-save save-button" title="Save to history" @click="storeData(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel && link"></a>
       </template>
   </v-server-table>
 </div>
@@ -99,6 +99,7 @@ function getPubMedID() {
     return [unescape(document.location.search.match(/id=(.*)\&/)[1]),
             unescape(document.location.search.match(/href=(.*)/)[1])];
   } catch(e) {
+    console.log("here");
     return null;
   }
 }
@@ -206,6 +207,11 @@ export default {
     // let ontology = document.location.search.match(/ontology=(.*)/)
     query = query ? unescape(query[1]) : undefined
     // ontology = ontology ? unescape(ontology[1]) : undefined
+    let pid = getPubMedID();
+    let link = true;
+    if (pid === null) {
+      link = false;
+    }
     return {
       loading: true,
       url: 'https://google.com', // Not required
@@ -230,6 +236,7 @@ export default {
       ontologyOptions: ontologies,
       results: [],
       request: null,
+      link: link,
       conceptrecogniserValue: 'ncbos',
       conceptrecogniserOptions: [{
         id: 'ncbos',
@@ -295,7 +302,6 @@ export default {
           link = [options[1]];
         }
         link.push(data);
-        // sessionStorage.setItem('storage', JSON.stringify([data]));
         sessionStorage.setItem('storage', JSON.stringify(link));
       } else {
         let currentStorage = JSON.parse(sessionStorage.getItem('storage'));
@@ -334,10 +340,13 @@ export default {
         document.getElementById('exportButton').addEventListener('click', downloadCSV);
         changeExportName();
         document.getElementById('clearButton').addEventListener('click', clearStorage);
-
         if (getPubMedID() === null) {
           document.getElementById('exportButton').style.display = 'none';
           document.getElementById('clearButton').style.display = 'none';
+          var all = document.getElementsByClassName('save-button');
+          for (var i = 0; i < all.length; i++) {
+            all[i].style.display = 'none';
+          }
         }
         
         let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;

@@ -12,7 +12,7 @@
     "128": "static/img/rdf_flyer.png"
   },
   "browser_action": {
-    "default_title": "ontoclick",
+    "default_title": "Ontoclick",
     "default_popup": "index.html"
   },
   "web_accessible_resources": [
