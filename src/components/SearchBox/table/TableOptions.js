@@ -263,11 +263,17 @@ export default {
           count: response.data.data.length
         }
       } else if (api == 3) {
+        let count;
+        if (response.data.terms.length >= 10) {
+          count = 1;
+        } else {
+          count = response.data.terms.length;
+        }
         return {
           data: response.data.terms,
           // API only returns top 10 results, all results are returned on one single page
-          // Let count be 1 to let user think there are more result pages
-          count: 1
+          // Let count be 1 to let user think there are no more result pages
+          count: count
         }
       } else if (api == 4) {
         return {
@@ -275,11 +281,17 @@ export default {
           count: response.data.response.numFound
         }
       } else if (api == 5) {
+        let count;
+        if (response.data.matches.length >= 10) {
+          count = 1;
+        } else {
+          count = response.data.matches.length;
+        }
         return {
           data: response.data.matches,
           // API only returns top 10 results, all results are returned on one single page
-          // Let count be 1 to let user think there are more result pages
-          count: 1
+          // Let count be 1 to let user think there are no more result pages
+          count: count
         }
       } else {
         return {
