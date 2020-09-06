@@ -52,6 +52,10 @@ Unfortunately, since it is under review by the Chrome team, this method of insta
 4. Copy desired result by clicking the different copy buttons which include copying notation or label individually, copying notation and label together, copying search text, notation, and label all together or clicking the save to history button when multiple results are desired to be exported. Clear button clears copy history.
 5. Right click and click paste to paste the copied text directly or click the export button to download the csv file which contains the copy history.
 
+## Known Limitations
+
+- Cannot choose a different concept recogniser as a default option, always reverts back to NCBO Bioportal Search
+
 
 ## Development Setup
 
