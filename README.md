@@ -56,6 +56,10 @@ Unfortunately, since it is under review by the Chrome team, this method of insta
 
 - Cannot choose a different concept recogniser as a default option, always reverts back to NCBO Bioportal Search
 
+## Install using automated build
+
+WIP
+
 
 ## Development Setup
 
