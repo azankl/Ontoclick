@@ -34,4 +34,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Ontoclick
-          path: /azankl/Ontoclick/dist
+          path: /azankl/Ontoclick/Release/
