@@ -99,7 +99,6 @@ function getPubMedID() {
     return [unescape(document.location.search.match(/id=(.*)\&/)[1]),
             unescape(document.location.search.match(/href=(.*)/)[1])];
   } catch(e) {
-    console.log("here");
     return null;
   }
 }
@@ -347,6 +346,9 @@ export default {
           for (var i = 0; i < all.length; i++) {
             all[i].style.display = 'none';
           }
+          let app = document.getElementById('app');
+          app.style.width = '700px';
+          app.style.height = '500px';
         }
         
         let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;
