@@ -1,24 +1,33 @@
-# OntoClick v2.0.1
+# OntoClick
 
-> Turn your clinical description into a proper ontology term.
+![build](https://github.com/azankl/Ontoclick/workflows/CI/badge.svg)
 
-![CI](https://github.com/azankl/Ontoclick/workflows/CI/badge.svg)
+#### Turn a free text description into a proper ontology term with just one click.
+#### Overview
 
-OntoClick is a Chrome browser extension used by bio researchers to reference ontology class identifiers and preferred labels.
+OntoClick is a Chrome browser extension that lets the user hightlight a piece of text and then tries to find a matching Ontology term for it. 
 
-It uses the [NCBO BioPortal REST API](http://bioportal.bioontology.org/), [HPO Jax](https://hpo.jax.org/webjars/swagger-ui/3.20.9/index.html?url=/api/hpo/docs/), [Pryzm Health CR](https://track.health/api/), [EBI Ontology Lookup Search](https://www.ebi.ac.uk/ols/docs/api) and [Neural Concept Recongniser](https://ncr.ccm.sickkids.ca/api_doc/) to fulfil search requests.
+Ontoclick currently supports matching terms to the [Human Phenotype Ontology](https://hpo.jax.org/app/), [Gene Ontology](http://geneontology.org), [Mondo Disease Ontology](https://mondo.monarchinitiative.org), [Orphanet Rare Disease Ontology](http://www.orphadata.org/cgi-bin/index.php#ontologies) and [Human Disease Ontology](https://disease-ontology.org).
 
-OntoClick was prototyped at [Health Hack](https://www.healthhack.com.au/) Sydney Nov 2017 by Dr Andreas Zankl's Team OntoClick and subsequently developed by [LivingryLabs](https://www.livingrylabs.net/).
+Ontoclick uses the [NCBO BioPortal Search API](http://data.bioontology.org/documentation#nav_search) to find a matching ontology term, but searches can also be performed with the [NCBO BioPortal Annotator API](http://data.bioontology.org/documentation#nav_annotator), the [EBI Ontology Lookup Service Search API](https://www.ebi.ac.uk/ols/docs/api), the [HPO Search API](https://hpo.jax.org/webjars/swagger-ui/3.20.9/index.html?url=/api/hpo/docs/), the [Pryzm Health Concept Recogniser](https://track.health/api/), and the [SickKids Neural Concept Recogniser](https://ncr.ccm.sickkids.ca/api_doc/)  (the latter three only support searching the Human Phenotype Ontology).
 
-OntoClick v2.0.1 was improved, based on initial OntoClick prototype, by Team Zankl (BINF6111) from UNSW.
+The search results can be copied to the clipboard or saved to a list that can be exported in .CSV format.
 
 
-## Build Prerequisites
+
+#### Acknowledgements
+
+OntoClick was born at [Health Hack Sydney](https://speakerdeck.com/azankl/ontoclick-pitch-healthhack-2017) in November 2017. Many thanks to Team Ontoclick, in particular  Graham Towse from [LivingryLabs](https://www.livingrylabs.net/) for developing the first prototype. The current version was built by Anthony Xu, Yifei (Frank) Luo, Aravind Venkateswaran, and Lianguizi (Alisa) Zhou, bioinformatics students at the University of New South Wales, as part of their BINF6111 engineering project.
+
+
+
+
+### Build Prerequisites
 
 * [Yarn](https://yarnpkg.com/en/docs/install)
 
 
-## Install From Source
+### Install From Source
 ``` bash
 # install dependencies
 yarn install
