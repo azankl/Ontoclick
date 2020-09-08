@@ -1,7 +1,7 @@
 {
   "name": "OntoClick",
-  "version": "0.0.1",
-  "description": "Turn your clinical description into a proper ontology term.",
+  "version": "1.0.0",
+  "description": "Turn a free text description into a proper ontology term.",
   "author": "grimbonious <grimbonious@hey.computer>",
   "license": "GPL-3.0",
   "private": true,
