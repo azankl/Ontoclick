@@ -1,7 +1,7 @@
 import style from './css/loader.css'
 import Popper from 'popper.js'
 
-// Store URL location of kwebsite the user it highlighting text from
+// Store URL location of website the user is highlighting text from
 var location = window.location.href;
 var url = location.split('/');
 var id = 'PMID: ';

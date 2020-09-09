@@ -6,7 +6,7 @@
     "scripts": ["static/js/background.js"]
   },
   "manifest_version": 2,
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://use.fontawesome.com/releases/v5.14.0/js/all.js; object-src 'self'",
   "icons": {
     "16": "static/img/rdf_flyer.png",
     "128": "static/img/rdf_flyer.png"
@@ -26,17 +26,9 @@
   ],
   "permissions": [
     "contextMenus",
-    "activeTab",
-    "clipboardRead",
     "clipboardWrite",
-    "cookies",
-    "webRequest",
-    "webRequestBlocking",
-    "http://data.bioontology.org/*",
-    "https://data.bioontology.org/*",
     "http://*/*",
-    "https://*/*",
-    "storage"
+    "https://*/*"
   ],
   "content_scripts": [{
     "matches": [
@@ -47,6 +39,5 @@
       "static/css/loader.css",
       "static/css/loader.css.map"
     ]
-  }],
-  "content_security_policy": "script-src 'self' https://use.fontawesome.com/releases/v5.14.0/js/all.js; object-src 'self'"
+  }]
 }
