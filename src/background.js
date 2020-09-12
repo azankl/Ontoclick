@@ -20,11 +20,12 @@ chrome.runtime.onStartup.addListener(function() {
   });
 });
 
-
-
 chrome.contextMenus.onClicked.addListener(function(item, tab) {
   chrome.tabs.executeScript({
-    file: 'static/js/loader.js'
+    code: 'var currentTab = ' + JSON.stringify(tab)
+  }, function() {
+      chrome.tabs.executeScript({
+        file: 'static/js/loader.js'
+      })
   });
-
 });
