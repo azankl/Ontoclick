@@ -2,7 +2,7 @@ import style from './css/loader.css'
 import Popper from 'popper.js'
 
 // Store URL location of website the user is highlighting text from
-var location = window.location.href;
+var location = currentTab.url;
 var url = location.split('/');
 var id = 'PMID: ';
 // Only grab the PubMed ID when on the two websites

@@ -27,8 +27,7 @@
   "permissions": [
     "contextMenus",
     "clipboardWrite",
-    "http://*/*",
-    "https://*/*"
+    "activeTab"
   ],
   "content_scripts": [{
     "matches": [
