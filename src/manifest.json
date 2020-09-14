@@ -28,15 +28,5 @@
     "contextMenus",
     "clipboardWrite",
     "activeTab"
-  ],
-  "content_scripts": [{
-    "matches": [
-      "http://*/*",
-      "https://*/*"
-    ],
-    "css": [
-      "static/css/loader.css",
-      "static/css/loader.css.map"
-    ]
-  }]
+  ]
 }
