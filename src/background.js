@@ -21,7 +21,9 @@ chrome.runtime.onStartup.addListener(function() {
 });
 
 chrome.contextMenus.onClicked.addListener(function(item, tab) {
-  chrome.tabs.executeScript({
+  chrome.tabs.insertCSS({
+    file: 'static/css/loader.css'
+  }), chrome.tabs.executeScript({
     code: 'var currentTab = ' + JSON.stringify(tab)
   }, function() {
       chrome.tabs.executeScript({
