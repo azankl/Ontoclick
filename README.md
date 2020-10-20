@@ -19,7 +19,7 @@ OntoClick was born at [Health Hack Sydney](https://speakerdeck.com/azankl/ontocl
 
 ### Install from Chrome Store
 
-We will update this page when Ontoclick is available on the Chrome Store.
+Ontoclick is available on the Chrome Store [here](https://chrome.google.com/webstore/detail/ontoclick/nepbilmonlfaigoeldkbimkeihligbgf).
 
 ### How to Use the Extension
 
