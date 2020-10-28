@@ -7,7 +7,7 @@ module.exports = {
   NCBO_KEY: JSON.stringify(API.ncbo_key),
   JAX: '"https://hpo.jax.org/api/hpo/search/"',
   EBI: '"https://www.ebi.ac.uk/ols/api/search"',
-  NEURAL: '"https://ncr.ccm.sickkids.ca/curr/match/"',
-  PRYZM: '"https://knowledge.pryzm.health/api/cr/v1/annotate?apiKey="',
+  NEURAL: '"https://cors-anywhere.herokuapp.com/https://ncr.ccm.sickkids.ca/curr/match/"',
+  PRYZM: '"https://cors-anywhere.herokuapp.com/https://knowledge.pryzm.health/api/cr/v1/annotate?apiKey="',
   PRYZM_KEY: JSON.stringify(API.pryzm_key)
 }
