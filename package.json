@@ -1,6 +1,6 @@
 {
   "name": "OntoClick",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Turn a free text description into a proper ontology term.",
   "author": "grimbonious <grimbonious@hey.computer>",
   "license": "GPL-3.0",
