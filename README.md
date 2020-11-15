@@ -5,7 +5,7 @@
 #### Turn a free text description into a proper ontology term with just one click.
 ### Overview
 
-OntoClick is a Chrome browser extension that lets the user hightlight a piece of text and then tries to find a matching Ontology term for it.
+OntoClick is a Chrome browser extension that lets the user highlight a piece of text and then tries to find a matching Ontology term for it.
 
 Ontoclick currently supports matching terms to the [Human Phenotype Ontology](https://hpo.jax.org/app/), [Gene Ontology](http://geneontology.org), [Mondo Disease Ontology](https://mondo.monarchinitiative.org), [Orphanet Rare Disease Ontology](http://www.orphadata.org/cgi-bin/index.php#ontologies) and [Human Disease Ontology](https://disease-ontology.org).
 
