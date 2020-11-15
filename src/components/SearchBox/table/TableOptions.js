@@ -90,7 +90,7 @@ export default {
     page: 'page'
   },
   headings: {
-    notation: 'Notation',
+    notation: 'Identifier',
     prefLabel: 'Label',
     spantext: 'Actions'
   },
