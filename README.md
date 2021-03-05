@@ -15,7 +15,7 @@ The search results can be copied to the clipboard or saved to a list that can be
 
 ### Acknowledgements
 
-Ontoclick was born at [Health Hack Sydney](https://speakerdeck.com/azankl/ontoclick-pitch-healthhack-2017) in November 2017. Many thanks to Team Ontoclick, in particular Graham Towse from [LivingryLabs](https://www.livingrylabs.net/) for developing the first prototype. That prototype was further improved with the help of Anthony Xu, Yifei (Frank) Luo, Aravind Venkateswaran, and Lianguizi (Alisa) Zhou, bioinformatics students at the University of New South Wales, as part of their BINF6111 engineering project.
+Ontoclick was born at [Health Hack Sydney](https://speakerdeck.com/azankl/ontoclick-pitch-healthhack-2017) in November 2017. Many thanks to Team Ontoclick, in particular Graham Towse from [LivingryLabs](https://www.livingrylabs.net/) for developing the first prototype. Many thanks to Anthony Xu, Yifei (Frank) Luo, Aravind Venkateswaran, and Lianguizi (Alisa) Zhou, for further improving this prototype.
 
 ### Install from Chrome Store
 
