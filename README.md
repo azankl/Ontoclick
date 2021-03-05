@@ -1,11 +1,11 @@
-# OntoClick
+# Ontoclick
 
 ![build](https://github.com/azankl/Ontoclick/workflows/build/badge.svg)
 
 #### Turn a free text description into a proper ontology term with just one click.
 ### Overview
 
-OntoClick is a Chrome browser extension that lets the user highlight a piece of text and then tries to find a matching Ontology term for it.
+Ontoclick is a Chrome browser extension that lets the user highlight a piece of text and then tries to find a matching Ontology term for it.
 
 Ontoclick currently supports matching terms to the [Human Phenotype Ontology](https://hpo.jax.org/app/), [Gene Ontology](http://geneontology.org), [Mondo Disease Ontology](https://mondo.monarchinitiative.org), [Orphanet Rare Disease Ontology](http://www.orphadata.org/cgi-bin/index.php#ontologies) and [Human Disease Ontology](https://disease-ontology.org).
 
@@ -15,7 +15,7 @@ The search results can be copied to the clipboard or saved to a list that can be
 
 ### Acknowledgements
 
-OntoClick was born at [Health Hack Sydney](https://speakerdeck.com/azankl/ontoclick-pitch-healthhack-2017) in November 2017. Many thanks to Team Ontoclick, in particular Graham Towse from [LivingryLabs](https://www.livingrylabs.net/) for developing the first prototype. That prototype was further improved with the help of Anthony Xu, Yifei (Frank) Luo, Aravind Venkateswaran, and Lianguizi (Alisa) Zhou, bioinformatics students at the University of New South Wales, as part of their BINF6111 engineering project.
+Ontoclick was born at [Health Hack Sydney](https://speakerdeck.com/azankl/ontoclick-pitch-healthhack-2017) in November 2017. Many thanks to Team Ontoclick, in particular Graham Towse from [LivingryLabs](https://www.livingrylabs.net/) for developing the first prototype. That prototype was further improved with the help of Anthony Xu, Yifei (Frank) Luo, Aravind Venkateswaran, and Lianguizi (Alisa) Zhou, bioinformatics students at the University of New South Wales, as part of their BINF6111 engineering project.
 
 ### Install from Chrome Store
 
