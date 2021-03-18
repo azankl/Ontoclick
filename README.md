@@ -13,6 +13,11 @@ Ontoclick uses the [NCBO BioPortal Search API](http://data.bioontology.org/docum
 
 The search results can be copied to the clipboard or saved to a list that can be exported in .CSV format.
 
+### Publication
+
+Ontoclick: a Chrome web browser extension to facilitate biomedical knowledge curation
+[https://www.biorxiv.org/content/10.1101/2021.03.04.433993v1](https://www.biorxiv.org/content/10.1101/2021.03.04.433993v1)
+
 ### Acknowledgements
 
 Ontoclick was born at [Health Hack Sydney](https://speakerdeck.com/azankl/ontoclick-pitch-healthhack-2017) in November 2017. Many thanks to Team Ontoclick, in particular Graham Towse from [LivingryLabs](https://www.livingrylabs.net/) for developing the first prototype. Many thanks to Anthony Xu, Yifei (Frank) Luo, Aravind Venkateswaran, and Lianguizi (Alisa) Zhou, for further improving this prototype.
