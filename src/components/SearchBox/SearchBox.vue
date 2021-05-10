@@ -243,19 +243,19 @@ export default {
       }, {
         id: 'ncboa',
         label: 'NCBO Bioportal Annotator',
-      },{
+      },/*{
         id: 'pryzm',
         label: 'Pryzm Health CR'
-      }, {
+      },*/ {
         id: 'ebi',
         label: 'Ontology Lookup Search EBI'
       }, {
         id: 'jax',
         label: 'HPO Jax',
-      }, {
+      },/* {
         id: 'neural',
         label: 'Neural Concept Recogniser',
-      }]
+      }*/]
     }
   },
   methods: {

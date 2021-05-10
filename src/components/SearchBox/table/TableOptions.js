@@ -28,10 +28,10 @@ import axios from 'axios';
 const recogDict = {
   'NCBO Bioportal Search': 0,
   'NCBO Bioportal Annotator': 1,
-  'Pryzm Health CR': 2,
+  // 'Pryzm Health CR': 2,
   'HPO Jax': 3,
   'Ontology Lookup Search EBI': 4,
-  'Neural Concept Recogniser': 5,
+  // 'Neural Concept Recogniser': 5,
   
 };
 
@@ -148,10 +148,10 @@ export default {
       }
     ];
 
-    const pryzm = [
-      process.env.PRYZM + process.env.PRYZM_KEY,
-      data.q
-    ]
+    // const pryzm = [
+    //   process.env.PRYZM + process.env.PRYZM_KEY,
+    //   data.q
+    // ]
 
     // Change the URL and parameters depending on the Concept Recogniser selected
     let apiURL, apiParam;
@@ -172,37 +172,37 @@ export default {
         apiURL = ebi[0];
         apiParam = ebi[1];
         break;
-      case 5:
-        apiURL = neural[0];
-        apiParam = neural[1];
-        break;
+      // case 5:
+      //   apiURL = neural[0];
+      //   apiParam = neural[1];
+      //   break;
       default:
         apiURL = null;
         apiParam = null;
     };
 
     // Seperate from the other returns as Pryzm requires a POST request instead of GET request
-    if (api == 2) {
-      return axios.post(pryzm[0], {
-        payload: pryzm[1]
-      }).then((res) => {
-        for (var i = 0; i < res.data.data.length; i++) {
-          // Switch return object's keys to align with display rows in SearchBox.vue
-          res.data.data[i].notation = res.data.data[i].term.curie;
-          res.data.data[i].prefLabel = res.data.data[i].term.label;
-          res.data.data[i].definition = [];
-          res.data.data[i].definition.push(res.data.data[i].term.metadata.metadata.DEFINITION);
-          let arr = [];
-          for (var j = 0; j < res.data.data[i].term.synonyms.length; j++) {
-              arr.push(res.data.data[i].term.synonyms[j].synonym)
-          }
-          res.data.data[i].synonym = arr;
-        }
-        return res;
-      }).catch((err) => {
-        return null
-      })
-    }
+    // if (api == 2) {
+    //   return axios.post(pryzm[0], {
+    //     payload: pryzm[1]
+    //   }).then((res) => {
+    //     for (var i = 0; i < res.data.data.length; i++) {
+    //       // Switch return object's keys to align with display rows in SearchBox.vue
+    //       res.data.data[i].notation = res.data.data[i].term.curie;
+    //       res.data.data[i].prefLabel = res.data.data[i].term.label;
+    //       res.data.data[i].definition = [];
+    //       res.data.data[i].definition.push(res.data.data[i].term.metadata.metadata.DEFINITION);
+    //       let arr = [];
+    //       for (var j = 0; j < res.data.data[i].term.synonyms.length; j++) {
+    //           arr.push(res.data.data[i].term.synonyms[j].synonym)
+    //       }
+    //       res.data.data[i].synonym = arr;
+    //     }
+    //     return res;
+    //   }).catch((err) => {
+    //     return null
+    //   })
+    // }
 
     return axios.get(apiURL, {
       params: apiParam
@@ -228,15 +228,15 @@ export default {
         res.data.response.docs = keyLoop(res.data.response.docs, 'label', 'prefLabel');
         res.data.response.docs = keyLoop(res.data.response.docs, 'description', 'definition');
         return res;
-      } else if (api == 5) {
-        res.data.matches = keyLoop(res.data.matches, 'hp_id', 'notation');
-        var i;
-        for (i = 0; i < res.data.matches.length; i++) {
-          res.data.matches[i].prefLabel = res.data.matches[i].names[0];
-          res.data.matches[i].names.shift();
-        }
-        res.data.matches = keyLoop(res.data.matches, 'names', 'synonym');
-        return res;
+      // } else if (api == 5) {
+      //   res.data.matches = keyLoop(res.data.matches, 'hp_id', 'notation');
+      //   var i;
+      //   for (i = 0; i < res.data.matches.length; i++) {
+      //     res.data.matches[i].prefLabel = res.data.matches[i].names[0];
+      //     res.data.matches[i].names.shift();
+      //   }
+      //   res.data.matches = keyLoop(res.data.matches, 'names', 'synonym');
+      //   return res;
       } else {
         return null;
       }
@@ -257,11 +257,11 @@ export default {
           data: response.data,
           count: response.data.length
         }
-      } else if (api == 2) {
-        return {
-          data: response.data.data,
-          count: response.data.data.length
-        }
+      // } else if (api == 2) {
+      //   return {
+      //     data: response.data.data,
+      //     count: response.data.data.length
+      //   }
       } else if (api == 3) {
         let count;
         if (response.data.terms.length >= 10) {
@@ -280,19 +280,19 @@ export default {
           data: response.data.response.docs,
           count: response.data.response.numFound
         }
-      } else if (api == 5) {
-        let count;
-        if (response.data.matches.length >= 10) {
-          count = 1;
-        } else {
-          count = response.data.matches.length;
-        }
-        return {
-          data: response.data.matches,
-          // API only returns top 10 results, all results are returned on one single page
-          // Let count be 1 to let user think there are no more result pages
-          count: count
-        }
+      // } else if (api == 5) {
+      //     let count;
+      //     if (response.data.matches.length >= 10) {
+      //       count = 1;
+      //     } else {
+      //       count = response.data.matches.length;
+      //     }
+      //   return {
+      //     data: response.data.matches,
+      //     // API only returns top 10 results, all results are returned on one single page
+      //     // Let count be 1 to let user think there are no more result pages
+      //     count: count
+      //   }
       } else {
         return {
           data: [],
