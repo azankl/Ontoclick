@@ -39,7 +39,7 @@
   </v-server-table>
 </div>
 </template>
-    
+
 <script>
 import Treeselect from '@riophae/vue-treeselect'
 // import {
@@ -155,7 +155,7 @@ function downloadCSV() {
     //   res.storage.forEach(function(row) {
     //     csv += row.join(',');
     //     csv += '\n';
-    //   }); 
+    //   });
     //   // console.log(csv);
     //   var hiddenElement = document.createElement('a');
     //   hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
@@ -236,7 +236,7 @@ export default {
       results: [],
       request: null,
       link: link,
-      conceptrecogniserValue: 'ncbos',
+      conceptrecogniserValue: 'ebi',
       conceptrecogniserOptions: [{
         id: 'ncbos',
         label: 'NCBO Bioportal Search',
@@ -293,7 +293,7 @@ export default {
 
       let options = getPubMedID();
       let link;
-      // SESSION STORAGE 
+      // SESSION STORAGE
       if (sessionStorage.getItem('storage') === null) {
         if (options[0] !== 'null') {
           link = [options[0].replace(/^\s+|\s+$/g, '')];
@@ -350,7 +350,7 @@ export default {
           app.style.width = '700px';
           app.style.height = '500px';
         }
-        
+
         let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;
         enterPress();
       } catch(err) {
@@ -460,7 +460,7 @@ ul.pagination>li>a,
   border: none;
   background: none;
 }
-  
+
 i.hoverer:hover {
   cursor:pointer;
 }

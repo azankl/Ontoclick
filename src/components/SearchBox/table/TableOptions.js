@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// NCBO Search = 0 
+// NCBO Search = 0
 // NCBO Annotator = 1
 //      data : response.data.collection
 //      count : response.data.totalCount
@@ -12,7 +12,7 @@ import axios from 'axios';
 // JAX = 3
 //     data : response.data.terms
 //     count : response.data.termsTotalCount
-// https://hpo.jax.org/api/hpo/docs/ 
+// https://hpo.jax.org/api/hpo/docs/
 
 // OLS EBI = 4
 //     data : response.data.
@@ -21,7 +21,7 @@ import axios from 'axios';
 
 // Neural Concept Recogniser = 5
 //     data: response.data.
-//     count: response.data. 
+//     count: response.data.
 // https://ncr.ccm.sickkids.ca/api_doc/
 
 
@@ -32,7 +32,7 @@ const recogDict = {
   'HPO Jax': 3,
   'Ontology Lookup Search EBI': 4,
   // 'Neural Concept Recogniser': 5,
-  
+
 };
 
 // Search HTML for concept recogniser dropdown list
@@ -42,7 +42,7 @@ function getSelectedAPI() {
   let api = 'NCBO Bioportal Search';
   if (typeof div !== "undefined") {
     api = document.getElementsByClassName('vue-treeselect__single-value')[0].innerText;
-  } 
+  }
   return recogDict[api];
 }
 
@@ -100,7 +100,7 @@ export default {
   requestFunction: (data) => {
     let api = getSelectedAPI();
     let ontologies = getOntologies();
-    
+
     const ncbo = [
       process.env.NCBO_SEARCH,
       process.env.NCBO_ANNOTATOR,
@@ -263,19 +263,41 @@ export default {
       //     count: response.data.data.length
       //   }
       } else if (api == 3) {
+        console.log(response);
         let count;
-        if (response.data.terms.length >= 10) {
+        let data;
+        if (response.data.terms == undefined) {
+          data = [];
+          count = 0;
+        } else if (response.data.terms.length >= 10) {
+          data = response.data.terms;
           count = 1;
+        } else if (response.data.terms.length == 0)  {
+          data = [];
+          count = 0;
         } else {
+          data = response.data.terms;
           count = response.data.terms.length;
         }
         return {
-          data: response.data.terms,
+          data: data,
           // API only returns top 10 results, all results are returned on one single page
           // Let count be 1 to let user think there are no more result pages
           count: count
         }
       } else if (api == 4) {
+        if (response.data.response == undefined) {
+          return {
+            data: [],
+            count: 0
+          }
+        }
+        if (response.data.response.numFound == 0) {
+          return {
+            data: [],
+            count: 0
+          }
+        }
         return {
           data: response.data.response.docs,
           count: response.data.response.numFound
