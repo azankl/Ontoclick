@@ -32,16 +32,18 @@ const recogDict = {
   'HPO Jax': 3,
   'Ontology Lookup Search EBI': 4,
   // 'Neural Concept Recogniser': 5,
-
 };
 
 // Search HTML for concept recogniser dropdown list
 // Initial startup value will always be NCBO Search
 function getSelectedAPI() {
   let div = document.getElementsByName("conceptRecogniser")[0];
-  let api = 'NCBO Bioportal Search';
+  let api;
+  // let api = 'Ontology Lookup Search EBI';
   if (typeof div !== "undefined") {
     api = document.getElementsByClassName('vue-treeselect__single-value')[0].innerText;
+  } else {
+    api = 'NCBO Bioportal Search';
   }
   return recogDict[api];
 }
@@ -204,55 +206,100 @@ export default {
     //   })
     // }
 
-    return axios.get(apiURL, {
-      params: apiParam
-    }).then((res) => {
-      if (api == 0) {
-        return res;
-      } else if (api == 1) {
-        for (var i = 0; i < res.data.length; i++) {
-          // Switch return object's keys to align with display rows in SearchBox.vue
-          res.data[i].notation = res.data[i].annotatedClass.notation;
-          res.data[i].prefLabel = res.data[i].annotatedClass.prefLabel;
-          res.data[i].definition = res.data[i].annotatedClass.definition;
-          res.data[i].synonym = res.data[i].annotatedClass.synonym;
-          res.data[i].annotatedClass = null;
-        }
-        return res;
-      } else if (api == 3) {
-        res.data.terms = keyLoop(res.data.terms, 'id', 'notation');
-        res.data.terms = keyLoop(res.data.terms, 'name', 'prefLabel');
-        return res
-      } else if (api == 4) {
-        res.data.response.docs = keyLoop(res.data.response.docs, 'obo_id', 'notation');
-        res.data.response.docs = keyLoop(res.data.response.docs, 'label', 'prefLabel');
-        res.data.response.docs = keyLoop(res.data.response.docs, 'description', 'definition');
-        return res;
-      // } else if (api == 5) {
-      //   res.data.matches = keyLoop(res.data.matches, 'hp_id', 'notation');
-      //   var i;
-      //   for (i = 0; i < res.data.matches.length; i++) {
-      //     res.data.matches[i].prefLabel = res.data.matches[i].names[0];
-      //     res.data.matches[i].names.shift();
-      //   }
-      //   res.data.matches = keyLoop(res.data.matches, 'names', 'synonym');
-      //   return res;
-      } else {
-        return null;
+    const ncbos_get = axios.get(ncbo[0], {params: ncbo[2]});
+    const ncboa_get = axios.get(ncbo[1], {params: ncbo[3]});
+    const jax_get = axios.get(jax[0], {params: jax[1]});
+    const ebi_get = axios.get(ebi[0], {params: ebi[1]});
+
+    return axios.all([ncbos_get, ncboa_get, jax_get, ebi_get]
+    ).then(res => {
+      const ncbos_res = res[0];
+      const ncboa_res = res[1];
+      const jax_res = res[2];
+      const ebi_res = res[3];
+
+      // Parse NCBO Search response
+      // none needed
+
+      // Parse NCBO Annotator response
+      for (var i = 0; i < ncboa_res.data.length; i++) {
+        // Switch return object's keys to align with display rows in SearchBox.vue
+        ncboa_res.data[i].notation = ncboa_res.data[i].annotatedClass.notation;
+        ncboa_res.data[i].prefLabel = ncboa_res.data[i].annotatedClass.prefLabel;
+        ncboa_res.data[i].definition = ncboa_res.data[i].annotatedClass.definition;
+        ncboa_res.data[i].synonym = ncboa_res.data[i].annotatedClass.synonym;
+        ncboa_res.data[i].annotatedClass = null;
       }
+
+      // Parse JAX response
+      jax_res.data.terms = keyLoop(jax_res.data.terms, 'id', 'notation');
+      jax_res.data.terms = keyLoop(jax_res.data.terms, 'name', 'prefLabel');
+
+      // Parse EBI response
+      ebi_res.data.response.docs = keyLoop(ebi_res.data.response.docs, 'obo_id', 'notation');
+      ebi_res.data.response.docs = keyLoop(ebi_res.data.response.docs, 'label', 'prefLabel');
+      ebi_res.data.response.docs = keyLoop(ebi_res.data.response.docs, 'description', 'definition');
+
+      return [ncbos_res, ncboa_res, jax_res, ebi_res];
     }).catch((err) => {
+      console.log(err);
       return null;
     });
+
+    // return axios.get(apiURL, {
+    //   params: apiParam
+    // }).then((res) => {
+    //   console.log("function api: " + api);
+    //   if (api == 0) {
+    //     console.log("request function 0");
+    //     return res;
+    //   } else if (api == 1) {
+    //     for (var i = 0; i < res.data.length; i++) {
+    //       // Switch return object's keys to align with display rows in SearchBox.vue
+    //       res.data[i].notation = res.data[i].annotatedClass.notation;
+    //       res.data[i].prefLabel = res.data[i].annotatedClass.prefLabel;
+    //       res.data[i].definition = res.data[i].annotatedClass.definition;
+    //       res.data[i].synonym = res.data[i].annotatedClass.synonym;
+    //       res.data[i].annotatedClass = null;
+    //     }
+    //     return res;
+    //   } else if (api == 3) {
+    //     res.data.terms = keyLoop(res.data.terms, 'id', 'notation');
+    //     res.data.terms = keyLoop(res.data.terms, 'name', 'prefLabel');
+    //     return res
+    //   } else if (api == 4) {
+    //     console.log("request function 4");
+    //     res.data.response.docs = keyLoop(res.data.response.docs, 'obo_id', 'notation');
+    //     res.data.response.docs = keyLoop(res.data.response.docs, 'label', 'prefLabel');
+    //     res.data.response.docs = keyLoop(res.data.response.docs, 'description', 'definition');
+    //     return res;
+    //   // } else if (api == 5) {
+    //   //   res.data.matches = keyLoop(res.data.matches, 'hp_id', 'notation');
+    //   //   var i;
+    //   //   for (i = 0; i < res.data.matches.length; i++) {
+    //   //     res.data.matches[i].prefLabel = res.data.matches[i].names[0];
+    //   //     res.data.matches[i].names.shift();
+    //   //   }
+    //   //   res.data.matches = keyLoop(res.data.matches, 'names', 'synonym');
+    //   //   return res;
+    //   } else {
+    //     return null;
+    //   }
+    // }).catch((err) => {
+    //   return null;
+    // });
   },
   responseAdapter: (response) => {
     let api = getSelectedAPI();
-    if (response !== null && response.data) {
+    if (response !== null) {
       if (api == 0) {
+        response = response[0];
         return {
           data: response.data.collection,
           count: response.data.totalCount
         }
       } else if (api == 1) {
+        response = response[1];
         return {
           data: response.data,
           count: response.data.length
@@ -263,7 +310,7 @@ export default {
       //     count: response.data.data.length
       //   }
       } else if (api == 3) {
-        console.log(response);
+        response = response[2];
         let count;
         let data;
         if (response.data.terms == undefined) {
@@ -286,6 +333,7 @@ export default {
           count: count
         }
       } else if (api == 4) {
+        response = response[3];
         if (response.data.response == undefined) {
           return {
             data: [],
