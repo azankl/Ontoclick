@@ -1,7 +1,7 @@
 {
   "name": "OntoClick",
   "description": "Turn your clinical description into a proper ontology term.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "background": {
     "scripts": ["static/js/background.js"]
   },
