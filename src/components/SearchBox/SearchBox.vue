@@ -16,7 +16,7 @@
       <treeselect :multiple="false" :clearable="false" :select='selectAPI()' :close-on-select="true" :options="conceptrecogniserOptions" v-model="conceptrecogniserValue" placeholder="Select Concept Recognizer" name="conceptRecogniser" />
     </div>
     <div slot='ontologiesFilter' class='form-group' v-if="conceptrecogniserValue==='ncbos' || conceptrecogniserValue==='ncboa'">
-        <treeselect :multiple="true" :clearable="false" :close-on-select="true" :flat="true" :options="ontologyOptions" style="z-index:6;" placeholder="Filter by Ontology" v-model="ontologyValue" />
+        <treeselect :multiple="true" :clearable="false" ::select='ontoSave()' close-on-select="true" :flat="true" :options="ontologyOptions" style="z-index:6;" placeholder="Filter by Ontology" v-model="ontologyValue" />
       </div>
     <template slot="child_row" scope="props">
         <div class='text-wrap' v-if="props.row.definition"><b>Definition: </b>{{props.row.definition[0]}}</div>
@@ -196,6 +196,14 @@ function isArrayInArray(arr, item){
   return contains;
 }
 
+let conceptrecogniserValue = 'ncbos'
+if(localStorage.conceptrecogniserValue){
+  conceptrecogniserValue = localStorage.conceptrecogniserValue
+}
+let ontologyValue = ['HP']
+if(localStorage.ontologyValue){
+  ontologyValue = localStorage.ontologyValue.split(",")
+}
 export default {
   name: 'search-box',
   components: {
@@ -231,12 +239,12 @@ export default {
         uniqueKey: 'notation'
       },
       query: query,
-      ontologyValue: ['HP'],
+      ontologyValue: ontologyValue,
       ontologyOptions: ontologies,
       results: [],
       request: null,
       link: link,
-      conceptrecogniserValue: 'ebi',
+      conceptrecogniserValue: conceptrecogniserValue ,
       conceptrecogniserOptions: [{
         id: 'ncbos',
         label: 'NCBO Bioportal Search',
@@ -335,6 +343,7 @@ export default {
       changeExportName();
     },
     selectAPI() {
+      localStorage.conceptrecogniserValue = this.conceptrecogniserValue
       try {
         document.getElementById('exportButton').addEventListener('click', downloadCSV);
         changeExportName();
@@ -356,6 +365,9 @@ export default {
       } catch(err) {
         // do nothing
       }
+    },
+    ontoSave() {
+      localStorage.ontologyValue = this.ontologyValue
     }
   }
 }
