@@ -5,9 +5,7 @@
 #### Turn a free text description into a proper ontology term with just one click.
 ### Overview
 
-Ontoclick is a web browser extension that lets the user highlight a piece of text and then tries to find a matching Ontology term for it.
-
-Ontoclick is currently available for the Chrome web browser and we are working on a version for the Firefox web browser.
+Ontoclick is a web browser extension for Chrome and Firefox browsers that lets the user highlight a piece of text and then tries to find a matching Ontology term for it.
 
 Ontoclick currently supports matching terms to the [Human Phenotype Ontology](https://hpo.jax.org/app/), [Gene Ontology](http://geneontology.org), [Mondo Disease Ontology](https://mondo.monarchinitiative.org), [Orphanet Rare Disease Ontology](http://www.orphadata.org/cgi-bin/index.php#ontologies) and [Human Disease Ontology](https://disease-ontology.org).
 
@@ -17,20 +15,24 @@ The search results can be copied to the clipboard or saved to a list that can be
 
 ### Publication
 
-Ontoclick: a Chrome web browser extension to facilitate biomedical knowledge curation
+Ontoclick: a web browser extension to facilitate biomedical knowledge curation
 [https://www.biorxiv.org/content/10.1101/2021.03.04.433993v1](https://www.biorxiv.org/content/10.1101/2021.03.04.433993v1)
 
 ### Acknowledgements
 
 Ontoclick was born at [Health Hack Sydney](https://speakerdeck.com/azankl/ontoclick-pitch-healthhack-2017) in November 2017. Many thanks to Team Ontoclick, in particular Graham Towse from [LivingryLabs](https://www.livingrylabs.net/) for developing the first prototype. Many thanks to Anthony Xu, Yifei (Frank) Luo, Aravind Venkateswaran, and Lianguizi (Alisa) Zhou, for further improving this prototype.
 
-### Install from Chrome Store
+### Install for Chrome
 
 Ontoclick is available on the Chrome Store [here](https://chrome.google.com/webstore/detail/ontoclick/nepbilmonlfaigoeldkbimkeihligbgf).
 
+### Install for Firefox
+
+Ontoclick is available as a Firefox Add-On [here](https://addons.mozilla.org/en-US/firefox/addon/ontoclick/)
+
 ### How to Use the Extension
 
-1. Visit a web page in the Chrome browser
+1. Visit a web page in your browser
 2. Highlight the text you want to search for, right-click to show the browser context menu and select Ontoclick from the context menu.
 3. The Ontoclick popup opens and displays matching ontology terms from the Human Phenotype Ontology.
 4. Click on the '+' icon in front of a term to see more information about the term (if available).
