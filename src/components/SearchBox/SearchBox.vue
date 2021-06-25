@@ -6,10 +6,12 @@
       <h3 class="pull-left">ONTOCLICK</h3>
       <i class="pull-right hover-action fas fa-eraser clear-icon hoverer" title="Clear All" id="clearButton"></i>
       <button class="pull-right hover-action export-button" title="Export" id="exportButton">
+        <div class="pull right" @click='keyResetter()'>Reset Key</div>
         <i class="pull-right fas fa-file-download export-icon hoverer"></i>
         <p class="pull-right" id="exportCounter"></p>
       </button>
     </div>
+  <div id="apkey" style="display:none"></div>
   </div>
   <v-server-table :url="url" :columns="columns" :options="options">
     <div slot='conceptRec' class='form-group'>
@@ -368,8 +370,22 @@ export default {
     },
     ontoSave() {
       localStorage.ontologyValue = this.ontologyValue
+    },
+    alerter() {
+      if(!localStorage.apiKey){
+        let apkey = prompt('API key not found. This might cause problems when using plugin. Your key can be set by creating account at: https://bioportal.bioontology.org/account. You can choose to cancel this popup and press the reset key button to come back and update later.')
+        apkey ? localStorage.apiKey = apkey : localStorage.apiKey = 'fae307aa-db9d-43be-8f9d-1c04444ad4d4'
+      }
+      document.getElementById('apkey').innerHTML =  localStorage.apiKey
+    },
+    keyResetter() {
+      localStorage.apiKey = ''
+      alert('Reset of API key done, please reload plugin to input new key')
     }
-  }
+  },
+   mounted(){
+    this.alerter()
+ },
 }
 </script>
 

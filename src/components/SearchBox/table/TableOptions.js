@@ -33,7 +33,6 @@ const recogDict = {
   'Ontology Lookup Search EBI': 4,
   // 'Neural Concept Recogniser': 5,
 };
-
 // Search HTML for concept recogniser dropdown list
 // Initial startup value will always be NCBO Search
 function getSelectedAPI() {
@@ -107,7 +106,7 @@ export default {
       process.env.NCBO_SEARCH,
       process.env.NCBO_ANNOTATOR,
       {
-        apikey: process.env.NCBO_KEY,
+        apikey: document.getElementById('apkey').innerHTML,
         q: data.q,
         pagesize: 5,
         page: data.page,
@@ -115,7 +114,7 @@ export default {
         ontologies: ontologies
       },
       {
-        apikey: process.env.NCBO_KEY,
+        apikey: document.getElementById('apkey').innerHTML,
         text: data.q,
         pagesize: 5,
         page: data.page,
