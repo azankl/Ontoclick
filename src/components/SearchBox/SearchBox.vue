@@ -379,8 +379,11 @@ export default {
       document.getElementById('apkey').innerHTML =  localStorage.apiKeyOntoclick
     },
     keyResetter() {
-      localStorage.apiKeyOntoclick = ''
-      alert('Reset of API key done, please reload plugin to input new key')
+      let conf = prompt("Please enter 'reset' without quotes to reset API key")
+      if (conf == 'reset'){
+        localStorage.apiKeyOntoclick = ''
+        alert('Reset of API key done, please reload plugin to input new API key')
+      }
     }
   },
    mounted(){
