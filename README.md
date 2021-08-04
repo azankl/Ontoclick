@@ -15,8 +15,8 @@ The search results can be copied to the clipboard or saved to a list that can be
 
 ### Publication
 
-Ontoclick: a web browser extension to facilitate biomedical knowledge curation
-[https://www.biorxiv.org/content/10.1101/2021.03.04.433993v2](https://www.biorxiv.org/content/10.1101/2021.03.04.433993v2)
+*Ontoclick: a web browser extension to facilitate biomedical knowledge curation*\
+[BioRxiv](https://www.biorxiv.org/content/10.1101/2021.03.04.433993v2) or [Bioinformatics (Oxford University Press)](https://doi.org/10.1093/bioinformatics/btab520)
 
 ### Acknowledgements
 
