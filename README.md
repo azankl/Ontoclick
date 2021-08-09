@@ -4,7 +4,7 @@
 
 #### Turn a free text description into a proper ontology term with just one click.
 
-![screenshot](https://github.com/azankl/Ontoclick/Screenshots/Figure1.png)
+![screenshot](https://github.com/azankl/Ontoclick/blob/master/Screenshots/Figure1.png)
 
 ### Overview
 
