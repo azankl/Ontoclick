@@ -4,8 +4,6 @@
 
 #### Turn a free text description into a proper ontology term with just one click.
 
-![screenshot](https://github.com/azankl/Ontoclick/blob/master/Screenshots/Figure1.png)
-
 ### Overview
 
 Ontoclick is a web browser extension for Chrome and Firefox browsers that lets the user highlight a piece of text and then tries to find a matching Ontology term for it.
@@ -15,6 +13,10 @@ Ontoclick currently supports matching terms to the [Human Phenotype Ontology](ht
 Ontoclick uses the [NCBO BioPortal Search API](http://data.bioontology.org/documentation#nav_search) to find a matching ontology term, but searches can also be performed with the [NCBO BioPortal Annotator API](http://data.bioontology.org/documentation#nav_annotator), the [EBI Ontology Lookup Service Search API](https://www.ebi.ac.uk/ols/docs/api) or the [HPO Search API](https://hpo.jax.org/webjars/swagger-ui/3.20.9/index.html?url=/api/hpo/docs/) (the latter two only support searching the Human Phenotype Ontology).
 
 The search results can be copied to the clipboard or saved to a list that can be exported in .CSV format.
+
+### Screeenshot
+
+<img src="https://github.com/azankl/Ontoclick/blob/master/Screenshots/Figure1.png" width="1024px">
 
 ### Publication
 
