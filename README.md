@@ -3,6 +3,9 @@
 ![build](https://github.com/azankl/Ontoclick/workflows/build/badge.svg)
 
 #### Turn a free text description into a proper ontology term with just one click.
+
+![screenshot](https://github.com/azankl/Ontoclick/Screenshots/Figure1.png)
+
 ### Overview
 
 Ontoclick is a Chrome browser extension that lets the user highlight a piece of text and then tries to find a matching Ontology term for it.
