@@ -8,25 +8,34 @@
 
 ### Overview
 
-Ontoclick is a Chrome browser extension that lets the user highlight a piece of text and then tries to find a matching Ontology term for it.
+Ontoclick is a web browser extension for Chrome and Firefox browsers that lets the user highlight a piece of text and then tries to find a matching Ontology term for it.
 
 Ontoclick currently supports matching terms to the [Human Phenotype Ontology](https://hpo.jax.org/app/), [Gene Ontology](http://geneontology.org), [Mondo Disease Ontology](https://mondo.monarchinitiative.org), [Orphanet Rare Disease Ontology](http://www.orphadata.org/cgi-bin/index.php#ontologies) and [Human Disease Ontology](https://disease-ontology.org).
 
-Ontoclick uses the [NCBO BioPortal Search API](http://data.bioontology.org/documentation#nav_search) to find a matching ontology term, but searches can also be performed with the [NCBO BioPortal Annotator API](http://data.bioontology.org/documentation#nav_annotator), the [EBI Ontology Lookup Service Search API](https://www.ebi.ac.uk/ols/docs/api), the [HPO Search API](https://hpo.jax.org/webjars/swagger-ui/3.20.9/index.html?url=/api/hpo/docs/), the [Pryzm Health Concept Recogniser](https://track.health/api/), and the [SickKids Neural Concept Recogniser](https://ncr.ccm.sickkids.ca/api_doc/)  (the latter four only support searching the Human Phenotype Ontology).
+Ontoclick uses the [NCBO BioPortal Search API](http://data.bioontology.org/documentation#nav_search) to find a matching ontology term, but searches can also be performed with the [NCBO BioPortal Annotator API](http://data.bioontology.org/documentation#nav_annotator), the [EBI Ontology Lookup Service Search API](https://www.ebi.ac.uk/ols/docs/api) or the [HPO Search API](https://hpo.jax.org/webjars/swagger-ui/3.20.9/index.html?url=/api/hpo/docs/) (the latter two only support searching the Human Phenotype Ontology).
 
 The search results can be copied to the clipboard or saved to a list that can be exported in .CSV format.
+
+### Publication
+
+*Ontoclick: a web browser extension to facilitate biomedical knowledge curation*\
+[BioRxiv](https://www.biorxiv.org/content/10.1101/2021.03.04.433993v2) or [Bioinformatics (Oxford University Press)](https://doi.org/10.1093/bioinformatics/btab520)
 
 ### Acknowledgements
 
 Ontoclick was born at [Health Hack Sydney](https://speakerdeck.com/azankl/ontoclick-pitch-healthhack-2017) in November 2017. Many thanks to Team Ontoclick, in particular Graham Towse from [LivingryLabs](https://www.livingrylabs.net/) for developing the first prototype. Many thanks to Anthony Xu, Yifei (Frank) Luo, Aravind Venkateswaran, and Lianguizi (Alisa) Zhou, for further improving this prototype.
 
-### Install from Chrome Store
+### Install for Chrome
 
 Ontoclick is available on the Chrome Store [here](https://chrome.google.com/webstore/detail/ontoclick/nepbilmonlfaigoeldkbimkeihligbgf).
 
+### Install for Firefox
+
+Ontoclick is available as a Firefox Add-On [here](https://addons.mozilla.org/en-US/firefox/addon/ontoclick/)
+
 ### How to Use the Extension
 
-1. Visit a web page in the Chrome browser
+1. Visit a web page in your browser
 2. Highlight the text you want to search for, right-click to show the browser context menu and select Ontoclick from the context menu.
 3. The Ontoclick popup opens and displays matching ontology terms from the Human Phenotype Ontology.
 4. Click on the '+' icon in front of a term to see more information about the term (if available).

@@ -9,14 +9,16 @@
         <i class="pull-right fas fa-file-download export-icon hoverer"></i>
         <p class="pull-right" id="exportCounter"></p>
       </button>
+      <button class="pull-right spaced" @click='keyResetter()'>RESET KEY</button>
     </div>
+  <div id="apkey" style="display:none"></div>
   </div>
   <v-server-table :url="url" :columns="columns" :options="options">
     <div slot='conceptRec' class='form-group'>
       <treeselect :multiple="false" :clearable="false" :select='selectAPI()' :close-on-select="true" :options="conceptrecogniserOptions" v-model="conceptrecogniserValue" placeholder="Select Concept Recognizer" name="conceptRecogniser" />
     </div>
     <div slot='ontologiesFilter' class='form-group' v-if="conceptrecogniserValue==='ncbos' || conceptrecogniserValue==='ncboa'">
-        <treeselect :multiple="true" :clearable="false" :close-on-select="true" :flat="true" :options="ontologyOptions" style="z-index:6;" placeholder="Filter by Ontology" v-model="ontologyValue" />
+        <treeselect :multiple="true" :clearable="false" ::select='ontoSave()' close-on-select="true" :flat="true" :options="ontologyOptions" style="z-index:6;" placeholder="Filter by Ontology" v-model="ontologyValue" />
       </div>
     <template slot="child_row" scope="props">
         <div class='text-wrap' v-if="props.row.definition"><b>Definition: </b>{{props.row.definition[0]}}</div>
@@ -39,7 +41,7 @@
   </v-server-table>
 </div>
 </template>
-    
+
 <script>
 import Treeselect from '@riophae/vue-treeselect'
 // import {
@@ -155,7 +157,7 @@ function downloadCSV() {
     //   res.storage.forEach(function(row) {
     //     csv += row.join(',');
     //     csv += '\n';
-    //   }); 
+    //   });
     //   // console.log(csv);
     //   var hiddenElement = document.createElement('a');
     //   hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
@@ -196,6 +198,14 @@ function isArrayInArray(arr, item){
   return contains;
 }
 
+let conceptrecogniserValue = 'ncbos'
+if(localStorage.conceptrecogniserValue){
+  conceptrecogniserValue = localStorage.conceptrecogniserValue
+}
+let ontologyValue = ['HP']
+if(localStorage.ontologyValue){
+  ontologyValue = localStorage.ontologyValue.split(",")
+}
 export default {
   name: 'search-box',
   components: {
@@ -231,31 +241,31 @@ export default {
         uniqueKey: 'notation'
       },
       query: query,
-      ontologyValue: ['HP'],
+      ontologyValue: ontologyValue,
       ontologyOptions: ontologies,
       results: [],
       request: null,
       link: link,
-      conceptrecogniserValue: 'ncbos',
+      conceptrecogniserValue: conceptrecogniserValue ,
       conceptrecogniserOptions: [{
         id: 'ncbos',
         label: 'NCBO Bioportal Search',
       }, {
         id: 'ncboa',
         label: 'NCBO Bioportal Annotator',
-      },{
+      },/*{
         id: 'pryzm',
         label: 'Pryzm Health CR'
-      }, {
+      },*/ {
         id: 'ebi',
         label: 'Ontology Lookup Search EBI'
       }, {
         id: 'jax',
         label: 'HPO Jax',
-      }, {
+      },/* {
         id: 'neural',
         label: 'Neural Concept Recogniser',
-      }]
+      }*/]
     }
   },
   methods: {
@@ -293,7 +303,7 @@ export default {
 
       let options = getPubMedID();
       let link;
-      // SESSION STORAGE 
+      // SESSION STORAGE
       if (sessionStorage.getItem('storage') === null) {
         if (options[0] !== 'null') {
           link = [options[0].replace(/^\s+|\s+$/g, '')];
@@ -335,6 +345,7 @@ export default {
       changeExportName();
     },
     selectAPI() {
+      localStorage.conceptrecogniserValue = this.conceptrecogniserValue
       try {
         document.getElementById('exportButton').addEventListener('click', downloadCSV);
         changeExportName();
@@ -350,14 +361,34 @@ export default {
           app.style.width = '700px';
           app.style.height = '500px';
         }
-        
+
         let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;
         enterPress();
       } catch(err) {
         // do nothing
       }
+    },
+    ontoSave() {
+      localStorage.ontologyValue = this.ontologyValue
+    },
+    alerter() {
+      if(!localStorage.apiKeyOntoclick){
+        let apkey = prompt('API key not found. This might cause problems when using plugin. Your key can be set by creating account at: https://bioportal.bioontology.org/account. You can choose to cancel this popup and press the reset key button to come back and update later.')
+        apkey ? localStorage.apiKeyOntoclick = apkey : localStorage.apiKeyOntoclick = 'fae307aa-db9d-43be-8f9d-1c04444ad4d4'
+      }
+      document.getElementById('apkey').innerHTML =  localStorage.apiKeyOntoclick
+    },
+    keyResetter() {
+      let conf = prompt("Please enter 'reset' without quotes to reset API key")
+      if (conf == 'reset'){
+        localStorage.apiKeyOntoclick = ''
+        alert('Reset of API key done, please reload plugin to input new API key')
+      }
     }
-  }
+  },
+   mounted(){
+    this.alerter()
+ },
 }
 </script>
 
@@ -460,9 +491,16 @@ ul.pagination>li>a,
   border: none;
   background: none;
 }
-  
+
 i.hoverer:hover {
   cursor:pointer;
 }
+
+.spaced {
+  margin-right:8px;
+  font-size:8px;
+  padding:1px;
+}
+
 
 </style>
