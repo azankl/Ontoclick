@@ -76,7 +76,7 @@
     "popper.js": "^1.12.7",
     "sass-loader": "^4.0.2",
     "selenium-server": "2.53.1",
-    "shelljs": "^0.8.4",
+    "shelljs": "^0.8.5",
     "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0",
     "url-loader": "^0.5.7",
