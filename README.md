@@ -46,7 +46,7 @@ Ontoclick is available as a Firefox Add-On [here](https://addons.mozilla.org/en-
    - click the 'copy' icon next to the Label to copy the Ontology Label
    - click the 'copy' icon in the 'Actions' column to copy the Ontology ID _and_ the Label
    - click the 'highlighter' icon in the 'Actions' column to copy the highlighted text _and_ the Ontology ID _and_ the Label.
-   - click the 'disc' icon in the 'Actions' column to save the highlighted text, Ontology ID and Label to Ontoclick's history list. The number in the right upper corner of the Ontoclick window shows the number of items saved to the history list. Click the 'download' icon to download the history list as a .CSV file. Click the 'rubber' icon to erase the history list.
+   - click the 'disk' icon in the 'Actions' column to save the highlighted text, Ontology ID and Label to Ontoclick's history list. The number in the right upper corner of the Ontoclick window shows the number of items saved to the history list. Click the 'download' icon to download the history list as a .CSV file. Click the 'eraser' icon to erase the history list.
 6. If no suitable terms are retrieved, click on the triangle next to 'NCBO Bioportal Search' to re-run the search with a different concept recogniser. The result window will update immediately with the new results. The different concept recognisers all have their strengths and weaknesses, try different ones to see what gives the best results.
 7. Click on the triangle next to 'Human Phenotype Ontology' to select another (or additional) ontologies. This only works when 'NCBO Bioportal Search' or 'NCBO Bioportal Annotator' are selected.
 8. The Ontoclick Popup can also be launched without selecting any text:
