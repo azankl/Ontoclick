@@ -2,7 +2,7 @@ import style from './css/loader.css'
 import Popper from 'popper.js'
 
 // Store URL location of website the user is highlighting text from
-var location = currentTab.url;
+var location = window.location.href;
 var url = location.split('/');
 var id = 'PMID: ';
 // Only grab the PubMed ID when on the two websites
@@ -31,7 +31,7 @@ frame.id = 'popper-inner';
 frame.setAttribute('width', '100%');
 frame.setAttribute('height', '100%');
 frame.setAttribute('frameborder', '0');
-frame.setAttribute('src', chrome.extension.getURL("index.html") + '?query=' + escape(selection) + '&id=' + escape(id) + '&href=' + escape(location));
+frame.setAttribute('src', chrome.runtime.getURL("index.html") + '?query=' + escape(selection) + '&id=' + escape(id) + '&href=' + escape(location));
 
 popperDiv.appendChild(frame)
 

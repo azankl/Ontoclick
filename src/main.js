@@ -9,6 +9,7 @@ import { ServerTable } from 'vue-tables-2';
 import TableOptions from 'components/SearchBox/table/TableOptions';
 import MockSearchResponse from 'components/SearchBox/OntologyData/mock';
 // import VueClipboard from 'vue-clipboard2';
+import './fontawesome-config';
 import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/js/all.js';
 

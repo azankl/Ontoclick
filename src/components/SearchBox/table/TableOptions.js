@@ -101,12 +101,14 @@ export default {
   requestFunction: (data) => {
     let api = getSelectedAPI();
     let ontologies = getOntologies();
+    // Read the key from storage rather than the #apkey element, which doesn't exist yet on the first request
+    let apikey = localStorage.apiKeyOntoclick || process.env.NCBO_KEY;
 
     const ncbo = [
       process.env.NCBO_SEARCH,
       process.env.NCBO_ANNOTATOR,
       {
-        apikey: document.getElementById('apkey').innerHTML,
+        apikey: apikey,
         q: data.q,
         pagesize: 5,
         page: data.page,
@@ -114,7 +116,7 @@ export default {
         ontologies: ontologies
       },
       {
-        apikey: document.getElementById('apkey').innerHTML,
+        apikey: apikey,
         text: data.q,
         pagesize: 5,
         page: data.page,
@@ -134,9 +136,10 @@ export default {
       process.env.EBI,
       {
         q: data.q,
-        ontology: 'hp',
+        // OLS uses the same ontology IDs as NCBO, but lowercase
+        ontology: ontologies.toLowerCase(),
         groupField: 'iri',
-        start: data.page,
+        start: (data.page - 1) * 5,
         rows: 5,
         local: true
       }
@@ -205,10 +208,15 @@ export default {
     //   })
     // }
 
-    const ncbos_get = axios.get(ncbo[0], {params: ncbo[2]});
-    const ncboa_get = axios.get(ncbo[1], {params: ncbo[3]});
-    const jax_get = axios.get(jax[0], {params: jax[1]});
-    const ebi_get = axios.get(ebi[0], {params: ebi[1]});
+    // A failing service resolves to null so it doesn't discard the results of the others
+    const get = (url, params) => axios.get(url, {params: params}).catch((err) => {
+      console.log(err);
+      return null;
+    });
+    const ncbos_get = get(ncbo[0], ncbo[2]);
+    const ncboa_get = get(ncbo[1], ncbo[3]);
+    const jax_get = get(jax[0], jax[1]);
+    const ebi_get = get(ebi[0], ebi[1]);
 
     return axios.all([ncbos_get, ncboa_get, jax_get, ebi_get]
     ).then(res => {
@@ -221,7 +229,7 @@ export default {
       // none needed
 
       // Parse NCBO Annotator response
-      for (var i = 0; i < ncboa_res.data.length; i++) {
+      for (var i = 0; ncboa_res && i < ncboa_res.data.length; i++) {
         // Switch return object's keys to align with display rows in SearchBox.vue
         ncboa_res.data[i].notation = ncboa_res.data[i].annotatedClass.notation;
         ncboa_res.data[i].prefLabel = ncboa_res.data[i].annotatedClass.prefLabel;
@@ -231,13 +239,17 @@ export default {
       }
 
       // Parse JAX response
-      jax_res.data.terms = keyLoop(jax_res.data.terms, 'id', 'notation');
-      jax_res.data.terms = keyLoop(jax_res.data.terms, 'name', 'prefLabel');
+      if (jax_res && jax_res.data.terms) {
+        jax_res.data.terms = keyLoop(jax_res.data.terms, 'id', 'notation');
+        jax_res.data.terms = keyLoop(jax_res.data.terms, 'name', 'prefLabel');
+      }
 
       // Parse EBI response
-      ebi_res.data.response.docs = keyLoop(ebi_res.data.response.docs, 'obo_id', 'notation');
-      ebi_res.data.response.docs = keyLoop(ebi_res.data.response.docs, 'label', 'prefLabel');
-      ebi_res.data.response.docs = keyLoop(ebi_res.data.response.docs, 'description', 'definition');
+      if (ebi_res && ebi_res.data.response) {
+        ebi_res.data.response.docs = keyLoop(ebi_res.data.response.docs, 'obo_id', 'notation');
+        ebi_res.data.response.docs = keyLoop(ebi_res.data.response.docs, 'label', 'prefLabel');
+        ebi_res.data.response.docs = keyLoop(ebi_res.data.response.docs, 'description', 'definition');
+      }
 
       return [ncbos_res, ncboa_res, jax_res, ebi_res];
     }).catch((err) => {
@@ -290,7 +302,8 @@ export default {
   },
   responseAdapter: (response) => {
     let api = getSelectedAPI();
-    if (response !== null) {
+    const index = {0: 0, 1: 1, 3: 2, 4: 3}[api];
+    if (response !== null && response[index]) {
       if (api == 0) {
         response = response[0];
         return {
