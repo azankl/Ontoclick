@@ -41,6 +41,11 @@ let popper = new Popper(range, popperDiv, {
   placement: 'right',
   removeOnDestroy: true,
   arrowElement: arrowElement,
+  modifiers: {
+    // Keep the popup inside the visible window (the default boundary is the whole page).
+    // If the window is shorter than the popup, keep the top with the search box visible.
+    preventOverflow: { boundariesElement: 'viewport', padding: 5, priority: ['left', 'right', 'bottom', 'top'] },
+  },
   onCreate: (data) => {
   },
   onUpdate: (data) => {
