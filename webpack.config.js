@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const pkg = require('./package.json');
-const API = require('./api/prod.api.json');
+const env = require('./build/env');
 
 // Sass deprecations triggered by Bootstrap 3, which we can't change
 // CommonJS output, because vue-loader 15 imports styles with a default import
@@ -18,7 +18,7 @@ const sassOptions = {
   silenceDeprecations: ['import', 'slash-div', 'global-builtin', 'color-functions'],
 };
 
-module.exports = (env, argv) => {
+module.exports = (_, argv) => {
   const production = argv.mode !== 'development';
 
   return {
@@ -89,17 +89,7 @@ module.exports = (env, argv) => {
     plugins: [
       new VueLoaderPlugin(),
       new webpack.DefinePlugin({
-        'process.env': {
-          NODE_ENV: JSON.stringify(production ? 'production' : 'development'),
-          NCBO_SEARCH: JSON.stringify('https://data.bioontology.org/search'),
-          NCBO_ANNOTATOR: JSON.stringify('https://data.bioontology.org/annotator'),
-          NCBO_KEY: JSON.stringify(API.ncbo_key),
-          JAX: JSON.stringify('https://ontology.jax.org/api/hp/search'),
-          EBI: JSON.stringify('https://www.ebi.ac.uk/ols4/api/search'),
-          NEURAL: JSON.stringify('https://cors-anywhere.herokuapp.com/https://ncr.ccm.sickkids.ca/curr/match/'),
-          PRYZM: JSON.stringify('https://cors-anywhere.herokuapp.com/https://knowledge.pryzm.health/api/cr/v1/annotate?apiKey='),
-          PRYZM_KEY: JSON.stringify(API.pryzm_key),
-        },
+        'process.env': env(production ? 'production' : 'development'),
       }),
       // micromatch (via vue-tables-2) reads process.platform; webpack 5 no longer provides it
       new webpack.ProvidePlugin({ process: 'process/browser.js' }),
