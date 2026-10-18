@@ -102,7 +102,7 @@ module.exports = (env, argv) => {
         },
       }),
       // micromatch (via vue-tables-2) reads process.platform; webpack 5 no longer provides it
-      new webpack.ProvidePlugin({ process: 'process/browser' }),
+      new webpack.ProvidePlugin({ process: 'process/browser.js' }),
       new MiniCssExtractPlugin({ filename: 'static/css/[name].css' }),
       new HtmlWebpackPlugin({
         filename: 'index.html',
