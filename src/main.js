@@ -12,6 +12,7 @@ import MockSearchResponse from 'components/SearchBox/OntologyData/mock';
 import './fontawesome-config';
 import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/js/all.js';
+import './css/app.sass';
 
 Vue.use(VueResource);
 Vue.use(ServerTable, TableOptions, false, require('components/SearchBox/table/TableTemplate.js')('server'));
