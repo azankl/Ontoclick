@@ -98,7 +98,7 @@ function enterPress() {
 
 function getPubMedID() {
   try {
-    return [unescape(document.location.search.match(/id=(.*)\&/)[1]),
+    return [unescape(document.location.search.match(/id=(.*)&/)[1]),
             unescape(document.location.search.match(/href=(.*)/)[1])];
   } catch(e) {
     return null;

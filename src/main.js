@@ -34,7 +34,6 @@ require('bootstrap-sass');
 import App from './App';
 
 // ======================== Vue Instance =======================
-/* eslint-disable no-new */
 new Vue({
   store,
   el: '#app',
