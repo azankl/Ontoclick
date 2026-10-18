@@ -9,7 +9,8 @@
     "dev": "webpack --mode development --watch",
     "build": "webpack --mode production",
     "lint": "eslint .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "zip": "yarn build && cd dist && zip -qr ../ontoclick-$npm_package_version.zip . -x '*.map'"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.14.0",
@@ -46,5 +47,8 @@
     "vue-template-compiler": "2.7.16",
     "webpack": "^5.99.0",
     "webpack-cli": "^6.0.1"
+  },
+  "engines": {
+    "node": ">=22.12"
   }
 }

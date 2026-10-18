@@ -59,22 +59,22 @@ Ontoclick is available as a Firefox Add-On [here](https://addons.mozilla.org/en-
 
 **Build Prerequisites**
 
-* [Yarn](https://yarnpkg.com/en/docs/install)
+* [Node.js](https://nodejs.org) 22.12 or later (the version used for releases is in `.nvmrc`)
+* [Yarn](https://classic.yarnpkg.com/en/docs/install) 1.x
 
 ``` bash
 # install dependencies
 yarn install
 
 # build for production with minification
-yarn run build
-
-# To install, follow these steps:
-Go to Chrome:
-1. Visit chrome://extensions
-2. Enable developer options
-3. Click 'Load unpacked extension...'
-4. Select the ontoclick/dist/ folder
+yarn build
 ```
+
+To install, go to Chrome:
+1. Visit chrome://extensions
+2. Enable Developer mode
+3. Click 'Load unpacked'
+4. Select the ontoclick/dist/ folder
 
 
 ### Development Setup
@@ -86,26 +86,22 @@ yarn install
 # get your BioPortal REST API key from https://bioportal.bioontology.org/account
 open https://bioportal.bioontology.org/account
 
-# add your API key for development builds
-cp api/example.api.json api/dev.api.json
-open api/dev.api.json
-
-# add your API key for production builds
+# add your API key (built in as the default key)
 cp api/example.api.json api/prod.api.json
 open api/prod.api.json
 
-# serve with hot reload at localhost:8080
-yarn run dev
+# rebuild dist/ on every change; click the reload icon at chrome://extensions to pick up changes
+yarn dev
 
 # build for production with minification
-yarn run build
+yarn build
+
+# build and package dist/ as ontoclick-<version>.zip for the Chrome Web Store
+yarn zip
 
 # run unit tests
-yarn run unit
-
-# run e2e tests
-yarn run e2e
-
-# run all tests
 yarn test
+
+# lint
+yarn lint
 ```

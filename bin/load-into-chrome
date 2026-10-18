@@ -1,1 +1,0 @@
-open -a "Google Chrome" --args --load-extension=$(pwd)/dist/ --app=chrome://extensions
