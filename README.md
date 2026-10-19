@@ -14,9 +14,9 @@ Ontoclick uses the [NCBO BioPortal Search API](http://data.bioontology.org/docum
 
 The search results can be copied to the clipboard or saved to a list that can be exported in .CSV format.
 
-### Screeenshot
+### Screenshot
 
-<img src="https://github.com/azankl/Ontoclick/blob/master/Screenshots/Figure1.png" width="1024px">
+<img src="Screenshots/Figure1.png" width="940px" alt="OntoClick popup next to the selected phrase 'large head circumference' in a PubMed abstract, showing the matching HPO term HP:0040194 Increased head circumference">
 
 ### Publication
 
