@@ -10,13 +10,13 @@ Ontoclick is a web browser extension for Chrome and Firefox browsers that lets t
 
 Ontoclick currently supports matching terms to the [Human Phenotype Ontology](https://hpo.jax.org/app/), [Gene Ontology](http://geneontology.org), [Mondo Disease Ontology](https://mondo.monarchinitiative.org), [Orphanet Rare Disease Ontology](http://www.orphadata.org/cgi-bin/index.php#ontologies) and [Human Disease Ontology](https://disease-ontology.org).
 
-Ontoclick uses the [NCBO BioPortal Search API](http://data.bioontology.org/documentation#nav_search) to find a matching ontology term, but searches can also be performed with the [NCBO BioPortal Annotator API](http://data.bioontology.org/documentation#nav_annotator), the [EBI Ontology Lookup Service Search API](https://www.ebi.ac.uk/ols/docs/api) or the [HPO Search API](https://hpo.jax.org/webjars/swagger-ui/3.20.9/index.html?url=/api/hpo/docs/) (the latter two only support searching the Human Phenotype Ontology).
+Ontoclick uses the [NCBO BioPortal Search API](http://data.bioontology.org/documentation#nav_search) to find a matching ontology term, but searches can also be performed with the [NCBO BioPortal Annotator API](http://data.bioontology.org/documentation#nav_annotator), the [EBI Ontology Lookup Service Search API](https://www.ebi.ac.uk/ols4/help) or the [HPO Search API](https://ontology.jax.org/api/hp/docs) (the latter only supports searching the Human Phenotype Ontology).
 
 The search results can be copied to the clipboard or saved to a list that can be exported in .CSV format.
 
-### Screeenshot
+### Screenshot
 
-<img src="https://github.com/azankl/Ontoclick/blob/master/Screenshots/Figure1.png" width="1024px">
+<img src="Screenshots/Figure1.png" width="940px" alt="OntoClick popup next to the selected phrase 'large head circumference' in a PubMed abstract, showing the matching HPO term HP:0040194 Increased head circumference">
 
 ### Publication
 
@@ -48,7 +48,7 @@ Ontoclick is available as a Firefox Add-On [here](https://addons.mozilla.org/en-
    - click the 'highlighter' icon in the 'Actions' column to copy the highlighted text _and_ the Ontology ID _and_ the Label.
    - click the 'disk' icon in the 'Actions' column to save the highlighted text, Ontology ID and Label to Ontoclick's history list. The number in the right upper corner of the Ontoclick window shows the number of items saved to the history list. Click the 'download' icon to download the history list as a .CSV file. Click the 'eraser' icon to erase the history list.
 6. If no suitable terms are retrieved, click on the triangle next to 'NCBO Bioportal Search' to re-run the search with a different concept recogniser. The result window will update immediately with the new results. The different concept recognisers all have their strengths and weaknesses, try different ones to see what gives the best results.
-7. Click on the triangle next to 'Human Phenotype Ontology' to select another (or additional) ontologies. This only works when 'NCBO Bioportal Search' or 'NCBO Bioportal Annotator' are selected.
+7. Click on the triangle next to 'Human Phenotype Ontology' to select another (or additional) ontologies. This only works when 'NCBO Bioportal Search', 'NCBO Bioportal Annotator' or 'Ontology Lookup Search EBI' are selected.
 8. The Ontoclick Popup can also be launched without selecting any text:
    - right-click anywhere in the browser window and select Ontoclick from the context menu that appears
    - click the Ontoclick icon in the browser toolbar
@@ -59,22 +59,22 @@ Ontoclick is available as a Firefox Add-On [here](https://addons.mozilla.org/en-
 
 **Build Prerequisites**
 
-* [Yarn](https://yarnpkg.com/en/docs/install)
+* [Node.js](https://nodejs.org) 22.12 or later (the version used for releases is in `.nvmrc`)
+* [Yarn](https://classic.yarnpkg.com/en/docs/install) 1.x
 
 ``` bash
 # install dependencies
 yarn install
 
 # build for production with minification
-yarn run build
-
-# To install, follow these steps:
-Go to Chrome:
-1. Visit chrome://extensions
-2. Enable developer options
-3. Click 'Load unpacked extension...'
-4. Select the ontoclick/dist/ folder
+yarn build
 ```
+
+To install, go to Chrome:
+1. Visit chrome://extensions
+2. Enable Developer mode
+3. Click 'Load unpacked'
+4. Select the ontoclick/dist/ folder
 
 
 ### Development Setup
@@ -86,26 +86,22 @@ yarn install
 # get your BioPortal REST API key from https://bioportal.bioontology.org/account
 open https://bioportal.bioontology.org/account
 
-# add your API key for development builds
-cp api/example.api.json api/dev.api.json
-open api/dev.api.json
-
-# add your API key for production builds
+# add your API key (built in as the default key)
 cp api/example.api.json api/prod.api.json
 open api/prod.api.json
 
-# serve with hot reload at localhost:8080
-yarn run dev
+# rebuild dist/ on every change; click the reload icon at chrome://extensions to pick up changes
+yarn dev
 
 # build for production with minification
-yarn run build
+yarn build
+
+# build and package dist/ as ontoclick-<version>.zip for the Chrome Web Store
+yarn zip
 
 # run unit tests
-yarn run unit
-
-# run e2e tests
-yarn run e2e
-
-# run all tests
 yarn test
+
+# lint
+yarn lint
 ```

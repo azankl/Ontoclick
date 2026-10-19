@@ -1,3 +1,4 @@
 {
-  "key": "EXAMPLE_API_KEY_123"
+  "ncbo_key": "YOUR_BIOPORTAL_API_KEY",
+  "pryzm_key": ""
 }

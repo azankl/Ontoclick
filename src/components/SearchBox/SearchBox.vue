@@ -17,22 +17,22 @@
     <div slot='conceptRec' class='form-group'>
       <treeselect :multiple="false" :clearable="false" :select='selectAPI()' :close-on-select="true" :options="conceptrecogniserOptions" v-model="conceptrecogniserValue" placeholder="Select Concept Recognizer" name="conceptRecogniser" />
     </div>
-    <div slot='ontologiesFilter' class='form-group' v-if="conceptrecogniserValue==='ncbos' || conceptrecogniserValue==='ncboa'">
+    <div slot='ontologiesFilter' class='form-group' v-if="conceptrecogniserValue==='ncbos' || conceptrecogniserValue==='ncboa' || conceptrecogniserValue==='ebi'">
         <treeselect :multiple="true" :clearable="false" ::select='ontoSave()' close-on-select="true" :flat="true" :options="ontologyOptions" style="z-index:6;" placeholder="Filter by Ontology" v-model="ontologyValue" />
       </div>
-    <template slot="child_row" scope="props">
+    <template slot="child_row" slot-scope="props">
         <div class='text-wrap' v-if="props.row.definition"><b>Definition: </b>{{props.row.definition[0]}}</div>
         <div class='text-wrap' v-if="props.row.synonym"><b>Synonyms: </b>{{ typeof props.row.synonym === 'string' ? props.row.synonym : props.row.synonym.join(', ') }}</div>
       </template>
-    <template slot="notation" scope="props" v-if="props.row.notation">
+    <template slot="notation" slot-scope="props" v-if="props.row.notation">
         <span :id='"notation"+props.index' v-if="props.row.notation">{{props.row.notation}}</span>
         <a class="hover-action far fa-copy" @click='copyContent("notation"+props.index)'></a>
       </template>
-    <template slot="prefLabel" scope="props" v-if="props.row.prefLabel">
+    <template slot="prefLabel" slot-scope="props" v-if="props.row.prefLabel">
         <span :id='"prefLabel"+props.index' v-if="props.row.prefLabel">{{props.row.prefLabel}}</span>
         <a class="hover-action far fa-copy" @click='copyContent("prefLabel"+props.index)'></a>
       </template>
-    <template slot="spantext" scope="props">
+    <template slot="spantext" slot-scope="props">
         <span :id='"spantext"+props.index' v-if="props.row.prefLabel && props.row.notation"></span>
         <a class="hover-action far fa-copy" title="Identifier + Label" @click='copyContentS(props.row.notation + " " + props.row.prefLabel)' v-if="props.row.notation && props.row.prefLabel"></a>
         <a class="hover-action fas fa-highlighter" title="Text span + Identifier + Label" @click="doCopy(props.row.notation, props.row.prefLabel)" v-if="props.row.notation && props.row.prefLabel"></a>
@@ -98,7 +98,7 @@ function enterPress() {
 
 function getPubMedID() {
   try {
-    return [unescape(document.location.search.match(/id=(.*)\&/)[1]),
+    return [unescape(document.location.search.match(/id=(.*)&/)[1]),
             unescape(document.location.search.match(/href=(.*)/)[1])];
   } catch(e) {
     return null;
