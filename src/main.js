@@ -6,7 +6,7 @@ import Vue from 'vue';
 
 import { ServerTable } from 'vue-tables-2';
 import TableOptions from 'components/SearchBox/table/TableOptions';
-import MockSearchResponse from 'components/SearchBox/OntologyData/mock';
+
 import './fontawesome-config';
 import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/js/all.js';
@@ -14,15 +14,6 @@ import './css/app.sass';
 
 Vue.use(ServerTable, TableOptions, false, require('components/SearchBox/table/TableTemplate.js')('server'));
 
-/*
-Vue.http.interceptors.unshift((request, next) => {
-  next(
-    request.respondWith(MockSearchResponse,
-      {status: 200}
-    )
-  );
-});
-*/
 
 import store from './store';
 

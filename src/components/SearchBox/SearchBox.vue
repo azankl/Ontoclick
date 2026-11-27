@@ -124,20 +124,6 @@ function changeExportName() {
   }
 }
 
-function getStorage() {
-  // PERSISTANT STORAGE
-  // chrome.storage.local.get(['storage'], function(res) {
-    // console.log(res);
-  // });
-
-  // SESSION STORAGE (Each tab is seperate from another)
-  if (sessionStorage.getItem('storage') === null) {
-    console.log(sessionStorage.getItem('storage'));
-  } else {
-    console.log(JSON.parse(sessionStorage.getItem('storage')));
-  }
-  console.log(getPubMedID());
-}
 
 function clearStorage() {
   // PERSISTANT STORAGE
@@ -198,7 +184,8 @@ function isArrayInArray(arr, item){
   return contains;
 }
 
-let conceptrecogniserValue = 'ncbos'
+// EBI OLS needs no API key, so it is the default; NCBO asks for a key when it is selected
+let conceptrecogniserValue = 'ebi'
 if(localStorage.conceptrecogniserValue){
   conceptrecogniserValue = localStorage.conceptrecogniserValue
 }
@@ -253,19 +240,13 @@ export default {
       }, {
         id: 'ncboa',
         label: 'NCBO Bioportal Annotator',
-      },/*{
-        id: 'pryzm',
-        label: 'Pryzm Health CR'
-      },*/ {
+      }, {
         id: 'ebi',
         label: 'Ontology Lookup Search EBI'
       }, {
         id: 'jax',
         label: 'HPO Jax',
-      },/* {
-        id: 'neural',
-        label: 'Neural Concept Recogniser',
-      }*/]
+      }]
     }
   },
   methods: {
@@ -362,7 +343,6 @@ export default {
           app.style.height = '500px';
         }
 
-        let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;
         enterPress();
       } catch(err) {
         // do nothing
@@ -371,12 +351,18 @@ export default {
     ontoSave() {
       localStorage.ontologyValue = this.ontologyValue
     },
+    isNcbo(value) {
+      return value === 'ncbos' || value === 'ncboa'
+    },
     alerter() {
       if(!localStorage.apiKeyOntoclick){
-        let apkey = prompt('API key not found. This might cause problems when using plugin. Your key can be set by creating account at: https://bioportal.bioontology.org/account. You can choose to cancel this popup and press the reset key button to come back and update later.')
-        apkey ? localStorage.apiKeyOntoclick = apkey : localStorage.apiKeyOntoclick = 'fae307aa-db9d-43be-8f9d-1c04444ad4d4'
+        let apkey = prompt('NCBO BioPortal API key not found. To use the NCBO BioPortal Search and Annotator, create a free account at https://bioportal.bioontology.org and paste the API key listed in your account here. If you cancel, you will be asked again the next time you select NCBO. The EBI and HPO Jax searches work without a key.')
+        // Cancelling (or entering nothing) stores nothing, so the prompt appears again the next time NCBO is selected
+        if (apkey && apkey.trim()) {
+          localStorage.apiKeyOntoclick = apkey.trim()
+        }
       }
-      document.getElementById('apkey').innerHTML =  localStorage.apiKeyOntoclick
+      document.getElementById('apkey').textContent = localStorage.apiKeyOntoclick || ''
     },
     keyResetter() {
       let conf = prompt("Please enter 'reset' without quotes to reset API key")
@@ -386,8 +372,18 @@ export default {
       }
     }
   },
+  watch: {
+    conceptrecogniserValue(value) {
+      if (this.isNcbo(value)) {
+        this.alerter()
+      }
+    }
+  },
    mounted(){
-    this.alerter()
+    // Only ask for the key when NCBO is already selected (e.g. remembered from a previous session)
+    if (this.isNcbo(this.conceptrecogniserValue)) {
+      this.alerter()
+    }
  },
 }
 </script>

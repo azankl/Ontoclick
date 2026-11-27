@@ -1,4 +1,4 @@
-import style from './css/loader.css'
+import './css/loader.css'
 import Popper from 'popper.js'
 
 // Store URL location of website the user is highlighting text from
