@@ -88,7 +88,6 @@ export default {
     dropdown: false
   },
   requestFunction: (data) => {
-    let api = getSelectedAPI();
     let ontologies = getOntologies();
     // Read the key from storage rather than the #apkey element, which doesn't exist yet on the first request
     let apikey = localStorage.apiKeyOntoclick;
@@ -133,33 +132,6 @@ export default {
         local: true
       }
     ];
-
-
-    // Change the URL and parameters depending on the Concept Recogniser selected
-    let apiURL, apiParam;
-    switch(api) {
-      case 0:
-        apiURL = ncbo[0];
-        apiParam = ncbo[2];
-        break;
-      case 1:
-        apiURL = ncbo[1];
-        apiParam = ncbo[3];
-        break;
-      case 3:
-        apiURL = jax[0];
-        apiParam = jax[1];
-        break;
-      case 4:
-        apiURL = ebi[0];
-        apiParam = ebi[1];
-        break;
-
-      default:
-        apiURL = null;
-        apiParam = null;
-    };
-
 
     // A failing service resolves to null so it doesn't discard the results of the others
     const get = (url, params) => axios.get(url, {params: params}).catch((err) => {

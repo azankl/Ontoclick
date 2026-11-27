@@ -124,20 +124,6 @@ function changeExportName() {
   }
 }
 
-function getStorage() {
-  // PERSISTANT STORAGE
-  // chrome.storage.local.get(['storage'], function(res) {
-    // console.log(res);
-  // });
-
-  // SESSION STORAGE (Each tab is seperate from another)
-  if (sessionStorage.getItem('storage') === null) {
-    console.log(sessionStorage.getItem('storage'));
-  } else {
-    console.log(JSON.parse(sessionStorage.getItem('storage')));
-  }
-  console.log(getPubMedID());
-}
 
 function clearStorage() {
   // PERSISTANT STORAGE
@@ -357,7 +343,6 @@ export default {
           app.style.height = '500px';
         }
 
-        let search = document.getElementsByClassName('VueTables__search')[0].children[0].value;
         enterPress();
       } catch(err) {
         // do nothing
