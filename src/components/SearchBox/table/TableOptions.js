@@ -6,9 +6,6 @@ import axios from 'axios';
 //      count : response.data.totalCount
 // https://data.bioontology.org/documentation
 
-// Pryzm Health = 2
-// https://track.health/api/
-
 // JAX = 3
 //     data : response.data.terms
 //     count : response.data.termsTotalCount
@@ -19,30 +16,22 @@ import axios from 'axios';
 //     count: response.data.
 // https://www.ebi.ac.uk/ols/docs/api/search
 
-// Neural Concept Recogniser = 5
-//     data: response.data.
-//     count: response.data.
-// https://ncr.ccm.sickkids.ca/api_doc/
-
-
 const recogDict = {
   'NCBO Bioportal Search': 0,
   'NCBO Bioportal Annotator': 1,
-  // 'Pryzm Health CR': 2,
+
   'HPO Jax': 3,
   'Ontology Lookup Search EBI': 4,
-  // 'Neural Concept Recogniser': 5,
 };
 // Search HTML for concept recogniser dropdown list
-// Initial startup value will always be NCBO Search
+// Before the dropdown exists (the first request), fall back to the default, EBI
 function getSelectedAPI() {
   let div = document.getElementsByName("conceptRecogniser")[0];
   let api;
-  // let api = 'Ontology Lookup Search EBI';
   if (typeof div !== "undefined") {
     api = document.getElementsByClassName('vue-treeselect__single-value')[0].innerText;
   } else {
-    api = 'NCBO Bioportal Search';
+    api = 'Ontology Lookup Search EBI';
   }
   return recogDict[api];
 }
@@ -102,7 +91,7 @@ export default {
     let api = getSelectedAPI();
     let ontologies = getOntologies();
     // Read the key from storage rather than the #apkey element, which doesn't exist yet on the first request
-    let apikey = localStorage.apiKeyOntoclick || process.env.NCBO_KEY;
+    let apikey = localStorage.apiKeyOntoclick;
 
     const ncbo = [
       process.env.NCBO_SEARCH,
@@ -145,17 +134,6 @@ export default {
       }
     ];
 
-    const neural = [
-      process.env.NEURAL,
-      {
-        text: data.q
-      }
-    ];
-
-    // const pryzm = [
-    //   process.env.PRYZM + process.env.PRYZM_KEY,
-    //   data.q
-    // ]
 
     // Change the URL and parameters depending on the Concept Recogniser selected
     let apiURL, apiParam;
@@ -176,45 +154,21 @@ export default {
         apiURL = ebi[0];
         apiParam = ebi[1];
         break;
-      // case 5:
-      //   apiURL = neural[0];
-      //   apiParam = neural[1];
-      //   break;
+
       default:
         apiURL = null;
         apiParam = null;
     };
 
-    // Seperate from the other returns as Pryzm requires a POST request instead of GET request
-    // if (api == 2) {
-    //   return axios.post(pryzm[0], {
-    //     payload: pryzm[1]
-    //   }).then((res) => {
-    //     for (var i = 0; i < res.data.data.length; i++) {
-    //       // Switch return object's keys to align with display rows in SearchBox.vue
-    //       res.data.data[i].notation = res.data.data[i].term.curie;
-    //       res.data.data[i].prefLabel = res.data.data[i].term.label;
-    //       res.data.data[i].definition = [];
-    //       res.data.data[i].definition.push(res.data.data[i].term.metadata.metadata.DEFINITION);
-    //       let arr = [];
-    //       for (var j = 0; j < res.data.data[i].term.synonyms.length; j++) {
-    //           arr.push(res.data.data[i].term.synonyms[j].synonym)
-    //       }
-    //       res.data.data[i].synonym = arr;
-    //     }
-    //     return res;
-    //   }).catch((err) => {
-    //     return null
-    //   })
-    // }
 
     // A failing service resolves to null so it doesn't discard the results of the others
     const get = (url, params) => axios.get(url, {params: params}).catch((err) => {
       console.log(err);
       return null;
     });
-    const ncbos_get = get(ncbo[0], ncbo[2]);
-    const ncboa_get = get(ncbo[1], ncbo[3]);
+    // NCBO rejects requests without a key, so skip them until the user has entered one
+    const ncbos_get = apikey ? get(ncbo[0], ncbo[2]) : Promise.resolve(null);
+    const ncboa_get = apikey ? get(ncbo[1], ncbo[3]) : Promise.resolve(null);
     const jax_get = get(jax[0], jax[1]);
     const ebi_get = get(ebi[0], ebi[1]);
 
@@ -284,15 +238,6 @@ export default {
     //     res.data.response.docs = keyLoop(res.data.response.docs, 'label', 'prefLabel');
     //     res.data.response.docs = keyLoop(res.data.response.docs, 'description', 'definition');
     //     return res;
-    //   // } else if (api == 5) {
-    //   //   res.data.matches = keyLoop(res.data.matches, 'hp_id', 'notation');
-    //   //   var i;
-    //   //   for (i = 0; i < res.data.matches.length; i++) {
-    //   //     res.data.matches[i].prefLabel = res.data.matches[i].names[0];
-    //   //     res.data.matches[i].names.shift();
-    //   //   }
-    //   //   res.data.matches = keyLoop(res.data.matches, 'names', 'synonym');
-    //   //   return res;
     //   } else {
     //     return null;
     //   }
@@ -316,11 +261,6 @@ export default {
           data: response.data,
           count: response.data.length
         }
-      // } else if (api == 2) {
-      //   return {
-      //     data: response.data.data,
-      //     count: response.data.data.length
-      //   }
       } else if (api == 3) {
         response = response[2];
         let count;
@@ -362,19 +302,6 @@ export default {
           data: response.data.response.docs,
           count: response.data.response.numFound
         }
-      // } else if (api == 5) {
-      //     let count;
-      //     if (response.data.matches.length >= 10) {
-      //       count = 1;
-      //     } else {
-      //       count = response.data.matches.length;
-      //     }
-      //   return {
-      //     data: response.data.matches,
-      //     // API only returns top 10 results, all results are returned on one single page
-      //     // Let count be 1 to let user think there are no more result pages
-      //     count: count
-      //   }
       } else {
         return {
           data: [],
